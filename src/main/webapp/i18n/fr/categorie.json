@@ -1,0 +1,10 @@
+{
+  "barApp": {
+    "Categorie": {
+      "null": "",
+      "ALCOLISEE": "ALCOLISEE",
+      "GASEUSE": "GASEUSE",
+      "AUTRE": "AUTRE"
+    }
+  }
+}

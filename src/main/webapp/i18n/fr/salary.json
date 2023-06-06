@@ -1,0 +1,27 @@
+{
+  "barApp": {
+    "salary": {
+      "home": {
+        "title": "Salaries",
+        "refreshListLabel": "Actualiser la liste",
+        "createLabel": "Créer un nouveau Salary",
+        "createOrEditLabel": "Créer ou éditer un Salary",
+        "notFound": "Aucun Salary trouvé"
+      },
+      "created": "Un nouveau Salary a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Salary avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Salary avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Êtes-vous certain de vouloir supprimer le Salary {{ id }} ?"
+      },
+      "detail": {
+        "title": "Salary"
+      },
+      "id": "Id",
+      "month": "Month",
+      "year": "Year",
+      "amount": "Amount",
+      "employee": "Employee"
+    }
+  }
+}

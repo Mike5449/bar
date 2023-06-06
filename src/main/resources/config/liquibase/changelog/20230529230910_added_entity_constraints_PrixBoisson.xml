@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <!--
+        Added the constraints for entity PrixBoisson.
+    -->
+    <changeSet id="20230529230910-2" author="jhipster">
+
+        <addForeignKeyConstraint baseColumnNames="boisson_id"
+                                 baseTableName="prix_boisson"
+                                 constraintName="fk_prix_boisson__boisson_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="boisson"/>
+    </changeSet>
+</databaseChangeLog>

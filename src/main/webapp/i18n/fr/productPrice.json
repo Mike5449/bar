@@ -1,0 +1,26 @@
+{
+  "barApp": {
+    "productPrice": {
+      "home": {
+        "title": "ProductPrices",
+        "refreshListLabel": "Actualiser la liste",
+        "createLabel": "Créer un nouveau Product Price",
+        "createOrEditLabel": "Créer ou éditer un Product Price",
+        "notFound": "Aucun Product Price trouvé"
+      },
+      "created": "Un nouveau Product Price a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Product Price avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Product Price avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Êtes-vous certain de vouloir supprimer le Product Price {{ id }} ?"
+      },
+      "detail": {
+        "title": "Product Price"
+      },
+      "id": "Id",
+      "price": "Price",
+      "status": "Status",
+      "produit": "Produit"
+    }
+  }
+}

@@ -1,0 +1,74 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <div *ngIf="sale">
+      <h2 data-cy="saleDetailsHeading"><span jhiTranslate="barApp.sale.detail.title">Sale</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="barApp.sale.id">Id</span></dt>
+        <dd>
+          <span>{{ sale.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="barApp.sale.quantity">Quantity</span></dt>
+        <dd>
+          <span>{{ sale.quantity }}</span>
+        </dd>
+        <dt><span jhiTranslate="barApp.sale.unitPrice">Unit Price</span></dt>
+        <dd>
+          <span>{{ sale.unitPrice }}</span>
+        </dd>
+        <dt><span jhiTranslate="barApp.sale.amountTotal">Amount Total</span></dt>
+        <dd>
+          <span>{{ sale.amountTotal }}</span>
+        </dd>
+        <dt><span jhiTranslate="barApp.sale.status">Status</span></dt>
+        <dd>
+          <span jhiTranslate="{{ 'barApp.StatusVente.' + sale.status }}">{{ sale.status }}</span>
+        </dd>
+        <dt><span jhiTranslate="barApp.sale.employee">Employee</span></dt>
+        <dd>
+          <div *ngIf="sale.employee">
+            <a [routerLink]="['/employee', sale.employee.id, 'view']">{{ sale.employee.firstName }}</a>
+          </div>
+        </dd>
+        <dt><span jhiTranslate="barApp.sale.client">Client</span></dt>
+        <dd>
+          <div *ngIf="sale.client">
+            <a [routerLink]="['/client', sale.client.id, 'view']">{{ sale.client.name }}</a>
+          </div>
+        </dd>
+        <dt><span jhiTranslate="barApp.sale.depot">Depot</span></dt>
+        <dd>
+          <div *ngIf="sale.depot">
+            <a [routerLink]="['/depot', sale.depot.id, 'view']">{{ sale.depot.amount }}</a>
+          </div>
+        </dd>
+        <dt><span jhiTranslate="barApp.sale.produit">Produit</span></dt>
+        <dd>
+          <div *ngIf="sale.produit">
+            <a [routerLink]="['/product', sale.produit.id, 'view']">{{ sale.produit.name }}</a>
+          </div>
+        </dd>
+        <dt><span jhiTranslate="barApp.sale.currentPrice">Current Price</span></dt>
+        <dd>
+          <div *ngIf="sale.currentPrice">
+            <a [routerLink]="['/product-price', sale.currentPrice.id, 'view']">{{ sale.currentPrice.id }}</a>
+          </div>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Retour</span>
+      </button>
+
+      <button type="button" [routerLink]="['/sale', sale.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editer</span>
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,10 @@
+{
+  "barApp": {
+    "StatusVente": {
+      "null": "",
+      "NEW": "NEW",
+      "VALIDATE": "VALIDATE",
+      "CANCEL": "CANCEL"
+    }
+  }
+}

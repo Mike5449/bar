@@ -26,6 +26,8 @@ import { PageRibbonComponent } from './layouts/profiles/page-ribbon.component';
 import { ActiveMenuDirective } from './layouts/navbar/active-menu.directive';
 import { ErrorComponent } from './layouts/error/error.component';
 
+import { TreeViewModule } from '@syncfusion/ej2-angular-navigations';
+
 @NgModule({
   imports: [
     BrowserModule,
@@ -38,6 +40,7 @@ import { ErrorComponent } from './layouts/error/error.component';
     HttpClientModule,
     NgxWebstorageModule.forRoot({ prefix: 'jhi', separator: '-', caseSensitive: true }),
     TranslationModule,
+    TreeViewModule
   ],
   providers: [
     Title,

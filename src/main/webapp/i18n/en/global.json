@@ -7,6 +7,23 @@
       "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
       "entities": {
         "main": "Entities",
+        "employee": "Employee",
+        "poste": "Poste",
+        "shift": "Shift",
+        "attendance": "Attendance",
+        "salary": "Salary",
+        "leaveRequest": "Leave Request",
+        "boisson": "Boisson",
+        "prix": "Prix",
+        "client": "Client",
+        "depot": "Depot",
+        "vente": "Vente",
+        "prixBoisson": "Prix Boisson",
+        "job": "Job",
+        "product": "Product",
+        "productPrice": "Product Price",
+        "stock": "Stock",
+        "sale": "Sale",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {

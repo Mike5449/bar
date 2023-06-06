@@ -1,0 +1,478 @@
+<ng-template #content let-modal>
+  <div class="modal-header" class="modal-header  text-black" >
+
+    <h2
+        id="jhi-sale-heading"
+        data-cy="SaleCreateUpdateHeading"
+        
+      >
+        Nouveau Commande
+      </h2>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body  text-black" >
+    <jhi-sale-update *ngIf="type === getTypeAction().INSERT" [currentClient]="currentClient"></jhi-sale-update>
+    <!-- <jhi-client-update *ngIf="type === getTypeAction().INSERT  && isNewClient" [currentClient]="currentClient"></jhi-client-update> -->
+    <!-- <jhi-sale-detail *ngIf="type === getTypeAction().DETAIL" [creditSolde]="creditSoldeSelected"></jhi-sale-detail>
+    <jhi-sale-update *ngIf="type === getTypeAction().UPDATE" [creditSolde]="creditSoldeSelected" [isForTransactionSys]="isTransaction"></jhi-sale-update> -->
+  </div>
+</ng-template>
+<div class="col bg-white" >
+
+  <div class="col-12 row d-flex justify-content-between" style="width: 100%;border-bottom: 3px solid blue;padding: 5px; ">
+  
+    <div class="col-2">
+
+      <select class="form-select form-select-sm bg-white" style="width: 100%;"  data-mb-filter="true">
+        <option  value=""></option>
+        <option *ngFor="let client of clients |filterSearch:clientSearching" value="client.name">{{client.name}}</option>
+        
+      </select>
+
+    </div>
+    
+    <div  class="row col-10 overflow-y serveuse" style="width: 600px;">
+
+      <div  class="row d-flex text-danger" style="font-weight: bold;font-size: 12px;">
+
+        <div (click)="setEmployee('')" class="col ">tous</div>
+
+        <div *ngFor="let employee of salesGroupe " (click)="setEmployee(employee?.employee?.firstName)" class="col">{{employee?.employee?.firstName}}</div>
+        
+      </div>       
+     
+    </div>
+  
+  </div>
+  <div class="d-flex col-12 justify-content-end m-1 g-2">
+
+    <div class="input-group-sm">
+      <input class="form-control " placeholder="nom du client" type="text" [(ngModel)]="clientName">
+    </div>
+    <div class="input-group-sm">
+      <input class="form-control" placeholder="Depot" type="number" [(ngModel)]="amountDepot">
+    </div>
+    <button (click)="newClient(content)" class="btn btn-sm btn-primary">nouveau c</button>
+
+  </div>
+
+  <div class="col"  *ngFor="let employee of salesGroupe | filterSearch:employeeSearching">
+
+    <div class="col-12" >
+  
+      <div class="row" >
+  
+        <div class="col-sm-4" *ngFor="let client of employee.clients ">
+          <div class="card"  style="margin-top: 10px;">
+            <div class="card-body overflow-auto" style="height: 400px; ">
+              
+              <div class="card-header bg-primary text-white   " style="font-weight: bold;width: 100%;font-size: 13px;">
+    
+                <div class="d-flex justify-content-between">
+
+                  <span>Client :{{client?.client?.name}}</span>
+                  <span>Depot  :500$</span>
+
+                </div>
+                <div class="d-flex justify-content-between">
+
+                  <div>Achat   :0$</div>
+                  <div>Balance :0$</div>
+                  
+                </div>
+               
+               
+    
+              </div>
+              <div class="table-responsive table-entities text-sm "  id="entities" *ngIf="sales && sales.length > 0">
+                <table class="table table-sm table-hover text-sm" aria-describedby="page-heading">
+                  <thead>
+                    <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()" style="font-size: 13px;" class="text-danger">
+                      <!-- <th scope="col" jhiSortBy="id">
+                        <div class="d-flex">
+                          <span jhiTranslate="barApp.sale.id">Id</span>
+                          <fa-icon class="p-1" icon="sort"></fa-icon>
+                        </div>
+                      </th> -->
+                      <th scope="col" jhiSortBy="produit.name">
+                        <div class="d-flex">
+                          <span jhiTranslate="barApp.sale.produit">Produit</span>
+                          
+                        </div>
+                      </th>
+                      <th scope="col" jhiSortBy="quantity">
+                        <div class="d-flex">
+                          <span jhiTranslate="barApp.sale.quantity">Quantity</span>
+                          
+                        </div>
+                      </th>
+                      <!-- <th scope="col" jhiSortBy="currentPrice.id">
+                        <div class="d-flex">
+                          <span jhiTranslate="barApp.sale.currentPrice">Current Price</span>
+                          
+                        </div>
+                      </th> -->
+                      <!-- <th scope="col" jhiSortBy="unitPrice">
+                        <div class="d-flex">
+                          <span jhiTranslate="barApp.sale.unitPrice">Unit Price</span>
+                          
+                        </div>
+                      </th> -->
+                      <!-- <th scope="col" jhiSortBy="amountTotal">
+                        <div class="d-flex">
+                          <span jhiTranslate="barApp.sale.amountTotal">Amount Total</span>
+                          
+                        </div>
+                      </th> -->
+                      <!-- <th scope="col" jhiSortBy="employee.firstName">
+                        <div class="d-flex">
+                          <span jhiTranslate="barApp.sale.employee">Employee</span>
+                          
+                        </div>
+                      </th> -->
+                      <th scope="col" jhiSortBy="status">
+                        <div class="d-flex">
+                          <span jhiTranslate="barApp.sale.status">Status</span>
+                          
+                        </div>
+                      </th>
+                      
+                      <!-- <th scope="col" jhiSortBy="client.name">
+                        <div class="d-flex">
+                          <span jhiTranslate="barApp.sale.client">Client</span>
+                          
+                        </div>
+                      </th> -->
+                      <!-- <th scope="col" jhiSortBy="depot.amount">
+                        <div class="d-flex">
+                          <span jhiTranslate="barApp.sale.depot">Depot</span>
+                          
+                        </div>
+                      </th> -->
+                      
+                      
+                      <th scope="col"></th>
+                    </tr>
+                  </thead>
+                  <tbody *ngFor="let sale of client?.produit; trackBy: trackId">
+                    <tr  data-cy="entityTable" style="font-weight: bold;font-size: 13px;">
+                      <!-- <td>
+                        <a [routerLink]="['/sale', sale.id, 'view']">{{ sale.id }}</a>
+                      </td> -->
+                      <td>
+                        <div *ngIf="sale.produit">
+                          {{ sale?.produit?.name }}
+                        </div>
+                      </td>
+                      <td>{{ sale?.quantity }}</td>
+                      <!-- <td>{{ sale.unitPrice }}</td> -->
+                      <!-- <td>
+                        <div *ngIf="sale.currentPrice">
+                          {{ sale.currentPrice.id }}
+                        </div>
+                      </td> -->
+                      <!-- <td>{{ sale.amountTotal }}</td> -->
+                      <!-- <td>
+                        <div *ngIf="sale.employee">
+                          <a [routerLink]="['/employee', sale.employee.id, 'view']">{{ sale.employee.firstName }}</a>
+                        </div>
+                      </td> -->
+                      <td>{{ sale?.status?.toLowerCase() }}</td>
+                      
+                      <!-- <td>
+                        <div *ngIf="sale.client">
+                          <a [routerLink]="['/client', sale.client.id, 'view']">{{ sale.client.name }}</a>
+                        </div>
+                      </td> -->
+                      <!-- <td>
+                        <div *ngIf="sale.depot">
+                          <a [routerLink]="['/depot', sale.depot.id, 'view']">{{ sale.depot.amount }}</a>
+                        </div>
+                      </td> -->
+                      
+                      
+                      <td (click)="openLine(sale.id)" class="text-end">
+
+                        <fa-icon icon="eye" style="color: green;"></fa-icon>
+
+                        
+                      </td>
+                    </tr>
+                    <tr *ngIf="isLine===sale.id" >
+                      <td   colspan="4">
+                        <tbody  class="d-flex justify-content-end">
+  
+                          <td class="text-end">
+                            <div class="btn-group">
+                          <button type="submit" [routerLink]="['/sale', sale.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
+                            <fa-icon icon="eye"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">Voir</span>
+                          </button>
+            
+                          <button type="submit" (click)="validateSale(sale)" class="btn btn-primary btn-sm" data-cy="entityEditButton">
+                            <fa-icon icon="pencil-alt"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">validate</span>
+                          </button>
+            
+                          <button type="submit" (click)="delete(sale)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                            <fa-icon icon="times"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Supprimer</span>
+                          </button>
+                        </div>
+                          </td>
+                        </tbody>
+                        
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="d-flex justify-content-end card-footer " >
+
+
+              <a (click)="openSpecific(content, getTypeAction().INSERT,client?.client)" class="btn bottom-0 btn-primary btn-sm">Commande</a>
+
+            </div>
+            
+
+          </div>
+        </div>
+    
+        <!-- <div class="col-sm-3">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">
+    
+                Client:Mike
+    
+              </h5>
+              <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit voluptatibus quis modi quae animi, dicta ullam distinctio cum incidunt atque suscipit eligendi qui earum autem accusamus alias quasi quaerat nulla!</p>
+              <a href="" class="btn btn-primary">Commande</a>
+            </div>
+          </div>
+        </div> -->
+    
+        <!-- <div class="col-sm-3">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">
+    
+                Client:Mike
+    
+              </h5>
+              <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit voluptatibus quis modi quae animi, dicta ullam distinctio cum incidunt atque suscipit eligendi qui earum autem accusamus alias quasi quaerat nulla!</p>
+              <a href="" class="btn btn-primary">Commande</a>
+            </div>
+          </div>
+        </div>
+    
+        <div class="col-sm-3">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">
+    
+                Client:Mike
+    
+              </h5>
+              <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit voluptatibus quis modi quae animi, dicta ullam distinctio cum incidunt atque suscipit eligendi qui earum autem accusamus alias quasi quaerat nulla!</p>
+              <a href="" class="btn btn-primary">Commande</a>
+            </div>
+          </div>
+        </div>
+    
+        <div class="col-sm-3">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">
+    
+                Client:Mike
+    
+              </h5>
+              <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit voluptatibus quis modi quae animi, dicta ullam distinctio cum incidunt atque suscipit eligendi qui earum autem accusamus alias quasi quaerat nulla!</p>
+              <a href="" class="btn btn-primary">Commande</a>
+            </div>
+          </div>
+        </div> -->
+      </div>
+  
+    </div>
+
+  </div>
+
+</div>
+
+
+
+<div>
+  <h2 id="page-heading" data-cy="SaleHeading">
+    <span jhiTranslate="barApp.sale.home.title">Sales</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span jhiTranslate="barApp.sale.home.refreshListLabel">Actualiser la liste</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-sale"
+        [routerLink]="['/sale/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span jhiTranslate="barApp.sale.home.createLabel"> Créer un nouveau Sale </span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <div class="alert alert-warning" id="no-result" *ngIf="sales?.length === 0">
+    <span jhiTranslate="barApp.sale.home.notFound">Aucun Sale trouvé</span>
+  </div>
+
+  <div class="table-responsive table-entities" id="entities" *ngIf="sales && sales.length > 0">
+    <table class="table table-striped" aria-describedby="page-heading">
+      <thead>
+        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()">
+          <th scope="col" jhiSortBy="id">
+            <div class="d-flex">
+              <span jhiTranslate="barApp.sale.id">Id</span>
+              
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="quantity">
+            <div class="d-flex">
+              <span jhiTranslate="barApp.sale.quantity">Quantity</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="unitPrice">
+            <div class="d-flex">
+              <span jhiTranslate="barApp.sale.unitPrice">Unit Price</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="amountTotal">
+            <div class="d-flex">
+              <span jhiTranslate="barApp.sale.amountTotal">Amount Total</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="status">
+            <div class="d-flex">
+              <span jhiTranslate="barApp.sale.status">Status</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="employee.firstName">
+            <div class="d-flex">
+              <span jhiTranslate="barApp.sale.employee">Employee</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="client.name">
+            <div class="d-flex">
+              <span jhiTranslate="barApp.sale.client">Client</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="depot.amount">
+            <div class="d-flex">
+              <span jhiTranslate="barApp.sale.depot">Depot</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="produit.name">
+            <div class="d-flex">
+              <span jhiTranslate="barApp.sale.produit">Produit</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="currentPrice.id">
+            <div class="d-flex">
+              <span jhiTranslate="barApp.sale.currentPrice">Current Price</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let sale of sales; trackBy: trackId" data-cy="entityTable">
+          <td>
+            <a [routerLink]="['/sale', sale.id, 'view']">{{ sale.id }}</a>
+          </td>
+          <td>{{ sale.quantity }}</td>
+          <td>{{ sale.unitPrice }}</td>
+          <td>{{ sale.amountTotal }}</td>
+          <td jhiTranslate="{{ 'barApp.StatusVente.' + sale.status }}">{{ sale.status }}</td>
+          <td>
+            <div *ngIf="sale.employee">
+              <a [routerLink]="['/employee', sale.employee.id, 'view']">{{ sale.employee.firstName }}</a>
+            </div>
+          </td>
+          <td>
+            <div *ngIf="sale.client">
+              <a [routerLink]="['/client', sale.client.id, 'view']">{{ sale.client.name }}</a>
+            </div>
+          </td>
+          <td>
+            <div *ngIf="sale.depot">
+              <a [routerLink]="['/depot', sale.depot.id, 'view']">{{ sale.depot.amount }}</a>
+            </div>
+          </td>
+          <td>
+            <div *ngIf="sale.produit">
+              <a [routerLink]="['/product', sale.produit.id, 'view']">{{ sale.produit.name }}</a>
+            </div>
+          </td>
+          <td>
+            <div *ngIf="sale.currentPrice">
+              <a [routerLink]="['/product-price', sale.currentPrice.id, 'view']">{{ sale.currentPrice.id }}</a>
+            </div>
+          </td>
+          <td class="text-end">
+            <div class="btn-group">
+              <button type="submit" [routerLink]="['/sale', sale.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
+                <fa-icon icon="eye"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">Voir</span>
+              </button>
+
+              <button type="submit" [routerLink]="['/sale', sale.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
+                <fa-icon icon="pencil-alt"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Editer</span>
+              </button>
+
+              <button type="submit" (click)="delete(sale)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                <fa-icon icon="times"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Supprimer</span>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div *ngIf="sales && sales.length > 0">
+    <div class="d-flex justify-content-center">
+      <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
+    </div>
+
+    <div class="d-flex justify-content-center">
+      <ngb-pagination
+        [collectionSize]="totalItems"
+        [page]="page"
+        [pageSize]="itemsPerPage"
+        [maxSize]="5"
+        [rotate]="true"
+        [boundaryLinks]="true"
+        (pageChange)="navigateToPage($event)"
+      ></ngb-pagination>
+    </div>
+  </div>
+</div>

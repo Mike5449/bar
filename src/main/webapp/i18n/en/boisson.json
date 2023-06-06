@@ -1,0 +1,26 @@
+{
+  "barApp": {
+    "boisson": {
+      "home": {
+        "title": "Boissons",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Boisson",
+        "createOrEditLabel": "Create or edit a Boisson",
+        "notFound": "No Boissons found"
+      },
+      "created": "A new Boisson is created with identifier {{ param }}",
+      "updated": "A Boisson is updated with identifier {{ param }}",
+      "deleted": "A Boisson is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Boisson {{ id }}?"
+      },
+      "detail": {
+        "title": "Boisson"
+      },
+      "id": "ID",
+      "name": "Name",
+      "image": "Image",
+      "type": "Type"
+    }
+  }
+}

@@ -1,0 +1,42 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <div *ngIf="productPrice">
+      <h2 data-cy="productPriceDetailsHeading"><span jhiTranslate="barApp.productPrice.detail.title">Product Price</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="barApp.productPrice.id">Id</span></dt>
+        <dd>
+          <span>{{ productPrice.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="barApp.productPrice.price">Price</span></dt>
+        <dd>
+          <span>{{ productPrice.price }}</span>
+        </dd>
+        <dt><span jhiTranslate="barApp.productPrice.status">Status</span></dt>
+        <dd>
+          <span jhiTranslate="{{ 'barApp.StatusPrice.' + productPrice.status }}">{{ productPrice.status }}</span>
+        </dd>
+        <dt><span jhiTranslate="barApp.productPrice.produit">Produit</span></dt>
+        <dd>
+          <div *ngIf="productPrice.produit">
+            <a [routerLink]="['/product', productPrice.produit.id, 'view']">{{ productPrice.produit.name }}</a>
+          </div>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Retour</span>
+      </button>
+
+      <button type="button" [routerLink]="['/product-price', productPrice.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editer</span>
+      </button>
+    </div>
+  </div>
+</div>

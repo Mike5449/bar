@@ -1,0 +1,197 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-employee-heading" data-cy="EmployeeCreateUpdateHeading" jhiTranslate="barApp.employee.home.createOrEditLabel">
+        Créer ou éditer un Employee
+      </h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <div class="row mb-3" *ngIf="editForm.controls.id.value !== null">
+          <label class="form-label" jhiTranslate="barApp.employee.id" for="field_id">Id</label>
+          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="barApp.employee.firstName" for="field_firstName">First Name</label>
+          <input type="text" class="form-control" name="firstName" id="field_firstName" data-cy="firstName" formControlName="firstName" />
+          <div *ngIf="editForm.get('firstName')!.invalid && (editForm.get('firstName')!.dirty || editForm.get('firstName')!.touched)">
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('firstName')?.errors?.required"
+              jhiTranslate="entity.validation.required"
+            >
+              Ce champ est obligatoire.
+            </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="barApp.employee.lastName" for="field_lastName">Last Name</label>
+          <input type="text" class="form-control" name="lastName" id="field_lastName" data-cy="lastName" formControlName="lastName" />
+          <div *ngIf="editForm.get('lastName')!.invalid && (editForm.get('lastName')!.dirty || editForm.get('lastName')!.touched)">
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('lastName')?.errors?.required"
+              jhiTranslate="entity.validation.required"
+            >
+              Ce champ est obligatoire.
+            </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="barApp.employee.gender" for="field_gender">Gender</label>
+          <select class="form-control" name="gender" formControlName="gender" id="field_gender" data-cy="gender">
+            <option [ngValue]="null">{{ 'barApp.Sexe.null' | translate }}</option>
+            <option *ngFor="let sexe of sexeValues" [value]="sexe">{{ 'barApp.Sexe.' + sexe | translate }}</option>
+          </select>
+          <div *ngIf="editForm.get('gender')!.invalid && (editForm.get('gender')!.dirty || editForm.get('gender')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('gender')?.errors?.required" jhiTranslate="entity.validation.required">
+              Ce champ est obligatoire.
+            </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="barApp.employee.dateOfBirth" for="field_dateOfBirth">Date Of Birth</label>
+          <div class="d-flex">
+            <input
+              id="field_dateOfBirth"
+              data-cy="dateOfBirth"
+              type="datetime-local"
+              class="form-control"
+              name="dateOfBirth"
+              formControlName="dateOfBirth"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="barApp.employee.contactNumber" for="field_contactNumber">Contact Number</label>
+          <input
+            type="text"
+            class="form-control"
+            name="contactNumber"
+            id="field_contactNumber"
+            data-cy="contactNumber"
+            formControlName="contactNumber"
+          />
+          <div
+            *ngIf="
+              editForm.get('contactNumber')!.invalid && (editForm.get('contactNumber')!.dirty || editForm.get('contactNumber')!.touched)
+            "
+          >
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('contactNumber')?.errors?.required"
+              jhiTranslate="entity.validation.required"
+            >
+              Ce champ est obligatoire.
+            </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="barApp.employee.email" for="field_email">Email</label>
+          <input type="text" class="form-control" name="email" id="field_email" data-cy="email" formControlName="email" />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="barApp.employee.nifCin" for="field_nifCin">Nif Cin</label>
+          <input type="text" class="form-control" name="nifCin" id="field_nifCin" data-cy="nifCin" formControlName="nifCin" />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="barApp.employee.address" for="field_address">Address</label>
+          <input type="text" class="form-control" name="address" id="field_address" data-cy="address" formControlName="address" />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="barApp.employee.baseSalary" for="field_baseSalary">Base Salary</label>
+          <input
+            type="number"
+            class="form-control"
+            name="baseSalary"
+            id="field_baseSalary"
+            data-cy="baseSalary"
+            formControlName="baseSalary"
+          />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="barApp.employee.commissionRate" for="field_commissionRate">Commission Rate</label>
+          <input
+            type="number"
+            class="form-control"
+            name="commissionRate"
+            id="field_commissionRate"
+            data-cy="commissionRate"
+            formControlName="commissionRate"
+          />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="barApp.employee.salary" for="field_salary">Salary</label>
+          <input type="number" class="form-control" name="salary" id="field_salary" data-cy="salary" formControlName="salary" />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="barApp.employee.hireDate" for="field_hireDate">Hire Date</label>
+          <div class="d-flex">
+            <input
+              id="field_hireDate"
+              data-cy="hireDate"
+              type="datetime-local"
+              class="form-control"
+              name="hireDate"
+              formControlName="hireDate"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="barApp.employee.terminationDate" for="field_terminationDate">Termination Date</label>
+          <div class="d-flex">
+            <input
+              id="field_terminationDate"
+              data-cy="terminationDate"
+              type="datetime-local"
+              class="form-control"
+              name="terminationDate"
+              formControlName="terminationDate"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="barApp.employee.job" for="field_job">Job</label>
+          <select class="form-control" id="field_job" data-cy="job" name="job" formControlName="job" [compareWith]="compareJob">
+            <option [ngValue]="null"></option>
+            <option [ngValue]="jobOption" *ngFor="let jobOption of jobsSharedCollection">{{ jobOption.jobName }}</option>
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Annuler</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Sauvegarder</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,27 @@
+{
+  "barApp": {
+    "leaveRequest": {
+      "home": {
+        "title": "LeaveRequests",
+        "refreshListLabel": "Actualiser la liste",
+        "createLabel": "Créer un nouveau Leave Request",
+        "createOrEditLabel": "Créer ou éditer un Leave Request",
+        "notFound": "Aucun Leave Request trouvé"
+      },
+      "created": "Un nouveau Leave Request a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Leave Request avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Leave Request avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Êtes-vous certain de vouloir supprimer le Leave Request {{ id }} ?"
+      },
+      "detail": {
+        "title": "Leave Request"
+      },
+      "id": "Id",
+      "startDate": "Start Date",
+      "enDate": "En Date",
+      "requestStatus": "Request Status",
+      "employee": "Employee"
+    }
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "barApp": {
+    "StatusPrice": {
+      "null": "",
+      "CURRENT": "CURRENT",
+      "CLOSE": "CLOSE"
+    }
+  }
+}

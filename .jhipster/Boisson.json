@@ -1,0 +1,31 @@
+{
+  "applications": "*",
+  "changelogDate": "20230529154859",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "boisson",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "image",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "type",
+      "fieldType": "Categorie",
+      "fieldValidateRules": ["required"],
+      "fieldValues": "ALCOLISEE,GASEUSE,AUTRE"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "Boisson",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [],
+  "service": "no"
+}

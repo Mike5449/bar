@@ -1,0 +1,51 @@
+{
+  "applications": "*",
+  "changelogDate": "20230529154903",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "vente",
+  "fields": [
+    {
+      "fieldName": "quantite",
+      "fieldType": "Integer",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "status",
+      "fieldType": "StatusVente",
+      "fieldValues": "NEW,VALIDATE,ANNULER"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "Vente",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityField": "firstName",
+      "otherEntityName": "employee",
+      "relationshipName": "employee",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityField": "name",
+      "otherEntityName": "client",
+      "relationshipName": "client",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityField": "montant",
+      "otherEntityName": "depot",
+      "relationshipName": "depot",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityField": "name",
+      "otherEntityName": "boisson",
+      "relationshipName": "boisson",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "service": "no"
+}

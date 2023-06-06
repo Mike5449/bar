@@ -13,7 +13,7 @@ import { SortByDirective } from './sort/sort-by.directive';
 import { SortDirective } from './sort/sort.directive';
 import { ItemCountComponent } from './pagination/item-count.component';
 import { FilterComponent } from './filter/filter.component';
-
+import { FilterSearchPipe } from './filter-search.pipe';
 @NgModule({
   imports: [SharedLibsModule],
   declarations: [
@@ -29,6 +29,7 @@ import { FilterComponent } from './filter/filter.component';
     SortDirective,
     ItemCountComponent,
     FilterComponent,
+    FilterSearchPipe
   ],
   exports: [
     SharedLibsModule,
@@ -44,6 +45,8 @@ import { FilterComponent } from './filter/filter.component';
     SortDirective,
     ItemCountComponent,
     FilterComponent,
+    FilterSearchPipe
+    // FilterSearchPipe
   ],
 })
 export class SharedModule {}

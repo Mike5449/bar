@@ -1,0 +1,36 @@
+{
+  "applications": "*",
+  "changelogDate": "20230528005613",
+  "dto": "mapstruct",
+  "embedded": false,
+  "entityTableName": "shift",
+  "fields": [
+    {
+      "fieldName": "id",
+      "fieldType": "Long"
+    },
+    {
+      "fieldName": "shiftDate",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "shiftType",
+      "fieldType": "RequestStatus",
+      "fieldValues": "PENDING,APPROVED,REJECTED"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "Shift",
+  "pagination": "pagination",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityField": "firstName",
+      "otherEntityName": "employee",
+      "relationshipName": "employee",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "service": "serviceImpl"
+}

@@ -1,0 +1,26 @@
+{
+  "barApp": {
+    "boisson": {
+      "home": {
+        "title": "Boissons",
+        "refreshListLabel": "Actualiser la liste",
+        "createLabel": "Créer un nouveau Boisson",
+        "createOrEditLabel": "Créer ou éditer un Boisson",
+        "notFound": "Aucun Boisson trouvé"
+      },
+      "created": "Un nouveau Boisson a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Boisson avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Boisson avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Êtes-vous certain de vouloir supprimer le Boisson {{ id }} ?"
+      },
+      "detail": {
+        "title": "Boisson"
+      },
+      "id": "ID",
+      "name": "Name",
+      "image": "Image",
+      "type": "Type"
+    }
+  }
+}

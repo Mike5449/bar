@@ -1,0 +1,29 @@
+{
+  "barApp": {
+    "vente": {
+      "home": {
+        "title": "Ventes",
+        "refreshListLabel": "Refrescar lista",
+        "createLabel": "Crear nuevo Vente",
+        "createOrEditLabel": "Crear o editar Vente",
+        "notFound": "Ningún Ventes encontrado"
+      },
+      "created": "Un nuevo Vente ha sido creado con el identificador {{ param }}",
+      "updated": "Un Vente ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Vente ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Vente {{ id }}?"
+      },
+      "detail": {
+        "title": "Vente"
+      },
+      "id": "ID",
+      "quantite": "Quantite",
+      "status": "Status",
+      "employee": "Employee",
+      "client": "Client",
+      "depot": "Depot",
+      "boisson": "Boisson"
+    }
+  }
+}

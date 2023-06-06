@@ -1,0 +1,28 @@
+{
+  "applications": "*",
+  "changelogDate": "20230529230910",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "prix_boisson",
+  "fields": [
+    {
+      "fieldName": "prix",
+      "fieldType": "Float",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "PrixBoisson",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityField": "name",
+      "otherEntityName": "boisson",
+      "relationshipName": "boisson",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "service": "no"
+}

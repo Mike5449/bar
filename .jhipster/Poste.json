@@ -1,0 +1,24 @@
+{
+  "applications": "*",
+  "changelogDate": "20230528005612",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "poste",
+  "fields": [
+    {
+      "fieldName": "id",
+      "fieldType": "Long"
+    },
+    {
+      "fieldName": "posteName",
+      "fieldType": "String"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "Poste",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [],
+  "service": "no"
+}

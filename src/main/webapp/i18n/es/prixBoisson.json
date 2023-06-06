@@ -1,0 +1,25 @@
+{
+  "barApp": {
+    "prixBoisson": {
+      "home": {
+        "title": "Prix Boissons",
+        "refreshListLabel": "Refrescar lista",
+        "createLabel": "Crear nuevo Prix Boisson",
+        "createOrEditLabel": "Crear o editar Prix Boisson",
+        "notFound": "Ningún Prix Boissons encontrado"
+      },
+      "created": "Un nuevo Prix Boisson ha sido creado con el identificador {{ param }}",
+      "updated": "Un Prix Boisson ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Prix Boisson ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Prix Boisson {{ id }}?"
+      },
+      "detail": {
+        "title": "Prix Boisson"
+      },
+      "id": "ID",
+      "prix": "Prix",
+      "boisson": "Boisson"
+    }
+  }
+}

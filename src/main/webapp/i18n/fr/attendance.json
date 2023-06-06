@@ -1,0 +1,26 @@
+{
+  "barApp": {
+    "attendance": {
+      "home": {
+        "title": "Attendances",
+        "refreshListLabel": "Actualiser la liste",
+        "createLabel": "Créer un nouveau Attendance",
+        "createOrEditLabel": "Créer ou éditer un Attendance",
+        "notFound": "Aucun Attendance trouvé"
+      },
+      "created": "Un nouveau Attendance a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Attendance avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Attendance avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Êtes-vous certain de vouloir supprimer le Attendance {{ id }} ?"
+      },
+      "detail": {
+        "title": "Attendance"
+      },
+      "id": "Id",
+      "date": "Date",
+      "isPresent": "Is Present",
+      "employee": "Employee"
+    }
+  }
+}

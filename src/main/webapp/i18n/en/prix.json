@@ -1,0 +1,26 @@
+{
+  "barApp": {
+    "prix": {
+      "home": {
+        "title": "Prixes",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Prix",
+        "createOrEditLabel": "Create or edit a Prix",
+        "notFound": "No Prixes found"
+      },
+      "created": "A new Prix is created with identifier {{ param }}",
+      "updated": "A Prix is updated with identifier {{ param }}",
+      "deleted": "A Prix is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Prix {{ id }}?"
+      },
+      "detail": {
+        "title": "Prix"
+      },
+      "id": "ID",
+      "prix": "Prix",
+      "date": "Date",
+      "boisson": "Boisson"
+    }
+  }
+}

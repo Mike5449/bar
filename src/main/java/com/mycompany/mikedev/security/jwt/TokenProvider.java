@@ -1,6 +1,14 @@
 package com.mycompany.mikedev.security.jwt;
 
+import com.mycompany.mikedev.domain.Attendance;
+import com.mycompany.mikedev.domain.Employee;
+import com.mycompany.mikedev.domain.enumeration.Sexe;
 import com.mycompany.mikedev.management.SecurityMetersService;
+import com.mycompany.mikedev.repository.AttendanceRepository;
+import com.mycompany.mikedev.repository.EmployeeRepository;
+import com.mycompany.mikedev.service.TokenManager;
+import com.mycompany.mikedev.service.dto.TokenPayloadDTO;
+
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -11,6 +19,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -38,6 +47,12 @@ public class TokenProvider {
     private final long tokenValidityInMillisecondsForRememberMe;
 
     private final SecurityMetersService securityMetersService;
+
+    @Autowired
+    private EmployeeRepository employeeRepository;
+
+    @Autowired
+    private AttendanceRepository attendanceRepository;
 
     public TokenProvider(JHipsterProperties jHipsterProperties, SecurityMetersService securityMetersService) {
         byte[] keyBytes;
@@ -73,6 +88,37 @@ public class TokenProvider {
             validity = new Date(now + this.tokenValidityInMilliseconds);
         }
 
+        Map<String, Object> mapToken = new HashMap<>();
+        TokenPayloadDTO tokenPayloadDTO = new TokenPayloadDTO();
+        Optional<Employee> employee = employeeRepository.findByUser_Login(authentication.getName());
+        // Optional<Attendance> attendance=attendanceRepository.findById(employee.get().getId());
+
+        if(employee.isPresent()){
+            tokenPayloadDTO.setLogin(authentication.getName());
+            tokenPayloadDTO.setEmployeeId(employee.get().getId());
+            tokenPayloadDTO.setFirstName(employee.get().getFirstName());
+            tokenPayloadDTO.setLastName(employee.get().getLastName());
+            tokenPayloadDTO.setGender(employee.get().getGender());
+            // tokenPayloadDTO.setJobId(employee.get().getJob().getId());
+            // tokenPayloadDTO.setJobName(employee.get().getJob().getJobName());
+            // tokenPayloadDTO.setIdAttendance(attendance.get().getEmployee().getId());
+
+            mapToken.put("login", tokenPayloadDTO.getLogin());
+            mapToken.put("employeeId",tokenPayloadDTO.getEmployeeId());
+            mapToken.put("firsName",tokenPayloadDTO.getFirstName());
+            mapToken.put("lastName",tokenPayloadDTO.getLastName());
+            mapToken.put("gender",tokenPayloadDTO.getGender());
+            // mapToken.put("jobId", tokenPayloadDTO.getJobId());
+            // mapToken.put("jobName",tokenPayloadDTO.getJobName());
+            // mapToken.put("attendanceId", tokenPayloadDTO.getIdAttendance());
+
+            
+            
+
+
+        }
+        TokenManager.setSubject(tokenPayloadDTO);
+
         return Jwts
             .builder()
             .setSubject(authentication.getName())
@@ -80,6 +126,30 @@ public class TokenProvider {
             .signWith(key, SignatureAlgorithm.HS512)
             .setExpiration(validity)
             .compact();
+    }
+
+    private void setTokenPayload(String authToken, Claims claims) {
+
+        TokenManager.setSubject(null);
+        TokenPayloadDTO tokenPayloadDTO = new TokenPayloadDTO();
+
+        try {
+
+            tokenPayloadDTO.setLogin(claims.get("sub") != null ? claims.get("sub").toString() : "");
+            tokenPayloadDTO.setEmployeeId(Long.parseLong(claims.get("employeeId").toString()));
+            tokenPayloadDTO.setFirstName(claims.containsKey("firstName") ? claims.get("firstName").toString() : "");
+            tokenPayloadDTO.setLastName(claims.containsKey("lastName") ? claims.get("lastName").toString() : "");
+            tokenPayloadDTO.setGender(claims.containsKey("gender") ? Sexe.valueOf(claims.get("gender").toString())
+            : Sexe.MASCULIN);
+            tokenPayloadDTO.setJobId(Long.parseLong(claims.get("jobId").toString()));
+            tokenPayloadDTO.setJobName(claims.containsKey("jobName") ? claims.get("jobName").toString() : "");
+            // tokenPayloadDTO.setIdAttendance(Long.parseLong(claims.get("attendanceId").toString()));
+            
+        } catch (Exception e) {
+            // TODO: handle exception
+        }
+
+        TokenManager.setSubject(tokenPayloadDTO);
     }
 
     public Authentication getAuthentication(String token) {
@@ -99,7 +169,10 @@ public class TokenProvider {
     public boolean validateToken(String authToken) {
         try {
             jwtParser.parseClaimsJws(authToken);
-
+            try {
+                Claims claims = jwtParser.parseClaimsJws(authToken).getBody();
+                setTokenPayload(authToken, claims);
+            } catch (Exception ex) {}
             return true;
         } catch (ExpiredJwtException e) {
             this.securityMetersService.trackTokenExpired();

@@ -1,0 +1,26 @@
+{
+  "barApp": {
+    "shift": {
+      "home": {
+        "title": "Shifts",
+        "refreshListLabel": "Refrescar lista",
+        "createLabel": "Crear nuevo Shift",
+        "createOrEditLabel": "Crear o editar Shift",
+        "notFound": "Ningún Shifts encontrado"
+      },
+      "created": "Un nuevo Shift ha sido creado con el identificador {{ param }}",
+      "updated": "Un Shift ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Shift ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Shift {{ id }}?"
+      },
+      "detail": {
+        "title": "Shift"
+      },
+      "id": "Id",
+      "shiftDate": "Shift Date",
+      "shiftType": "Shift Type",
+      "employee": "Employee"
+    }
+  }
+}

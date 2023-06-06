@@ -1,0 +1,41 @@
+{
+  "applications": "*",
+  "changelogDate": "20230531013125",
+  "dto": "mapstruct",
+  "embedded": false,
+  "entityTableName": "product",
+  "fields": [
+    {
+      "fieldName": "id",
+      "fieldType": "Long"
+    },
+    {
+      "fieldName": "name",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "image",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "type",
+      "fieldType": "Categorie",
+      "fieldValidateRules": ["required"],
+      "fieldValues": "ALCOLISEE,GASEUSE,AUTRE"
+    },
+    {
+      "fieldName": "section",
+      "fieldType": "Section",
+      "fieldValidateRules": ["required"],
+      "fieldValues": "HOTEL,BAR,RESTAURANT,PISCINE"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "Product",
+  "pagination": "pagination",
+  "readOnly": false,
+  "relationships": [],
+  "service": "serviceImpl"
+}

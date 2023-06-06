@@ -1,0 +1,32 @@
+{
+  "barApp": {
+    "sale": {
+      "home": {
+        "title": "Sales",
+        "refreshListLabel": "Refrescar lista",
+        "createLabel": "Crear nuevo Sale",
+        "createOrEditLabel": "Crear o editar Sale",
+        "notFound": "Ningún Sales encontrado"
+      },
+      "created": "Un nuevo Sale ha sido creado con el identificador {{ param }}",
+      "updated": "Un Sale ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Sale ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Sale {{ id }}?"
+      },
+      "detail": {
+        "title": "Sale"
+      },
+      "id": "Id",
+      "quantity": "Quantity",
+      "unitPrice": "Unit Price",
+      "amountTotal": "Amount Total",
+      "status": "Status",
+      "employee": "Employee",
+      "client": "Client",
+      "depot": "Depot",
+      "produit": "Produit",
+      "currentPrice": "Current Price"
+    }
+  }
+}

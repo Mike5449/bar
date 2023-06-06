@@ -1,0 +1,25 @@
+{
+  "barApp": {
+    "prixBoisson": {
+      "home": {
+        "title": "PrixBoissons",
+        "refreshListLabel": "Actualiser la liste",
+        "createLabel": "Créer un nouveau Prix Boisson",
+        "createOrEditLabel": "Créer ou éditer un Prix Boisson",
+        "notFound": "Aucun Prix Boisson trouvé"
+      },
+      "created": "Un nouveau Prix Boisson a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Prix Boisson avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Prix Boisson avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Êtes-vous certain de vouloir supprimer le Prix Boisson {{ id }} ?"
+      },
+      "detail": {
+        "title": "Prix Boisson"
+      },
+      "id": "ID",
+      "prix": "Prix",
+      "boisson": "Boisson"
+    }
+  }
+}

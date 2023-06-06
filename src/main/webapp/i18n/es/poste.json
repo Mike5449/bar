@@ -1,0 +1,24 @@
+{
+  "barApp": {
+    "poste": {
+      "home": {
+        "title": "Postes",
+        "refreshListLabel": "Refrescar lista",
+        "createLabel": "Crear nuevo Poste",
+        "createOrEditLabel": "Crear o editar Poste",
+        "notFound": "Ningún Postes encontrado"
+      },
+      "created": "Un nuevo Poste ha sido creado con el identificador {{ param }}",
+      "updated": "Un Poste ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Poste ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Poste {{ id }}?"
+      },
+      "detail": {
+        "title": "Poste"
+      },
+      "id": "Id",
+      "posteName": "Poste Name"
+    }
+  }
+}

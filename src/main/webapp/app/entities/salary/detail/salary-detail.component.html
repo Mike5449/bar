@@ -1,0 +1,46 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <div *ngIf="salary">
+      <h2 data-cy="salaryDetailsHeading"><span jhiTranslate="barApp.salary.detail.title">Salary</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="barApp.salary.id">Id</span></dt>
+        <dd>
+          <span>{{ salary.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="barApp.salary.month">Month</span></dt>
+        <dd>
+          <span>{{ salary.month }}</span>
+        </dd>
+        <dt><span jhiTranslate="barApp.salary.year">Year</span></dt>
+        <dd>
+          <span>{{ salary.year }}</span>
+        </dd>
+        <dt><span jhiTranslate="barApp.salary.amount">Amount</span></dt>
+        <dd>
+          <span>{{ salary.amount }}</span>
+        </dd>
+        <dt><span jhiTranslate="barApp.salary.employee">Employee</span></dt>
+        <dd>
+          <div *ngIf="salary.employee">
+            <a [routerLink]="['/employee', salary.employee.id, 'view']">{{ salary.employee.firstName }}</a>
+          </div>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Retour</span>
+      </button>
+
+      <button type="button" [routerLink]="['/salary', salary.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editer</span>
+      </button>
+    </div>
+  </div>
+</div>

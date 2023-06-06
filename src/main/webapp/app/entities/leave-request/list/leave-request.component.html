@@ -1,0 +1,131 @@
+<div>
+  <h2 id="page-heading" data-cy="LeaveRequestHeading">
+    <span jhiTranslate="barApp.leaveRequest.home.title">LeaveRequests</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span jhiTranslate="barApp.leaveRequest.home.refreshListLabel">Actualiser la liste</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-leave-request"
+        [routerLink]="['/leave-request/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span jhiTranslate="barApp.leaveRequest.home.createLabel"> Créer un nouveau Leave Request </span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <div class="alert alert-warning" id="no-result" *ngIf="leaveRequests?.length === 0">
+    <span jhiTranslate="barApp.leaveRequest.home.notFound">Aucun Leave Request trouvé</span>
+  </div>
+
+  <div class="table-responsive table-entities" id="entities" *ngIf="leaveRequests && leaveRequests.length > 0">
+    <table class="table table-striped" aria-describedby="page-heading">
+      <thead>
+        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()">
+          <th scope="col" jhiSortBy="id">
+            <div class="d-flex">
+              <span jhiTranslate="barApp.leaveRequest.id">Id</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="startDate">
+            <div class="d-flex">
+              <span jhiTranslate="barApp.leaveRequest.startDate">Start Date</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="enDate">
+            <div class="d-flex">
+              <span jhiTranslate="barApp.leaveRequest.enDate">En Date</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="requestStatus">
+            <div class="d-flex">
+              <span jhiTranslate="barApp.leaveRequest.requestStatus">Request Status</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="employee.firstName">
+            <div class="d-flex">
+              <span jhiTranslate="barApp.leaveRequest.employee">Employee</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let leaveRequest of leaveRequests; trackBy: trackId" data-cy="entityTable">
+          <td>
+            <a [routerLink]="['/leave-request', leaveRequest.id, 'view']">{{ leaveRequest.id }}</a>
+          </td>
+          <td>{{ leaveRequest.startDate | formatMediumDatetime }}</td>
+          <td>{{ leaveRequest.enDate | formatMediumDatetime }}</td>
+          <td jhiTranslate="{{ 'barApp.RequestStatus.' + leaveRequest.requestStatus }}">{{ leaveRequest.requestStatus }}</td>
+          <td>
+            <div *ngIf="leaveRequest.employee">
+              <a [routerLink]="['/employee', leaveRequest.employee.id, 'view']">{{ leaveRequest.employee.firstName }}</a>
+            </div>
+          </td>
+          <td class="text-end">
+            <div class="btn-group">
+              <button
+                type="submit"
+                [routerLink]="['/leave-request', leaveRequest.id, 'view']"
+                class="btn btn-info btn-sm"
+                data-cy="entityDetailsButton"
+              >
+                <fa-icon icon="eye"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">Voir</span>
+              </button>
+
+              <button
+                type="submit"
+                [routerLink]="['/leave-request', leaveRequest.id, 'edit']"
+                class="btn btn-primary btn-sm"
+                data-cy="entityEditButton"
+              >
+                <fa-icon icon="pencil-alt"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Editer</span>
+              </button>
+
+              <button type="submit" (click)="delete(leaveRequest)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                <fa-icon icon="times"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Supprimer</span>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div *ngIf="leaveRequests && leaveRequests.length > 0">
+    <div class="d-flex justify-content-center">
+      <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
+    </div>
+
+    <div class="d-flex justify-content-center">
+      <ngb-pagination
+        [collectionSize]="totalItems"
+        [page]="page"
+        [pageSize]="itemsPerPage"
+        [maxSize]="5"
+        [rotate]="true"
+        [boundaryLinks]="true"
+        (pageChange)="navigateToPage($event)"
+      ></ngb-pagination>
+    </div>
+  </div>
+</div>

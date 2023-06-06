@@ -1,0 +1,42 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <div *ngIf="shift">
+      <h2 data-cy="shiftDetailsHeading"><span jhiTranslate="barApp.shift.detail.title">Shift</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="barApp.shift.id">Id</span></dt>
+        <dd>
+          <span>{{ shift.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="barApp.shift.shiftDate">Shift Date</span></dt>
+        <dd>
+          <span>{{ shift.shiftDate | formatMediumDatetime }}</span>
+        </dd>
+        <dt><span jhiTranslate="barApp.shift.shiftType">Shift Type</span></dt>
+        <dd>
+          <span jhiTranslate="{{ 'barApp.RequestStatus.' + shift.shiftType }}">{{ shift.shiftType }}</span>
+        </dd>
+        <dt><span jhiTranslate="barApp.shift.employee">Employee</span></dt>
+        <dd>
+          <div *ngIf="shift.employee">
+            <a [routerLink]="['/employee', shift.employee.id, 'view']">{{ shift.employee.firstName }}</a>
+          </div>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Retour</span>
+      </button>
+
+      <button type="button" [routerLink]="['/shift', shift.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editer</span>
+      </button>
+    </div>
+  </div>
+</div>

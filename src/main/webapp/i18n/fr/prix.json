@@ -1,0 +1,26 @@
+{
+  "barApp": {
+    "prix": {
+      "home": {
+        "title": "Prixes",
+        "refreshListLabel": "Actualiser la liste",
+        "createLabel": "Créer un nouveau Prix",
+        "createOrEditLabel": "Créer ou éditer un Prix",
+        "notFound": "Aucun Prix trouvé"
+      },
+      "created": "Un nouveau Prix a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Prix avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Prix avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Êtes-vous certain de vouloir supprimer le Prix {{ id }} ?"
+      },
+      "detail": {
+        "title": "Prix"
+      },
+      "id": "ID",
+      "prix": "Prix",
+      "date": "Date",
+      "boisson": "Boisson"
+    }
+  }
+}

@@ -1,0 +1,216 @@
+
+<div class="col">
+
+  <div class="col-12" >
+
+    <div class="row" >
+
+      <div *ngFor="let product of productsSharedCollection ;let i=index " class="col-sm-6">
+        <div class="card flex-row " style="height: 100px;">
+
+          <div class="card-header col-4 border-1">
+
+            <img [src]="product.image" alt="image">
+
+          </div>
+          <div class="col-8 d-flex flex-column justify-center" >
+                      
+            <h6 class="card-title text-center">{{product.name}}</h6>
+            <div class="d-flex justify-content-around align-items-center" style="display: flex;align-items: center;justify-content: space-around;">
+
+              <span>+</span>
+              <input class="form-control" type="number" style="width: 80%;height: 27px;" [(ngModel)]="productPrices[i]">
+              <span>-</span>
+                             
+            </div>
+            <!-- <button class="btn btn-success btn-sm">Ajouter</button> -->
+           
+
+          </div>
+
+
+          
+          <!-- <img src="" alt="" class="card-img-">
+          <div class="card-body" style="height: 100px; ">
+            
+            <div class="card-header bg-primary text-white   " style="font-weight: bold;width: 100%;font-size: 13px;">
+              <title class="card-title">Prduit</title>
+            </div>
+
+          </div> -->
+
+        </div>
+
+      </div>
+      <button (click)="submitPrices()" class="btn btn-success btn-sm">Ajouter</button>
+
+
+    </div>
+
+  </div>
+
+</div>
+
+
+
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <!-- <h2 id="jhi-sale-heading" data-cy="SaleCreateUpdateHeading" jhiTranslate="barApp.sale.home.createOrEditLabel">
+        Créer ou éditer un Sale
+      </h2> -->
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <!-- <div class="row mb-3" *ngIf="editForm.controls.id.value !== null">
+          <label class="form-label" jhiTranslate="barApp.sale.id" for="field_id">Id</label>
+          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+        </div> -->
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="barApp.sale.employee" for="field_employee">Employee</label>
+          <select
+            class="form-control"
+            id="field_employee"
+            data-cy="employee"
+            name="employee"
+            formControlName="employee"
+            [compareWith]="compareEmployee"
+          >
+            <option [ngValue]="null"></option>
+            <option [ngValue]="employeeOption" *ngFor="let employeeOption of employeesSharedCollection">
+              {{ employeeOption.firstName }}
+            </option>
+          </select>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="barApp.sale.produit" for="field_produit">Produit</label>
+          <select
+            class="form-control"
+            id="field_produit"
+            data-cy="produit"
+            name="produit"
+            formControlName="produit"
+            [compareWith]="compareProduct"
+          >
+            <option [ngValue]="null"></option>
+            <option [ngValue]="productOption" *ngFor="let productOption of productsSharedCollection">{{ productOption.name }}</option>
+          </select>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="barApp.sale.quantity" for="field_quantity">Quantity</label>
+          <input type="number" class="form-control" name="quantity" id="field_quantity" data-cy="quantity" formControlName="quantity" />
+          <div *ngIf="editForm.get('quantity')!.invalid && (editForm.get('quantity')!.dirty || editForm.get('quantity')!.touched)">
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('quantity')?.errors?.required"
+              jhiTranslate="entity.validation.required"
+            >
+              Ce champ est obligatoire.
+            </small>
+            <small
+              class="form-text text-danger"
+              [hidden]="!editForm.get('quantity')?.errors?.number"
+              jhiTranslate="entity.validation.number"
+            >
+              Ce champ doit être un nombre.
+            </small>
+          </div>
+        </div>
+
+        <!-- <div class="row mb-3">
+          <label class="form-label" jhiTranslate="barApp.sale.unitPrice" for="field_unitPrice">Unit Price</label>
+          <input type="number" class="form-control" name="unitPrice" id="field_unitPrice" data-cy="unitPrice" formControlName="unitPrice" />
+        </div> -->
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="barApp.sale.amountTotal" for="field_amountTotal">Amount Total</label>
+          <input
+            type="number"
+            class="form-control"
+            name="amountTotal"
+            id="field_amountTotal"
+            data-cy="amountTotal"
+            formControlName="amountTotal"
+          />
+        </div>
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="barApp.sale.client" for="field_client">Client</label>
+          <select
+            class="form-control"
+            id="field_client"
+            data-cy="client"
+            name="client"
+            formControlName="client"
+            [compareWith]="compareClient"
+          >
+            <option [ngValue]="null"></option>
+            <option [ngValue]="clientOption" *ngFor="let clientOption of clientsSharedCollection">{{ clientOption.name }}</option>
+          </select>
+        </div>
+
+        <!-- <div class="row mb-3">
+          <label class="form-label" jhiTranslate="barApp.sale.status" for="field_status">Status</label>
+          <select class="form-control" name="status" formControlName="status" id="field_status" data-cy="status">
+            <option [ngValue]="null">{{ 'barApp.StatusVente.null' | translate }}</option>
+            <option *ngFor="let statusVente of statusVenteValues" [value]="statusVente">
+              {{ 'barApp.StatusVente.' + statusVente | translate }}
+            </option>
+          </select>
+        </div> -->
+
+        
+
+        
+
+        <!-- <div class="row mb-3">
+          <label class="form-label" jhiTranslate="barApp.sale.depot" for="field_depot">Depot</label>
+          <select class="form-control" id="field_depot" data-cy="depot" name="depot" formControlName="depot" [compareWith]="compareDepot">
+            <option [ngValue]="null"></option>
+            <option [ngValue]="depotOption" *ngFor="let depotOption of depotsSharedCollection">{{ depotOption.amount }}</option>
+          </select>
+        </div> -->
+
+        
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="barApp.sale.currentPrice" for="field_currentPrice">Current Price</label>
+          <select
+            class="form-control"
+            id="field_currentPrice"
+            data-cy="currentPrice"
+            name="currentPrice"
+            formControlName="currentPrice"
+            [compareWith]="compareProductPrice"
+          >
+            <option [ngValue]="null"></option>
+            <option [ngValue]="productPriceOption" *ngFor="let productPriceOption of productPricesSharedCollection">
+              {{ productPriceOption.id }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Annuler</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Sauvegarder</span>
+        </button>
+      </div>
+
+      
+    </form>
+  </div>
+</div>

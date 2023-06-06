@@ -48,6 +48,23 @@ public class CacheConfiguration {
             createCache(cm, com.mycompany.mikedev.domain.User.class.getName());
             createCache(cm, com.mycompany.mikedev.domain.Authority.class.getName());
             createCache(cm, com.mycompany.mikedev.domain.User.class.getName() + ".authorities");
+            createCache(cm, com.mycompany.mikedev.domain.Employee.class.getName());
+            createCache(cm, com.mycompany.mikedev.domain.Poste.class.getName());
+            createCache(cm, com.mycompany.mikedev.domain.Shift.class.getName());
+            createCache(cm, com.mycompany.mikedev.domain.Attendance.class.getName());
+            createCache(cm, com.mycompany.mikedev.domain.Salary.class.getName());
+            createCache(cm, com.mycompany.mikedev.domain.LeaveRequest.class.getName());
+            createCache(cm, com.mycompany.mikedev.domain.Boisson.class.getName());
+            createCache(cm, com.mycompany.mikedev.domain.Prix.class.getName());
+            createCache(cm, com.mycompany.mikedev.domain.Client.class.getName());
+            createCache(cm, com.mycompany.mikedev.domain.Depot.class.getName());
+            createCache(cm, com.mycompany.mikedev.domain.Vente.class.getName());
+            createCache(cm, com.mycompany.mikedev.domain.PrixBoisson.class.getName());
+            createCache(cm, com.mycompany.mikedev.domain.Job.class.getName());
+            createCache(cm, com.mycompany.mikedev.domain.Product.class.getName());
+            createCache(cm, com.mycompany.mikedev.domain.ProductPrice.class.getName());
+            createCache(cm, com.mycompany.mikedev.domain.Stock.class.getName());
+            createCache(cm, com.mycompany.mikedev.domain.Sale.class.getName());
             // jhipster-needle-ehcache-add-entry
         };
     }

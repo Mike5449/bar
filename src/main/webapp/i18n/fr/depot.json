@@ -1,0 +1,26 @@
+{
+  "barApp": {
+    "depot": {
+      "home": {
+        "title": "Depots",
+        "refreshListLabel": "Actualiser la liste",
+        "createLabel": "Créer un nouveau Depot",
+        "createOrEditLabel": "Créer ou éditer un Depot",
+        "notFound": "Aucun Depot trouvé"
+      },
+      "created": "Un nouveau Depot a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Depot avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Depot avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Êtes-vous certain de vouloir supprimer le Depot {{ id }} ?"
+      },
+      "detail": {
+        "title": "Depot"
+      },
+      "id": "ID",
+      "amount": "Amount",
+      "description": "Description",
+      "employee": "Employee"
+    }
+  }
+}
