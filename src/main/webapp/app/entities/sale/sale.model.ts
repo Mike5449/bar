@@ -12,9 +12,9 @@ export interface ISale {
   amountTotal?: number | null;
   status?: StatusVente | null;
   employee?: Pick<IEmployee, 'id' | 'firstName'> | null;
-  client?: Pick<IClient, 'id' | 'name'> | null;
+  client?: Pick<IClient, 'id' | 'name' | 'depot'> | null;
   depot?: Pick<IDepot, 'id' | 'amount'> | null;
-  produit?: Pick<IProduct, 'id' | 'name'> | null;
+  product?: Pick<IProduct, 'id' | 'name' | 'price'> | null;
   currentPrice?: Pick<IProductPrice, 'id'> | null;
 }
 

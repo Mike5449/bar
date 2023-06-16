@@ -20,7 +20,7 @@ type ProductPriceFormGroupContent = {
   id: FormControl<IProductPrice['id'] | NewProductPrice['id']>;
   price: FormControl<IProductPrice['price']>;
   status: FormControl<IProductPrice['status']>;
-  produit: FormControl<IProductPrice['produit']>;
+  product: FormControl<IProductPrice['product']>;
 };
 
 export type ProductPriceFormGroup = FormGroup<ProductPriceFormGroupContent>;
@@ -44,7 +44,7 @@ export class ProductPriceFormService {
         validators: [Validators.required],
       }),
       status: new FormControl(productPriceRawValue.status),
-      produit: new FormControl(productPriceRawValue.produit),
+      product: new FormControl(productPriceRawValue.product),
     });
   }
 

@@ -41,4 +41,6 @@ public interface VenteRepository extends JpaRepository<Vente, Long> {
         "select vente from Vente vente left join fetch vente.employee left join fetch vente.client left join fetch vente.depot left join fetch vente.boisson where vente.id =:id"
     )
     Optional<Vente> findOneWithToOneRelationships(@Param("id") Long id);
+
+    
 }

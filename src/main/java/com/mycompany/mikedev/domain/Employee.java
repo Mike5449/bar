@@ -16,7 +16,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Table(name = "employee")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class Employee implements Serializable {
+public class Employee extends AbstractAuditingEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -32,6 +32,14 @@ public class Employee implements Serializable {
     @NotNull
     @Column(name = "last_name", nullable = false)
     private String lastName;
+
+    @NotNull
+    @Column(name ="login" , nullable = false)
+    private String login;
+
+    @NotNull
+    @Column(name ="password" , nullable = false)
+    private String password;
 
     @NotNull
     @Enumerated(EnumType.STRING)
@@ -78,6 +86,13 @@ public class Employee implements Serializable {
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
+    public Employee(){
+
+    }
+    
+    public Employee(Long id){
+        this.id=id;
+    }
     public Long getId() {
         return this.id;
     }
@@ -312,4 +327,48 @@ public class Employee implements Serializable {
             ", terminationDate='" + getTerminationDate() + "'" +
             "}";
     }
+
+    /**
+     * @return User return the user
+     */
+    public User getUser() {
+        return user;
+    }
+
+    /**
+     * @param user the user to set
+     */
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+
+    /**
+     * @return String return the login
+     */
+    public String getLogin() {
+        return login;
+    }
+
+    /**
+     * @param login the login to set
+     */
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
+    /**
+     * @return String return the password
+     */
+    public String getPassword() {
+        return password;
+    }
+
+    /**
+     * @param password the password to set
+     */
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
 }

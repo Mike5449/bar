@@ -40,7 +40,7 @@ public class Vente implements Serializable {
     private Client client;
 
     @ManyToOne
-    @JsonIgnoreProperties(value = { "employee" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "employee", "client" }, allowSetters = true)
     private Depot depot;
 
     @ManyToOne

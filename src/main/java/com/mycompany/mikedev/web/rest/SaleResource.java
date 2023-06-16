@@ -145,7 +145,7 @@ public class SaleResource {
      * @param eagerload flag to eager load entities from relationships (This is applicable for many-to-many).
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of sales in body.
      */
-    @GetMapping("/sales")
+    @GetMapping("/saless")
     public ResponseEntity<List<SaleDTO>> getAllSales(
         @org.springdoc.api.annotations.ParameterObject Pageable pageable,
         @RequestParam(required = false, defaultValue = "false") boolean eagerload
@@ -159,6 +159,20 @@ public class SaleResource {
         }
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    @GetMapping("/sales")
+    public ResponseEntity<List<SaleDTO>> getAllSalesByDateAndEmploy(
+        @org.springdoc.api.annotations.ParameterObject Pageable pageable,
+        @RequestParam(required = false, defaultValue = "false") boolean eagerload
+    ) {
+        log.debug("REST request to get a page of Sales");
+        List<SaleDTO> page =saleService.prendreParDateAndEmploy();
+        
+        
+        
+        // HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().body(page);
     }
 
     /**

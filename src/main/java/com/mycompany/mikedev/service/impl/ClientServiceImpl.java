@@ -5,7 +5,13 @@ import com.mycompany.mikedev.repository.ClientRepository;
 import com.mycompany.mikedev.service.ClientService;
 import com.mycompany.mikedev.service.dto.ClientDTO;
 import com.mycompany.mikedev.service.mapper.ClientMapper;
+import com.mycompany.mikedev.util.DateUtil;
+
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -81,4 +87,30 @@ public class ClientServiceImpl implements ClientService {
         log.debug("Request to delete Client : {}", id);
         clientRepository.deleteById(id);
     }
+
+    @Override
+    public List<ClientDTO> clientToDay() {
+        
+        return clientMapper.toDto(clientRepository.clientToDay(DateUtil.getDateInString(DateUtil.getCurrentDate(),"-")));
+    }
+
+    // @Override
+    // public List<ClientDTO> clientToDay() {
+
+    //     return clientMapper.toDto(clientRepository.clientToDay(DateUtil.getDateInString(DateUtil.getCurrentDate(), "-"))
+    //             .stream().map(data -> {
+    //                 try {
+    //                     data.setDepot(data.getDepot().stream().map(data1 -> {
+    //                         data1.setclient(null);
+    //                         return data1;
+    //                     }).collect(Collectors.toList()));
+
+    //                 } catch (Exception ex) {
+
+    //                 }
+
+    //                 return data;
+    //             }).collect(Collectors.toList()));
+
+    // }
 }

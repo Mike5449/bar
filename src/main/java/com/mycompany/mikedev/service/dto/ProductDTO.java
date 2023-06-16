@@ -4,6 +4,9 @@ import com.mycompany.mikedev.domain.enumeration.Categorie;
 import com.mycompany.mikedev.domain.enumeration.Section;
 import java.io.Serializable;
 import java.util.Objects;
+import java.util.Set;
+
+import javax.persistence.Lob;
 import javax.validation.constraints.*;
 
 /**
@@ -17,13 +20,21 @@ public class ProductDTO implements Serializable {
     @NotNull
     private String name;
 
+    @NotNull
+    private Long price;
+
+    @Lob
     private byte[] image;
+
+    private String imageContentType;
 
     @NotNull
     private Categorie type;
 
     @NotNull
     private Section section;
+
+    // private Set<ProductPriceDTO> productPrice;
 
     public Long getId() {
         return id;
@@ -47,6 +58,14 @@ public class ProductDTO implements Serializable {
 
     public void setImage(byte[] image) {
         this.image = image;
+    }
+
+    public String getImageContentType() {
+        return imageContentType;
+    }
+
+    public void setImageContentType(String imageContentType) {
+        this.imageContentType = imageContentType;
     }
 
     public Categorie getType() {
@@ -97,4 +116,43 @@ public class ProductDTO implements Serializable {
             ", section='" + getSection() + "'" +
             "}";
     }
+
+    /**
+     * @return Long return the productPrice
+     */
+    
+
+
+
+
+
+    // /**
+    //  * @return Set<ProductPriceDTO> return the productPrice
+    //  */
+    // public Set<ProductPriceDTO> getProductPrice() {
+    //     return productPrice;
+    // }
+
+    // /**
+    //  * @param productPrice the productPrice to set
+    //  */
+    // public void setProductPrice(Set<ProductPriceDTO> productPrice) {
+    //     this.productPrice = productPrice;
+    // }
+
+
+    /**
+     * @return Long return the price
+     */
+    public Long getPrice() {
+        return price;
+    }
+
+    /**
+     * @param price the price to set
+     */
+    public void setPrice(Long price) {
+        this.price = price;
+    }
+
 }

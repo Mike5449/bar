@@ -83,7 +83,7 @@ export class ProductPriceUpdateComponent implements OnInit {
 
     this.productsSharedCollection = this.productService.addProductToCollectionIfMissing<IProduct>(
       this.productsSharedCollection,
-      productPrice.produit
+      productPrice.product
     );
   }
 
@@ -92,7 +92,7 @@ export class ProductPriceUpdateComponent implements OnInit {
       .query()
       .pipe(map((res: HttpResponse<IProduct[]>) => res.body ?? []))
       .pipe(
-        map((products: IProduct[]) => this.productService.addProductToCollectionIfMissing<IProduct>(products, this.productPrice?.produit))
+        map((products: IProduct[]) => this.productService.addProductToCollectionIfMissing<IProduct>(products, this.productPrice?.product))
       )
       .subscribe((products: IProduct[]) => (this.productsSharedCollection = products));
   }

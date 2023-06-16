@@ -6,6 +6,9 @@ export interface IEmployee {
   id: number;
   firstName?: string | null;
   lastName?: string | null;
+  login?: string | null;
+  password?: string | null;
+  confirm ?: string | null;
   gender?: Sexe | null;
   dateOfBirth?: dayjs.Dayjs | null;
   contactNumber?: string | null;

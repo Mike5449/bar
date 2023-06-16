@@ -175,6 +175,48 @@
             <option [ngValue]="jobOption" *ngFor="let jobOption of jobsSharedCollection">{{ jobOption.jobName }}</option>
           </select>
         </div>
+
+        <div class="row mb-3">
+          <label class="form-label" for="field_login">Nom utilisateur</label>
+          <input type="text" class="form-control" name="login" id="field_login" data-cy="login" formControlName="login" />
+          <div *ngIf="editForm.get('login')!.invalid && (editForm.get('login')!.dirty || editForm.get('login')!.touched)">
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('login')?.errors?.required"
+              jhiTranslate="entity.validation.required"
+            >
+              Ce champ est obligatoire.
+            </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" for="field_password">Mot de passe</label>
+          <input type="password" class="form-control" name="password" id="field_password" data-cy="password" formControlName="password" />
+          <div *ngIf="editForm.get('password')!.invalid && (editForm.get('password')!.dirty || editForm.get('password')!.touched)">
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('password')?.errors?.required"
+              jhiTranslate="entity.validation.required"
+            >
+              Ce champ est obligatoire.
+            </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="barApp.employee.confirm" for="field_confirm">Confirmer mot de passe</label>
+          <input type="password" class="form-control" name="confirm" id="field_confirm" data-cy="confirm" formControlName="confirm" />
+          <div *ngIf="editForm.get('confirm')!.invalid && (editForm.get('confirm')!.dirty || editForm.get('confirm')!.touched)">
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('confirm')?.errors?.required"
+              jhiTranslate="entity.validation.required"
+            >
+              Ce champ est obligatoire.
+            </small>
+          </div>
+        </div>
       </div>
 
       <div>

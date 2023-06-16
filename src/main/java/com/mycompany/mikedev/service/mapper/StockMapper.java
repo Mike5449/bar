@@ -18,5 +18,9 @@ public interface StockMapper extends EntityMapper<StockDTO, Stock> {
     @BeanMapping(ignoreByDefault = true)
     @Mapping(target = "id", source = "id")
     @Mapping(target = "name", source = "name")
+    @Mapping(target = "imageContentType", source = "imageContentType")
+    @Mapping(target = "image", source = "image")
+    @Mapping(target = "section", source = "section")
+    @Mapping(target = "price", source = "price")
     ProductDTO toDtoProductName(Product product);
 }

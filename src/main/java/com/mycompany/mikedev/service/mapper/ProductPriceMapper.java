@@ -11,12 +11,12 @@ import org.mapstruct.*;
  */
 @Mapper(componentModel = "spring")
 public interface ProductPriceMapper extends EntityMapper<ProductPriceDTO, ProductPrice> {
-    @Mapping(target = "produit", source = "produit", qualifiedByName = "productName")
-    ProductPriceDTO toDto(ProductPrice s);
+    // @Mapping(target = "produit", source = "product", qualifiedByName = "productName")
+    // ProductPriceDTO toDto(ProductPrice s);
 
-    @Named("productName")
-    @BeanMapping(ignoreByDefault = true)
-    @Mapping(target = "id", source = "id")
-    @Mapping(target = "name", source = "name")
-    ProductDTO toDtoProductName(Product product);
+    // @Named("productName")
+    // @BeanMapping(ignoreByDefault = true)
+    // @Mapping(target = "id", source = "id")
+    // @Mapping(target = "name", source = "name")
+    // ProductDTO toDtoProductName(Product product);
 }

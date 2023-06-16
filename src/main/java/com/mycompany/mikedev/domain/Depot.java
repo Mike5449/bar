@@ -14,7 +14,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Table(name = "depot")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class Depot implements Serializable {
+public class Depot extends AbstractAuditingEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -31,8 +31,13 @@ public class Depot implements Serializable {
     private String description;
 
     @ManyToOne
-    @JsonIgnoreProperties(value = { "job" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "job", "user" }, allowSetters = true)
     private Employee employee;
+
+    @ManyToOne
+    @JsonIgnoreProperties(value = { "job ","depot","client" }, allowSetters = true)
+    @JoinColumn(name="client.id")
+    private Client client;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -85,6 +90,19 @@ public class Depot implements Serializable {
 
     public Depot employee(Employee employee) {
         this.setEmployee(employee);
+        return this;
+    }
+
+    public Client getclient() {
+        return this.client;
+    }
+
+    public void setclient(Client client) {
+        this.client = client;
+    }
+
+    public Depot client(Client client) {
+        this.setclient(client);
         return this;
     }
 

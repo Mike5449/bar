@@ -1,0 +1,129 @@
+<div>
+  <h2 id="page-heading" data-cy="VenteHeading">
+    <span jhiTranslate="barApp.vente.home.title">Ventes</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span jhiTranslate="barApp.vente.home.refreshListLabel">Actualiser la liste</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-vente"
+        [routerLink]="['/vente/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span jhiTranslate="barApp.vente.home.createLabel"> Créer un nouveau Vente </span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <div class="alert alert-warning" id="no-result" *ngIf="ventes?.length === 0">
+    <span jhiTranslate="barApp.vente.home.notFound">Aucun Vente trouvé</span>
+  </div>
+
+  <div class="table-responsive table-entities" id="entities" *ngIf="ventes && ventes.length > 0">
+    <table class="table table-striped" aria-describedby="page-heading">
+      <thead>
+        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()">
+          <th scope="col" jhiSortBy="id">
+            <div class="d-flex">
+              <span jhiTranslate="global.field.id">ID</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="quantite">
+            <div class="d-flex">
+              <span jhiTranslate="barApp.vente.quantite">Quantite</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="status">
+            <div class="d-flex">
+              <span jhiTranslate="barApp.vente.status">Status</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="employee.firstName">
+            <div class="d-flex">
+              <span jhiTranslate="barApp.vente.employee">Employee</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="client.name">
+            <div class="d-flex">
+              <span jhiTranslate="barApp.vente.client">Client</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="depot.montant">
+            <div class="d-flex">
+              <span jhiTranslate="barApp.vente.depot">Depot</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="boisson.name">
+            <div class="d-flex">
+              <span jhiTranslate="barApp.vente.boisson">Boisson</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let vente of ventes; trackBy: trackId" data-cy="entityTable">
+          <td>
+            <a [routerLink]="['/vente', vente.id, 'view']">{{ vente.id }}</a>
+          </td>
+          <td>{{ vente.quantite }}</td>
+          <td jhiTranslate="{{ 'barApp.StatusVente.' + vente.status }}">{{ vente.status }}</td>
+          <td>
+            <div *ngIf="vente.employee">
+              <a [routerLink]="['/employee', vente.employee.id, 'view']">{{ vente.employee.firstName }}</a>
+            </div>
+          </td>
+          <td>
+            <div *ngIf="vente.client">
+              <a [routerLink]="['/client', vente.client.id, 'view']">{{ vente.client.name }}</a>
+            </div>
+          </td>
+          <td>
+            <div *ngIf="vente.depot">
+              <a [routerLink]="['/depot', vente.depot.id, 'view']">{{ vente.depot.montant }}</a>
+            </div>
+          </td>
+          <td>
+            <div *ngIf="vente.boisson">
+              <a [routerLink]="['/boisson', vente.boisson.id, 'view']">{{ vente.boisson.name }}</a>
+            </div>
+          </td>
+          <td class="text-end">
+            <div class="btn-group">
+              <button type="submit" [routerLink]="['/vente', vente.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
+                <fa-icon icon="eye"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">Voir</span>
+              </button>
+
+              <button type="submit" [routerLink]="['/vente', vente.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
+                <fa-icon icon="pencil-alt"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Editer</span>
+              </button>
+
+              <button type="submit" (click)="delete(vente)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                <fa-icon icon="times"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Supprimer</span>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

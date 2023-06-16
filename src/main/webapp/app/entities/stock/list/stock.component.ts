@@ -71,6 +71,62 @@ export class StockComponent implements OnInit {
     this.handleNavigation(page, this.predicate, this.ascending);
   }
 
+  getImageDataUrl(img:any,contentType:any){
+    return `data:${contentType};base64,${img}`
+
+  }
+
+  firstChange() {
+    const filterMenu = document.querySelector<HTMLElement>(".filter-menu");
+    if (filterMenu) {
+      filterMenu.classList.toggle("active");
+    }
+  }
+
+  secondChange() {
+    const listElement = document.querySelector<HTMLElement>(".list");
+    const gridElement = document.querySelector<HTMLElement>(".grid");
+    const productsAreaWrapperElement = document.querySelector<HTMLElement>(
+      ".products-area-wrapper"
+    );
+
+    if (listElement && gridElement && productsAreaWrapperElement) {
+      listElement.classList.remove("active");
+      gridElement.classList.add("active");
+      productsAreaWrapperElement.classList.add("gridView");
+      productsAreaWrapperElement.classList.remove("tableView");
+    }
+  }
+
+  thirdChange() {
+    const listElement = document.querySelector<HTMLElement>(".list");
+const gridElement = document.querySelector<HTMLElement>(".grid");
+const productsAreaWrapperElement = document.querySelector<HTMLElement>(
+  ".products-area-wrapper"
+);
+
+if (listElement && gridElement && productsAreaWrapperElement) {
+  listElement.addEventListener("click", () => {
+    listElement.classList.add("active");
+    gridElement.classList.remove("active");
+    productsAreaWrapperElement.classList.remove("gridView");
+    productsAreaWrapperElement.classList.add("tableView");
+  });
+}
+
+  }
+
+  changeTheme() {
+    const modeSwitch = document.querySelector<HTMLElement>('.mode-switch');
+
+    if (modeSwitch) {
+      modeSwitch.addEventListener('click', () => {
+        document.documentElement.classList.toggle('light');
+        modeSwitch.classList.toggle('active');
+      });
+    }
+  }
+
   protected loadFromBackendWithRouteInformations(): Observable<EntityArrayResponseType> {
     return combineLatest([this.activatedRoute.queryParamMap, this.activatedRoute.data]).pipe(
       tap(([params, data]) => this.fillComponentAttributeFromRoute(params, data)),

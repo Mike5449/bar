@@ -23,6 +23,7 @@ describe('Depot Form Service', () => {
             amount: expect.any(Object),
             description: expect.any(Object),
             employee: expect.any(Object),
+            client: expect.any(Object),
           })
         );
       });
@@ -36,6 +37,7 @@ describe('Depot Form Service', () => {
             amount: expect.any(Object),
             description: expect.any(Object),
             employee: expect.any(Object),
+            client: expect.any(Object),
           })
         );
       });

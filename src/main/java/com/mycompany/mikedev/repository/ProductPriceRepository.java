@@ -26,15 +26,17 @@ public interface ProductPriceRepository extends JpaRepository<ProductPrice, Long
         return this.findAllWithToOneRelationships(pageable);
     }
 
+    
+
     @Query(
-        value = "select distinct productPrice from ProductPrice productPrice left join fetch productPrice.produit",
+        value = "select distinct productPrice from ProductPrice productPrice left join fetch productPrice.product",
         countQuery = "select count(distinct productPrice) from ProductPrice productPrice"
     )
     Page<ProductPrice> findAllWithToOneRelationships(Pageable pageable);
 
-    @Query("select distinct productPrice from ProductPrice productPrice left join fetch productPrice.produit")
+    @Query("select distinct productPrice from ProductPrice productPrice left join fetch productPrice.product")
     List<ProductPrice> findAllWithToOneRelationships();
 
-    @Query("select productPrice from ProductPrice productPrice left join fetch productPrice.produit where productPrice.id =:id")
+    @Query("select productPrice from ProductPrice productPrice left join fetch productPrice.product where productPrice.id =:id")
     Optional<ProductPrice> findOneWithToOneRelationships(@Param("id") Long id);
 }

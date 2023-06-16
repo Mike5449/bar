@@ -19,6 +19,7 @@
       },
       "id": "Id",
       "name": "Name",
+      "price": "Price",
       "image": "Image",
       "type": "Type",
       "section": "Section"

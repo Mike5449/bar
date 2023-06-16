@@ -1,6 +1,9 @@
 package com.mycompany.mikedev.service;
 
+import com.mycompany.mikedev.domain.Client;
 import com.mycompany.mikedev.service.dto.DepotDTO;
+
+import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -63,4 +66,12 @@ public interface DepotService {
      * @param id the id of the entity.
      */
     void delete(Long id);
+
+   List<DepotDTO>getDepotsByClientId( Long clientId);
+//    List<DepotDTO> findByClient(Client client);
+
+Double getTotalDepotsClientByClientId(Long clientId);
+
 }
+
+

@@ -26,6 +26,12 @@
       "otherEntityName": "employee",
       "relationshipName": "employee",
       "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityField": "name",
+      "otherEntityName": "client",
+      "relationshipName": "client",
+      "relationshipType": "many-to-one"
     }
   ],
   "service": "serviceImpl"

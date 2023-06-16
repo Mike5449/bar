@@ -21,6 +21,9 @@ import { ProductPriceService } from 'app/entities/product-price/service/product-
 import { StatusVente } from 'app/entities/enumerations/status-vente.model';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SharedService } from 'app/shared/shared.service';
+import { DomSanitizer } from '@angular/platform-browser';
+import { StockService } from 'app/entities/stock/service/stock.service';
+import { IStock } from 'app/entities/stock/stock.model';
 
 interface IProductWithPrice{
   name:string;
@@ -59,8 +62,18 @@ export class SaleUpdateComponent implements OnInit {
     protected productPriceService: ProductPriceService,
     protected activatedRoute: ActivatedRoute,
     protected modalService: NgbModal,
+    private sanitizer:DomSanitizer,
+    protected stockService: StockService,
     
   ) {}
+
+  setBlob(path:any):any{
+
+    const blob=new Blob([path],{type:'image/*'})
+
+    return this.sanitizer.bypassSecurityTrustResourceUrl(window.URL.createObjectURL(blob));
+
+  }
 
   compareEmployee = (o1: IEmployee | null, o2: IEmployee | null): boolean => this.employeeService.compareEmployee(o1, o2);
 
@@ -82,6 +95,7 @@ export class SaleUpdateComponent implements OnInit {
 
       this.loadRelationshipsOptions();
     });
+    
 
     if(this.currentClient){
 
@@ -91,7 +105,7 @@ export class SaleUpdateComponent implements OnInit {
         sale.client=this.currentClient;
         sale.depot=null;
         sale.employee=null;
-        sale.produit=null;
+        sale.product=null;
         sale.quantity=0;
         sale.status=StatusVente.NEW;
         sale.unitPrice=0;
@@ -99,8 +113,13 @@ export class SaleUpdateComponent implements OnInit {
 
     }
     else{
-      console.log(this.currentClient)
+      
     }
+  }
+
+  getImageDataUrl(img:any,contentType:any){
+    return `data:${contentType};base64,${img}`
+
   }
 
   previousState(): void {
@@ -108,9 +127,11 @@ export class SaleUpdateComponent implements OnInit {
   }
 
   submitPrices(){
+
     const productsWithPrices=this.productsSharedCollection.filter((product,index)=>{
 
       const price=this.productPrices[index];
+      console.log(price)
       return price && price>0
 
       
@@ -120,6 +141,7 @@ export class SaleUpdateComponent implements OnInit {
       const price=this.productPrices[index]
       return { ...product,price}
     })
+    console.log(productsWithPrices)
     productsWithPrices.forEach(data=>{
 
       const sale: any = {id:0};
@@ -129,7 +151,7 @@ export class SaleUpdateComponent implements OnInit {
         sale.client=this.currentClient;
         sale.depot=null;
         sale.employee=null;
-        sale.produit=data;
+        sale.product=data;
         sale.quantity=data.price;
         sale.status=StatusVente.NEW;
         sale.unitPrice=0;
@@ -147,7 +169,7 @@ export class SaleUpdateComponent implements OnInit {
         }
 
     })
-    console.log(productsWithPrices)
+    
   }
 
 
@@ -184,6 +206,20 @@ export class SaleUpdateComponent implements OnInit {
     this.modalService.dismissAll();
   }
 
+  // updatStock(): void {
+    
+  //   this.subscribeToSaveStock(this.stockService.create(stock));
+    
+  // }
+
+  // protected subscribeToSaveStock(result: Observable<HttpResponse<IStock>>): void {
+  //   result.pipe(finalize(() => this.onSaveFinalize())).subscribe({
+  //     next: () => this.onSaveSuccess(),
+  //     error: () => this.onSaveError(),
+  //   });
+  // }
+
+
   protected onSaveError(): void {
     // Api for inheritance.
   }
@@ -204,7 +240,7 @@ export class SaleUpdateComponent implements OnInit {
     this.depotsSharedCollection = this.depotService.addDepotToCollectionIfMissing<IDepot>(this.depotsSharedCollection, sale.depot);
     this.productsSharedCollection = this.productService.addProductToCollectionIfMissing<IProduct>(
       this.productsSharedCollection,
-      sale.produit
+      sale.product
     );
     this.productPricesSharedCollection = this.productPriceService.addProductPriceToCollectionIfMissing<IProductPrice>(
       this.productPricesSharedCollection,
@@ -236,7 +272,7 @@ export class SaleUpdateComponent implements OnInit {
     this.productService
       .query()
       .pipe(map((res: HttpResponse<IProduct[]>) => res.body ?? []))
-      .pipe(map((products: IProduct[]) => this.productService.addProductToCollectionIfMissing<IProduct>(products, this.sale?.produit)))
+      .pipe(map((products: IProduct[]) => this.productService.addProductToCollectionIfMissing<IProduct>(products, this.sale?.product)))
       .subscribe((products: IProduct[]) => (this.productsSharedCollection = products));
 
     this.productPriceService

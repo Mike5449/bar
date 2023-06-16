@@ -99,8 +99,8 @@ public class TokenProvider {
             tokenPayloadDTO.setFirstName(employee.get().getFirstName());
             tokenPayloadDTO.setLastName(employee.get().getLastName());
             tokenPayloadDTO.setGender(employee.get().getGender());
-            // tokenPayloadDTO.setJobId(employee.get().getJob().getId());
-            // tokenPayloadDTO.setJobName(employee.get().getJob().getJobName());
+            tokenPayloadDTO.setJobId(employee.get().getJob().getId());
+            tokenPayloadDTO.setJobName(employee.get().getJob().getJobName());
             // tokenPayloadDTO.setIdAttendance(attendance.get().getEmployee().getId());
 
             mapToken.put("login", tokenPayloadDTO.getLogin());
@@ -108,8 +108,8 @@ public class TokenProvider {
             mapToken.put("firsName",tokenPayloadDTO.getFirstName());
             mapToken.put("lastName",tokenPayloadDTO.getLastName());
             mapToken.put("gender",tokenPayloadDTO.getGender());
-            // mapToken.put("jobId", tokenPayloadDTO.getJobId());
-            // mapToken.put("jobName",tokenPayloadDTO.getJobName());
+            mapToken.put("jobId", tokenPayloadDTO.getJobId());
+            mapToken.put("jobName",tokenPayloadDTO.getJobName());
             // mapToken.put("attendanceId", tokenPayloadDTO.getIdAttendance());
 
             
@@ -123,6 +123,7 @@ public class TokenProvider {
             .builder()
             .setSubject(authentication.getName())
             .claim(AUTHORITIES_KEY, authorities)
+            .addClaims(mapToken)
             .signWith(key, SignatureAlgorithm.HS512)
             .setExpiration(validity)
             .compact();

@@ -7,6 +7,9 @@ import { finalize } from 'rxjs/operators';
 import { ProductFormService, ProductFormGroup } from './product-form.service';
 import { IProduct } from '../product.model';
 import { ProductService } from '../service/product.service';
+import { AlertError } from 'app/shared/alert/alert-error.model';
+import { EventManager, EventWithContent } from 'app/core/util/event-manager.service';
+import { DataUtils, FileLoadError } from 'app/core/util/data-util.service';
 import { Categorie } from 'app/entities/enumerations/categorie.model';
 import { Section } from 'app/entities/enumerations/section.model';
 
@@ -20,12 +23,11 @@ export class ProductUpdateComponent implements OnInit {
   categorieValues = Object.keys(Categorie);
   sectionValues = Object.keys(Section);
 
-  imageURL:string | ArrayBuffer | null | undefined;
-  imagBase64String?:string;
-
   editForm: ProductFormGroup = this.productFormService.createProductFormGroup();
 
   constructor(
+    protected dataUtils: DataUtils,
+    protected eventManager: EventManager,
     protected productService: ProductService,
     protected productFormService: ProductFormService,
     protected activatedRoute: ActivatedRoute
@@ -40,38 +42,21 @@ export class ProductUpdateComponent implements OnInit {
     });
   }
 
-  onFileSelected(envent:any){
-    const file:File=envent.target.files[0];
-
-    this.previewImage(file)
-    this.convertToBase64(file).then((base64String:string)=>{
-      this.imagBase64String=base64String
-    })
-    
+  byteSize(base64String: string): string {
+    return this.dataUtils.byteSize(base64String);
   }
-  previewImage(file:File){
-    const reader=new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload=()=>{
-      this.imageURL=reader.result;
-      
-    }
-  }
-  convertToBase64(file:File):Promise<string>{
-    return new Promise((resolve,reject)=>{
-      const reader =new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload=()=>{
-        const base64String=reader.result?.toString();
-        if(base64String)
-        resolve(base64String);
-        
 
-      };
-      reader.onerror=(error)=>reject(error);
-
-    })
+  openFile(base64String: string, contentType: string | null | undefined): void {
+    this.dataUtils.openFile(base64String, contentType);
   }
+
+  setFileData(event: Event, field: string, isImage: boolean): void {
+    this.dataUtils.loadFileToForm(event, this.editForm, field, isImage).subscribe({
+      error: (err: FileLoadError) =>
+        this.eventManager.broadcast(new EventWithContent<AlertError>('barApp.error', { ...err, key: 'error.file.' + err.key })),
+    });
+  }
+
   previousState(): void {
     window.history.back();
   }
@@ -79,8 +64,6 @@ export class ProductUpdateComponent implements OnInit {
   save(): void {
     this.isSaving = true;
     const product = this.productFormService.getProduct(this.editForm);
-    product.image=this.imagBase64String;
-    // console.log(product)
     if (product.id !== null) {
       this.subscribeToSaveResponse(this.productService.update(product));
     } else {

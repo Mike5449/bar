@@ -1,13 +1,8 @@
 <ng-template #content let-modal>
   <div class="modal-header" class="modal-header  text-black" >
 
-    <h2
-        id="jhi-sale-heading"
-        data-cy="SaleCreateUpdateHeading"
+    <h2 id="jhi-sale-heading" data-cy="SaleCreateUpdateHeading">Nouveau Commande</h2>
         
-      >
-        Nouveau Commande
-      </h2>
     <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
   </div>
   <div class="modal-body  text-black" >
@@ -17,15 +12,19 @@
     <jhi-sale-update *ngIf="type === getTypeAction().UPDATE" [creditSolde]="creditSoldeSelected" [isForTransactionSys]="isTransaction"></jhi-sale-update> -->
   </div>
 </ng-template>
-<div class="col bg-white" >
+<!-- <div class="app-content">
+
+</div> -->
+<div class="col" >
 
   <div class="col-12 row d-flex justify-content-between" style="width: 100%;border-bottom: 3px solid blue;padding: 5px; ">
   
     <div class="col-2">
 
-      <select class="form-select form-select-sm bg-white" style="width: 100%;"  data-mb-filter="true">
+      <select class="form-select form-select-sm bg-white" (click)="setClient(client)" style="width: 100%;" [(ngModel)]="client" (change)="openSpecific(content, getTypeAction().INSERT,client)"  data-mb-filter="true">
         <option  value=""></option>
-        <option *ngFor="let client of clients |filterSearch:clientSearching" value="client.name">{{client.name}}</option>
+        <option ><input type="text" placeholder="Search" class="input-group-sm"></option>
+        <option *ngFor="let client of clients "   value="client">{{client.name}}</option>
         
       </select>
 
@@ -39,45 +38,51 @@
 
         <div *ngFor="let employee of salesGroupe " (click)="setEmployee(employee?.employee?.firstName)" class="col">{{employee?.employee?.firstName}}</div>
         
+        <div (click)="closeSideBare()" class="col ">sidebar</div>
+
       </div>       
      
     </div>
   
   </div>
-  <div class="d-flex col-12 justify-content-end m-1 g-2">
+  <div *ngIf="!isCommande" class="d-flex col-12 justify-content-end m-1 g-2">
+
+    <button (click)="newCommande()" class="btn btn-sm btn-primary">nouveau client</button>
+
+  </div>
+
+  <div *ngIf="isCommande" class="d-flex col-12 justify-content-end m-1 g-2">
 
     <div class="input-group-sm">
       <input class="form-control " placeholder="nom du client" type="text" [(ngModel)]="clientName">
     </div>
-    <div class="input-group-sm">
-      <input class="form-control" placeholder="Depot" type="number" [(ngModel)]="amountDepot">
-    </div>
-    <button (click)="newClient(content)" class="btn btn-sm btn-primary">nouveau c</button>
+
+    <button [disabled]="!clientName" (click)="newClient(content)" class="btn btn-sm btn-primary">Commande</button>
 
   </div>
 
-  <div class="col"  *ngFor="let employee of salesGroupe | filterSearch:employeeSearching">
+  <div class="col"  *ngFor="let employee of salesGroupe | filterSearch:employeeSearching:'EMPLOYEE'">
 
     <div class="col-12" >
   
       <div class="row" >
   
-        <div class="col-sm-4" *ngFor="let client of employee.clients ">
-          <div class="card"  style="margin-top: 10px;">
-            <div class="card-body overflow-auto" style="height: 400px; ">
+        <div class="col-sm-4" style="" *ngFor="let client of employee.clients | filterSearch:clientSearching:'CLIENT'">
+          <div class="card "  style="margin-top: 10px;">
+            <div class="card-body products-row overflow-auto" style="height: 400px;background-color: #1d283c;color: #fff; ">
               
-              <div class="card-header bg-primary text-white   " style="font-weight: bold;width: 100%;font-size: 13px;">
+              <div class="card-header text-white " style="font-weight: bold;width: 100%;font-size: 13px;">
     
                 <div class="d-flex justify-content-between">
 
-                  <span>Client :{{client?.client?.name}}</span>
-                  <span>Depot  :500$</span>
+                  <span class="text-success" >Client : <span >{{client?.client?.name}}</span></span>
+                  <span class="text-success">Depot  : <span>{{sendTotalDepot(client?.client?.id)}}</span> $</span>
 
                 </div>
                 <div class="d-flex justify-content-between">
 
-                  <div>Achat   :0$</div>
-                  <div>Balance :0$</div>
+                  <div class="text-success">Achat   : <span >{{totalAchat(client?.product)}}</span> $</div>
+                  <div [ngClass]="sendTotalDepot(client?.client?.id) - balance(client?.product) <= 0 ? 'text-danger' : 'text-success' ">Balance : <span>{{sendTotalDepot(client?.client?.id) - balance(client?.product) || 0}}$</span> </div>
                   
                 </div>
                
@@ -94,9 +99,9 @@
                           <fa-icon class="p-1" icon="sort"></fa-icon>
                         </div>
                       </th> -->
-                      <th scope="col" jhiSortBy="produit.name">
+                      <th scope="col" jhiSortBy="product.name">
                         <div class="d-flex">
-                          <span jhiTranslate="barApp.sale.produit">Produit</span>
+                          <span jhiTranslate="barApp.sale.product">Product</span>
                           
                         </div>
                       </th>
@@ -151,20 +156,23 @@
                       </th> -->
                       
                       
-                      <th scope="col"></th>
+                      <th scope="col">
+                        <fa-icon icon="eye" class="text-danger"></fa-icon>
+
+                      </th>
                     </tr>
                   </thead>
-                  <tbody *ngFor="let sale of client?.produit; trackBy: trackId">
-                    <tr  data-cy="entityTable" style="font-weight: bold;font-size: 13px;">
+                  <tbody *ngFor="let sale of client?.product; trackBy: trackId">
+                    <tr  data-cy="entityTable" style="font-weight: bold;font-size: 13px;color: #fff;border: none;">
                       <!-- <td>
                         <a [routerLink]="['/sale', sale.id, 'view']">{{ sale.id }}</a>
                       </td> -->
-                      <td>
-                        <div *ngIf="sale.produit">
-                          {{ sale?.produit?.name }}
+                      <td  style="border: none;">
+                        <div *ngIf="sale.product">
+                          {{ sale?.product?.name }}
                         </div>
                       </td>
-                      <td>{{ sale?.quantity }}</td>
+                      <td  style="border: none;">{{ sale?.quantity }}</td>
                       <!-- <td>{{ sale.unitPrice }}</td> -->
                       <!-- <td>
                         <div *ngIf="sale.currentPrice">
@@ -177,7 +185,7 @@
                           <a [routerLink]="['/employee', sale.employee.id, 'view']">{{ sale.employee.firstName }}</a>
                         </div>
                       </td> -->
-                      <td>{{ sale?.status?.toLowerCase() }}</td>
+                      <td  style="border: none;">{{ sale?.status?.toLowerCase() }}</td>
                       
                       <!-- <td>
                         <div *ngIf="sale.client">
@@ -191,7 +199,7 @@
                       </td> -->
                       
                       
-                      <td (click)="openLine(sale.id)" class="text-end">
+                      <td style="border: none;" (click)="openLine(sale.id)" class="text-end ">
 
                         <fa-icon icon="eye" style="color: green;"></fa-icon>
 
@@ -203,18 +211,35 @@
                         <tbody  class="d-flex justify-content-end">
   
                           <td class="text-end">
-                            <div class="btn-group">
-                          <button type="submit" [routerLink]="['/sale', sale.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
+                            <div *ngIf="infoToken?.jobName!='Serveur(se)'" class="btn-group">
+                          <!-- <button type="submit" [routerLink]="['/sale', sale.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
                             <fa-icon icon="eye"></fa-icon>
                             <span class="d-none d-md-inline" jhiTranslate="entity.action.view">Voir</span>
-                          </button>
+                          </button> -->
             
-                          <button type="submit" (click)="validateSale(sale)" class="btn btn-primary btn-sm" data-cy="entityEditButton">
+                          <button *ngIf="sale?.status!='VALIDATE' || sale?.status!='CANCEL'"  type="submit" (click)="validateSale(sale)" class="btn btn-primary btn-sm" data-cy="entityEditButton">
                             <fa-icon icon="pencil-alt"></fa-icon>
                             <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">validate</span>
                           </button>
             
-                          <button type="submit" (click)="delete(sale)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                          <button *ngIf="sale?.status!='VALIDATE'" type="submit" (click)="delete(sale)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                            <fa-icon icon="times"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Supprimer</span>
+                          </button>
+                        </div>
+
+                        <div *ngIf="infoToken?.jobName==='Serveur(se)'" class="btn-group">
+                          <!-- <button type="submit" [routerLink]="['/sale', sale.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
+                            <fa-icon icon="eye"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">Voir</span>
+                          </button> -->
+            
+                          <!-- <button type="submit" (click)="validateSale(sale)" class="btn btn-primary btn-sm" data-cy="entityEditButton">
+                            <fa-icon icon="pencil-alt"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">validate</span>
+                          </button> -->
+            
+                          <button  *ngIf="sale?.status!='VALIDATE'" type="submit" (click)="delete(sale)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
                             <fa-icon icon="times"></fa-icon>
                             <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Supprimer</span>
                           </button>
@@ -228,10 +253,23 @@
                 </table>
               </div>
             </div>
-            <div class="d-flex justify-content-end card-footer " >
+            <div class="d-flex justify-content-end card-footer " style="background-color: #1d283c;" >
 
+              <div *ngIf="infoToken.jobName!='Serveur(se)'" class="d-flex">
 
-              <a (click)="openSpecific(content, getTypeAction().INSERT,client?.client)" class="btn bottom-0 btn-primary btn-sm">Commande</a>
+                <div class="input-group-sm mr-5">
+                  <input class="form-control" #amountDepot placeholder="Depot" type="number" [(ngModel)]="amountDepots">
+                </div>
+                <button [disabled]="!amountDepots" (click)="newDepot(client?.client,amountDepot)" class="btn bottom-0 btn-success btn-sm">Depot</button>
+                
+                
+              </div>
+              
+              <div style="margin-left: 10px;">
+              <a *ngIf="infoToken.jobName==='Serveur(se)'" (click)="openSpecific(content, getTypeAction().INSERT,client?.client)" class="btn bottom-0 btn-primary ml5 btn-sm">Commande</a>
+              <a *ngIf="infoToken.jobName!='Serveur(se)'" (click)="validateAllsale(client?.product,client?.client?.id)" class="btn bottom-0 btn-primary ml5 btn-sm">Tout valider</a>
+
+              </div>
 
             </div>
             
@@ -386,9 +424,9 @@
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          <th scope="col" jhiSortBy="produit.name">
+          <th scope="col" jhiSortBy="product.name">
             <div class="d-flex">
-              <span jhiTranslate="barApp.sale.produit">Produit</span>
+              <span jhiTranslate="barApp.sale.product">Product</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
@@ -426,8 +464,8 @@
             </div>
           </td>
           <td>
-            <div *ngIf="sale.produit">
-              <a [routerLink]="['/product', sale.produit.id, 'view']">{{ sale.produit.name }}</a>
+            <div *ngIf="sale.product">
+              <a [routerLink]="['/product', sale.product.id, 'view']">{{ sale.product.name }}</a>
             </div>
           </td>
           <td>

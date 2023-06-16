@@ -20,7 +20,7 @@
       "id": "Id",
       "price": "Price",
       "status": "Status",
-      "produit": "Produit"
+      "product": "Product"
     }
   }
 }

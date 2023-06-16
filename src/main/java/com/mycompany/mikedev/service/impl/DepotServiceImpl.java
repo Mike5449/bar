@@ -1,11 +1,20 @@
 package com.mycompany.mikedev.service.impl;
 
+import com.mycompany.mikedev.domain.Client;
 import com.mycompany.mikedev.domain.Depot;
+import com.mycompany.mikedev.domain.Employee;
 import com.mycompany.mikedev.repository.DepotRepository;
 import com.mycompany.mikedev.service.DepotService;
+import com.mycompany.mikedev.service.TokenManager;
 import com.mycompany.mikedev.service.dto.DepotDTO;
 import com.mycompany.mikedev.service.mapper.DepotMapper;
+
+import io.prometheus.client.Collector;
+
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -36,6 +45,7 @@ public class DepotServiceImpl implements DepotService {
         log.debug("Request to save Depot : {}", depotDTO);
         Depot depot = depotMapper.toEntity(depotDTO);
         depot = depotRepository.save(depot);
+        depot.setEmployee(new Employee(TokenManager.getSubject().getEmployeeId()));
         return depotMapper.toDto(depot);
     }
 
@@ -84,5 +94,35 @@ public class DepotServiceImpl implements DepotService {
     public void delete(Long id) {
         log.debug("Request to delete Depot : {}", id);
         depotRepository.deleteById(id);
+    }
+    // @Override
+    // public List<DepotDTO>getDepotByClient(Long clientId){
+    //     return depotMapper.toDto(depotRepository.findByClientId(clientId));
+         
+            
+    // }
+
+    @Override
+    public List<DepotDTO> getDepotsByClientId(Long id){
+        Client client =new Client();
+        client.setId(id);
+
+        List<Depot> depots=depotRepository.findByClient(client);
+
+       return depots.stream()
+        .map(depotMapper::toDto)
+        .collect(Collectors.toList());
+
+        // return depots.stream()
+        // .map(depot->modelMapper.map(depot,DepotDTO.class))
+        // .collect(Collectors.toList());
+    }
+
+    @Override
+    public Double getTotalDepotsClientByClientId(Long clientId){
+        Client client =new Client();
+        client.setId(clientId);
+        return depotRepository.getTotalDepotsByClient(client);
+
     }
 }

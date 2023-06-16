@@ -76,7 +76,24 @@
           </div>
         </div>
 
-        <div class="mb-3">
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="barApp.sale.employee" for="field_employee">Employee</label>
+          <select
+            class="form-control"
+            id="field_employee"
+            data-cy="employee"
+            name="employee"
+            formControlName="employee"
+            [compareWith]="compareEmployee"
+          >
+            <option [ngValue]="null"></option>
+            <option [ngValue]="employeeOption" *ngFor="let employeeOption of employeesSharedCollection">
+              {{ employeeOption.firstName }}
+            </option>
+          </select>
+        </div>
+
+        <!-- <div class="mb-3">
           <label class="form-label" for="email" jhiTranslate="global.form.email.label">Email</label>
           <input
             type="email"
@@ -121,7 +138,7 @@
               Votre email ne doit pas comporter plus de 50 caractères.
             </small>
           </div>
-        </div>
+        </div> -->
 
         <div class="mb-3">
           <label class="form-label" for="password" jhiTranslate="global.form.newpassword.label">Nouveau mot de passe</label>

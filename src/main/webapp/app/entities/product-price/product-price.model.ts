@@ -5,7 +5,7 @@ export interface IProductPrice {
   id: number;
   price?: number | null;
   status?: StatusPrice | null;
-  produit?: Pick<IProduct, 'id' | 'name'> | null;
+  product?: Pick<IProduct, 'id' | 'name'> | null;
 }
 
 export type NewProductPrice = Omit<IProductPrice, 'id'> & { id: null };

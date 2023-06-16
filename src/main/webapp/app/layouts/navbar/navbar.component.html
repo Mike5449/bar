@@ -58,6 +58,18 @@
             <li>
               <a
                 class="dropdown-item"
+                routerLink="account/register"
+                routerLinkActive="active"
+                [routerLinkActiveOptions]="{ exact: true }"
+                (click)="collapseNavbar()"
+              >
+                <fa-icon icon="asterisk" [fixedWidth]="true"></fa-icon>
+                <span >User Account</span>
+              </a>
+            </li>
+            <li>
+              <a
+                class="dropdown-item"
                 routerLink="poste"
                 routerLinkActive="active"
                 [routerLinkActiveOptions]="{ exact: true }"

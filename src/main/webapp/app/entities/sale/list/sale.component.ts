@@ -65,7 +65,16 @@ export class SaleComponent implements OnInit {
   clientSearching:string='';
   clientName:string='';
   amountDepot?:number;
+  amountDepots?:number;
   infoToken?:any;
+
+  client?:IClient;
+
+  closeSideBar?:boolean=false;
+  isCommande?:boolean=false;
+
+
+  static depotMap=new Map<number,number>();
   
 
 
@@ -75,10 +84,13 @@ export class SaleComponent implements OnInit {
     protected saleService: SaleService,
     protected activatedRoute: ActivatedRoute,
     public router: Router,
-    protected modalService: NgbModal,protected clientService: ClientService,
+    protected modalService: NgbModal,
+    protected clientService: ClientService,
     protected clientFormService: ClientFormService,
     protected depotService: DepotService,
     public tokenDecodeService: TokenDecodeService,
+    private deposevice:DepotService,
+    
 
   ) {}
 
@@ -95,7 +107,58 @@ export class SaleComponent implements OnInit {
         SharedService.mapModalVisible.next(true);
       }
     });
+
+    SharedService.closeSideBar.subscribe(data=>{
+
+      this.closeSideBar=data;
+
+    })
+
+  }
+
+  closeSideBare(){
+
     
+
+    console.log(!this.closeSideBar)
+
+    SharedService.closeSideBar.next(!this.closeSideBar)
+
+    // this.closeSideBar=!this.closeSideBar;
+
+  }
+
+  newCommande(){
+    this.isCommande=true;
+  }
+
+  validateAllsale(sales:any[],clientId:number){
+
+    const balance=this.sendTotalDepot(clientId) - this.balance(sales)
+
+
+    sales.forEach(data=>{
+
+
+      if(balance>0){
+
+        if(data.status!=StatusVente.VALIDATE){
+
+          data.status=StatusVente.VALIDATE;
+  
+          this.subscribeToValidatedateSale(this.saleService.update(data));
+  
+        }
+
+      }else{
+        alert("Depot insufisant pour valider tous les ventes")
+      }
+
+      
+      
+      
+    })
+
   }
 
   newClient(content:any){
@@ -113,22 +176,162 @@ export class SaleComponent implements OnInit {
     this.type=TypeAction.INSERT;
     this.content=content;
     this.isNewClient=true;
+    this.isCommande=false;
+
 
   }
-  newDepot(client:IClient){
+  newDepot(client:IClient,amountDepot:any){
 
     const depot:any={id:0};
-    // depot.client=client;
-    const employee:IEmployee={id:3,firstName:'multi-byte Administrateur'}
-    depot.employee=employee;
-    depot.amount=this.amountDepot;
-    depot.id=null
+    const newClient={id:client.id ,firstName:client.name}
+    depot.client=client;
+    // const employee:IEmployee={id:3,firstName:'multi-byte Administrateur'}
+    depot.employee=null;
+    depot.amount=amountDepot.value;
+    depot.id=null  
+
+
 
     if (depot.id !== null) {
       this.subscribeToSaveDepot(this.depotService.update(depot));
     } else {
       this.subscribeToSaveDepot(this.depotService.create(depot));
+  
+
     }
+
+    this.currentClient=client;
+
+
+  }
+  getallClientWithComand(sales:any[]){
+
+    const tableauDoublons=sales.reduce((acc , obj)=>{
+
+      const existant= acc.find((item :ISale)=>item?.client?.id=== obj.client?.id);
+      if(!existant){
+        acc.push(obj);
+      }
+      return acc
+
+    },[])
+
+    tableauDoublons.forEach((data:ISale) => {
+
+      if(data.client?.id)
+      this.getDepot(data.client?.id)
+      
+    });
+
+    // const ensembleObj=new Set(sales?.map(obj=>JSON.stringify(obj)));
+    // const tableauWithoutDoublon=Array.from(ensembleObj).map(obj=>JSON.parse(obj));
+ 
+    
+    console.log(tableauDoublons)
+  }
+
+  getDepot(client:number){
+
+
+    let allDepot:IDepot[]=[];
+    let totalDepot:number=0;
+
+    // console.log(client)
+
+      this.depotService.getDepotByClient(client).subscribe({
+
+        next:(data)=>{ 
+
+          if(data.body){
+
+            allDepot=data.body;
+            allDepot.forEach(data=>{
+
+              if(data.amount)
+              totalDepot+=data.amount;
+
+            })
+          //  const depotTotalClient=this.onSuccessGetDepot(data.body);
+           SaleComponent.depotMap.set(client,totalDepot);
+
+
+          }
+        },
+        error:(erro)=>{
+  
+          console.log(erro)
+  
+  
+        }
+        
+
+      })
+      
+      console.log(SaleComponent.depotMap)
+
+   
+
+    
+  }
+
+  // onSuccessGetDepot(client:IClient):number{
+
+  //   const depots:IDepot[]=this.getDepot(client);
+
+  //   let depotClient:number=0;
+ 
+  //     depots.forEach(data=>{
+
+  //       if(data.amount){
+
+  //         depotClient+=data.amount;
+  //         console.log(depotClient)
+
+  //       }
+       
+
+
+  //     })
+
+  //  return depotClient;
+
+  // }
+
+  totalDepot(sale:ISale[]):number{
+
+    let totalDepot:number=0;
+
+    const clientDepot=sale[0];
+
+    clientDepot?.client?.depot?.forEach(data=>{
+
+      if(data.amount)
+      totalDepot+=data.amount;
+    })
+
+    return totalDepot;
+
+  }
+
+  totalAchat(sale:ISale[]):number{
+
+    let totalAchat:number=0
+
+    sale?.forEach(data=>{
+      
+      if(data.product?.price)
+      totalAchat+=data?.product?.price;
+    })
+
+    
+
+    return totalAchat
+
+  }
+
+  balance(sale:ISale[]):number{
+
+    return this.totalAchat(sale)
 
   }
 
@@ -147,34 +350,86 @@ export class SaleComponent implements OnInit {
   }
 
   protected onSaveSuccessClient(client:any): void {
-    this.newDepot(client)
+
+    this.openSpecific(this.content,this.type,client);
+    this.getClient();
+    // this.newDepot(client)
     // SharedService.mapModalVisible.next(true);
     
   }
+  sendTotalDepot(clientId:number):any{
+
+   return SaleComponent.depotMap.get(clientId);
+
+  }
   protected onSaveSuccessDepot(): void {
+
+    if(this.currentClient){
+
+      this.getDepot(this.currentClient.id);
+
+      
+    }
+    this.amountDepots=undefined;
+    
+
+
+    // if(this.currentClient){
+
+    //   const depotClient=this.onSuccessGetDepot(this.currentClient);
+
+    //   this.depotMap.set(this.currentClient?.id,depotClient);
+
+    //   console.log(Array.from<any>(this.depotMap))
+
+    // }
+    
    
-    this.openForNewClient(this.content,this.type,true);
+    // this.openForNewClient(this.content,this.type,true);
     
   }
   setEmployee (employee:string){
     this.employeeSearching=employee;
   }
+  setClient (client:IClient | undefined){
+    // this.clientSearching= client;
+    console.log(client)
+  }
+  getClient(){
 
-  getClient(sale:ISale[]){
+    this.clientService.query().subscribe({
+      next:(data)=>{
 
-    const clienMap=new Map<number,IClient>()
+        if(this.infoToken.jobName==='Serveur(se)' && data.body){
 
-    sale.forEach(data=>{
-      if(data.client)
-      clienMap.set(data.client.id,data.client);
+          this.clients=data.body.filter(data=>data.createdBy===this.infoToken?.login)
+
+        }else{
+          if(data.body)
+          this.clients=data.body
+        }
+        
+        
+
+      },
+      error:()=>{
+
+      }
     })
 
-    if(this.clients){
+    // const clienMap=new Map<number,IClient>()
 
-      this.clients=Array.from<IClient>(clienMap.values())
+    // sale.forEach(data=>{
+    //   if(data.client)
+    //   clienMap.set(data.client.id,data.client);
+    // })
 
-    }
-    console.log(this.clients)
+    // if(this.clients){
+
+    //   this.clients=Array.from<IClient>(clienMap.values())
+
+    // }
+
 
   }
 
@@ -210,7 +465,9 @@ export class SaleComponent implements OnInit {
     this.open(content);
     this.isTransaction = false;
   }
+// setClient(){
 
+// }
   openSpecific(content: any, type: TypeAction ,currentClient?:IClient) {
 
     console.log(currentClient)
@@ -271,19 +528,19 @@ export class SaleComponent implements OnInit {
           clients: [
             {
               client,
-              produit: [obj]
+              product: [obj]
             }
           ]
         });
       } else {
-        // Sinon, ajouter l'objet à la liste d'produitrmations de l'utilisateur existant
+        // Sinon, ajouter l'objet à la liste d'productrmations de l'utilisateur existant
         const user = tableauGrouper[userAccountIndex].clients.find((u:any) => u.client?.name === client?.name);
         if (user) {
-          user.produit.push(obj);
+          user.product.push(obj);
         } else {
           tableauGrouper[userAccountIndex].clients.push({
             client,
-            produit: [obj]
+            product: [obj]
           });
         }
       }
@@ -291,7 +548,7 @@ export class SaleComponent implements OnInit {
 
     // this.bilanAPayerService=tableauGrouper
     
-    // console.log(tableauGrouper);
+    //  console.log(tableauGrouper);
     
     this.salesGroupe = tableauGrouper;
 
@@ -365,8 +622,9 @@ validateSale(currentsale:ISale): void {
     this.fillComponentAttributesFromResponseHeader(response.headers);
     const dataFromBody = this.fillComponentAttributesFromResponseBody(response.body);
     this.sales = dataFromBody;
+    this.getallClientWithComand(this.sales);
     this.groupeByEmployeeAnDCient(this.sales);
-    this.getClient(this.sales);
+    this.getClient();
   }
 
   protected fillComponentAttributesFromResponseBody(data: ISale[] | null): ISale[] {

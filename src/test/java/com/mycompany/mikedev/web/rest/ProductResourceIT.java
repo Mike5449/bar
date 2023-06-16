@@ -24,6 +24,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Base64Utils;
 
 /**
  * Integration tests for the {@link ProductResource} REST controller.
@@ -37,10 +38,9 @@ class ProductResourceIT {
     private static final String UPDATED_NAME = "BBBBBBBBBB";
 
     private static final byte[] DEFAULT_IMAGE = TestUtil.createByteArray(1, "0");
-    private static final byte[] UPDATED_IMAGE = TestUtil.createByteArray(1, "0");
-    private static final String DEFAULT_IMAGE_P_CONTENT_TYPE="image/png";
-    private static final String UPDATED_IMAGE_IMAGE_P_CONTENT_TYPE="image/png";
-
+    private static final byte[] UPDATED_IMAGE = TestUtil.createByteArray(1, "1");
+    private static final String DEFAULT_IMAGE_CONTENT_TYPE = "image/jpg";
+    private static final String UPDATED_IMAGE_CONTENT_TYPE = "image/png";
 
     private static final Categorie DEFAULT_TYPE = Categorie.ALCOLISEE;
     private static final Categorie UPDATED_TYPE = Categorie.GASEUSE;
@@ -75,7 +75,12 @@ class ProductResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Product createEntity(EntityManager em) {
-        Product product = new Product().name(DEFAULT_NAME).image(DEFAULT_IMAGE).type(DEFAULT_TYPE).section(DEFAULT_SECTION);
+        Product product = new Product()
+            .name(DEFAULT_NAME)
+            .image(DEFAULT_IMAGE)
+            .imageContentType(DEFAULT_IMAGE_CONTENT_TYPE)
+            .type(DEFAULT_TYPE)
+            .section(DEFAULT_SECTION);
         return product;
     }
 
@@ -86,7 +91,12 @@ class ProductResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Product createUpdatedEntity(EntityManager em) {
-        Product product = new Product().name(UPDATED_NAME).image(UPDATED_IMAGE).type(UPDATED_TYPE).section(UPDATED_SECTION);
+        Product product = new Product()
+            .name(UPDATED_NAME)
+            .image(UPDATED_IMAGE)
+            .imageContentType(UPDATED_IMAGE_CONTENT_TYPE)
+            .type(UPDATED_TYPE)
+            .section(UPDATED_SECTION);
         return product;
     }
 
@@ -111,6 +121,7 @@ class ProductResourceIT {
         Product testProduct = productList.get(productList.size() - 1);
         assertThat(testProduct.getName()).isEqualTo(DEFAULT_NAME);
         assertThat(testProduct.getImage()).isEqualTo(DEFAULT_IMAGE);
+        assertThat(testProduct.getImageContentType()).isEqualTo(DEFAULT_IMAGE_CONTENT_TYPE);
         assertThat(testProduct.getType()).isEqualTo(DEFAULT_TYPE);
         assertThat(testProduct.getSection()).isEqualTo(DEFAULT_SECTION);
     }
@@ -201,7 +212,8 @@ class ProductResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(product.getId().intValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
-            .andExpect(jsonPath("$.[*].image").value(hasItem(DEFAULT_IMAGE)))
+            .andExpect(jsonPath("$.[*].imageContentType").value(hasItem(DEFAULT_IMAGE_CONTENT_TYPE)))
+            .andExpect(jsonPath("$.[*].image").value(hasItem(Base64Utils.encodeToString(DEFAULT_IMAGE))))
             .andExpect(jsonPath("$.[*].type").value(hasItem(DEFAULT_TYPE.toString())))
             .andExpect(jsonPath("$.[*].section").value(hasItem(DEFAULT_SECTION.toString())));
     }
@@ -219,7 +231,8 @@ class ProductResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(product.getId().intValue()))
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME))
-            .andExpect(jsonPath("$.image").value(DEFAULT_IMAGE))
+            .andExpect(jsonPath("$.imageContentType").value(DEFAULT_IMAGE_CONTENT_TYPE))
+            .andExpect(jsonPath("$.image").value(Base64Utils.encodeToString(DEFAULT_IMAGE)))
             .andExpect(jsonPath("$.type").value(DEFAULT_TYPE.toString()))
             .andExpect(jsonPath("$.section").value(DEFAULT_SECTION.toString()));
     }
@@ -243,7 +256,12 @@ class ProductResourceIT {
         Product updatedProduct = productRepository.findById(product.getId()).get();
         // Disconnect from session so that the updates on updatedProduct are not directly saved in db
         em.detach(updatedProduct);
-        updatedProduct.name(UPDATED_NAME).image(UPDATED_IMAGE).type(UPDATED_TYPE).section(UPDATED_SECTION);
+        updatedProduct
+            .name(UPDATED_NAME)
+            .image(UPDATED_IMAGE)
+            .imageContentType(UPDATED_IMAGE_CONTENT_TYPE)
+            .type(UPDATED_TYPE)
+            .section(UPDATED_SECTION);
         ProductDTO productDTO = productMapper.toDto(updatedProduct);
 
         restProductMockMvc
@@ -260,6 +278,7 @@ class ProductResourceIT {
         Product testProduct = productList.get(productList.size() - 1);
         assertThat(testProduct.getName()).isEqualTo(UPDATED_NAME);
         assertThat(testProduct.getImage()).isEqualTo(UPDATED_IMAGE);
+        assertThat(testProduct.getImageContentType()).isEqualTo(UPDATED_IMAGE_CONTENT_TYPE);
         assertThat(testProduct.getType()).isEqualTo(UPDATED_TYPE);
         assertThat(testProduct.getSection()).isEqualTo(UPDATED_SECTION);
     }
@@ -355,6 +374,7 @@ class ProductResourceIT {
         Product testProduct = productList.get(productList.size() - 1);
         assertThat(testProduct.getName()).isEqualTo(DEFAULT_NAME);
         assertThat(testProduct.getImage()).isEqualTo(DEFAULT_IMAGE);
+        assertThat(testProduct.getImageContentType()).isEqualTo(DEFAULT_IMAGE_CONTENT_TYPE);
         assertThat(testProduct.getType()).isEqualTo(DEFAULT_TYPE);
         assertThat(testProduct.getSection()).isEqualTo(DEFAULT_SECTION);
     }
@@ -371,7 +391,12 @@ class ProductResourceIT {
         Product partialUpdatedProduct = new Product();
         partialUpdatedProduct.setId(product.getId());
 
-        partialUpdatedProduct.name(UPDATED_NAME).image(UPDATED_IMAGE).type(UPDATED_TYPE).section(UPDATED_SECTION);
+        partialUpdatedProduct
+            .name(UPDATED_NAME)
+            .image(UPDATED_IMAGE)
+            .imageContentType(UPDATED_IMAGE_CONTENT_TYPE)
+            .type(UPDATED_TYPE)
+            .section(UPDATED_SECTION);
 
         restProductMockMvc
             .perform(
@@ -387,6 +412,7 @@ class ProductResourceIT {
         Product testProduct = productList.get(productList.size() - 1);
         assertThat(testProduct.getName()).isEqualTo(UPDATED_NAME);
         assertThat(testProduct.getImage()).isEqualTo(UPDATED_IMAGE);
+        assertThat(testProduct.getImageContentType()).isEqualTo(UPDATED_IMAGE_CONTENT_TYPE);
         assertThat(testProduct.getType()).isEqualTo(UPDATED_TYPE);
         assertThat(testProduct.getSection()).isEqualTo(UPDATED_SECTION);
     }

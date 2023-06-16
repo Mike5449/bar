@@ -21,6 +21,12 @@ public class EmployeeDTO implements Serializable {
     private String lastName;
 
     @NotNull
+    private String login;
+
+    @NotNull
+    private String password;
+
+    @NotNull
     private Sexe gender;
 
     private Instant dateOfBirth;
@@ -45,6 +51,8 @@ public class EmployeeDTO implements Serializable {
     private Instant terminationDate;
 
     private JobDTO job;
+
+    private UserDTO user;
 
     public Long getId() {
         return id;
@@ -208,4 +216,48 @@ public class EmployeeDTO implements Serializable {
             ", job=" + getJob() +
             "}";
     }
+
+    /**
+     * @return String return the login
+     */
+    public String getLogin() {
+        return login;
+    }
+
+    /**
+     * @param login the login to set
+     */
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
+    /**
+     * @return String return the password
+     */
+    public String getPassword() {
+        return password;
+    }
+
+    /**
+     * @param password the password to set
+     */
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+
+    /**
+     * @return UserDTO return the user
+     */
+    public UserDTO getUser() {
+        return user;
+    }
+
+    /**
+     * @param user the user to set
+     */
+    public void setUser(UserDTO user) {
+        this.user = user;
+    }
+
 }

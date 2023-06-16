@@ -22,10 +22,10 @@
         <dd>
           <span jhiTranslate="{{ 'barApp.StatusPrice.' + productPrice.status }}">{{ productPrice.status }}</span>
         </dd>
-        <dt><span jhiTranslate="barApp.productPrice.produit">Produit</span></dt>
+        <dt><span jhiTranslate="barApp.productPrice.product">Product</span></dt>
         <dd>
-          <div *ngIf="productPrice.produit">
-            <a [routerLink]="['/product', productPrice.produit.id, 'view']">{{ productPrice.produit.name }}</a>
+          <div *ngIf="productPrice.product">
+            <a [routerLink]="['/product', productPrice.product.id, 'view']">{{ productPrice.product.name }}</a>
           </div>
         </dd>
       </dl>

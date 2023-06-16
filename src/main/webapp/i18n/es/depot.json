@@ -20,7 +20,8 @@
       "id": "ID",
       "amount": "Amount",
       "description": "Description",
-      "employee": "Employee"
+      "employee": "Employee",
+      "client": "Client"
     }
   }
 }

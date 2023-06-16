@@ -26,9 +26,9 @@ public class SaleDTO implements Serializable {
 
     private ClientDTO client;
 
-    private DepotDTO depot;
+    // private DepotDTO depot;
 
-    private ProductDTO produit;
+    private ProductDTO product;
 
     private ProductPriceDTO currentPrice;
 
@@ -88,20 +88,20 @@ public class SaleDTO implements Serializable {
         this.client = client;
     }
 
-    public DepotDTO getDepot() {
-        return depot;
+    // public DepotDTO getDepot() {
+    //     return depot;
+    // }
+
+    // public void setDepot(DepotDTO depot) {
+    //     this.depot = depot;
+    // }
+
+    public ProductDTO getProduct() {
+        return product;
     }
 
-    public void setDepot(DepotDTO depot) {
-        this.depot = depot;
-    }
-
-    public ProductDTO getProduit() {
-        return produit;
-    }
-
-    public void setProduit(ProductDTO produit) {
-        this.produit = produit;
+    public void setProduct(ProductDTO product) {
+        this.product = product;
     }
 
     public ProductPriceDTO getCurrentPrice() {
@@ -144,8 +144,8 @@ public class SaleDTO implements Serializable {
             ", status='" + getStatus() + "'" +
             ", employee=" + getEmployee() +
             ", client=" + getClient() +
-            ", depot=" + getDepot() +
-            ", produit=" + getProduit() +
+            // ", depot=" + getDepot() +
+            ", product=" + getProduct() +
             ", currentPrice=" + getCurrentPrice() +
             "}";
     }

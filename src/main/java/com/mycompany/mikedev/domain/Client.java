@@ -1,10 +1,16 @@
 package com.mycompany.mikedev.domain;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
  * A Client.
@@ -13,7 +19,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Table(name = "client")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class Client implements Serializable {
+public class Client extends AbstractAuditingEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -26,6 +32,10 @@ public class Client implements Serializable {
     @Column(name = "name", nullable = false)
     private String name;
 
+    // @OneToMany(mappedBy = "client")
+    // @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    // @JsonIgnoreProperties(value = { "client" ,"employee"}, allowSetters = true)
+    // private List<Depot> depot;
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
     public Long getId() {
@@ -81,4 +91,19 @@ public class Client implements Serializable {
             ", name='" + getName() + "'" +
             "}";
     }
+
+    // /**
+    //  * @return Set<ProductPrice> return the depot
+    //  */
+    // public List<Depot> getDepot() {
+    //     return depot;
+    // }
+
+    // /**
+    //  * @param depot the depot to set
+    //  */
+    // public void setDepot(List<Depot> depot) {
+    //     this.depot = depot;
+    // }
+
 }

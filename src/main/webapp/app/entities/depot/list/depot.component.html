@@ -56,6 +56,12 @@
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
+          <th scope="col" jhiSortBy="client.name">
+            <div class="d-flex">
+              <span jhiTranslate="barApp.depot.client">Client</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
           <th scope="col"></th>
         </tr>
       </thead>
@@ -69,6 +75,11 @@
           <td>
             <div *ngIf="depot.employee">
               <a [routerLink]="['/employee', depot.employee.id, 'view']">{{ depot.employee.firstName }}</a>
+            </div>
+          </td>
+          <td>
+            <div *ngIf="depot.client">
+              <a [routerLink]="['/client', depot.client.id, 'view']">{{ depot.client.name }}</a>
             </div>
           </td>
           <td class="text-end">

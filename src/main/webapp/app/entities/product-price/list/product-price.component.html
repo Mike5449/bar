@@ -50,9 +50,9 @@
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          <th scope="col" jhiSortBy="produit.name">
+          <th scope="col" jhiSortBy="product.name">
             <div class="d-flex">
-              <span jhiTranslate="barApp.productPrice.produit">Produit</span>
+              <span jhiTranslate="barApp.productPrice.product">Product</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
@@ -67,8 +67,8 @@
           <td>{{ productPrice.price }}</td>
           <td jhiTranslate="{{ 'barApp.StatusPrice.' + productPrice.status }}">{{ productPrice.status }}</td>
           <td>
-            <div *ngIf="productPrice.produit">
-              <a [routerLink]="['/product', productPrice.produit.id, 'view']">{{ productPrice.produit.name }}</a>
+            <div *ngIf="productPrice.product">
+              <a [routerLink]="['/product', productPrice.product.id, 'view']">{{ productPrice.product.name }}</a>
             </div>
           </td>
           <td class="text-end">

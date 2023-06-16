@@ -5,26 +5,27 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class FilterSearchPipe implements PipeTransform {
 
-  transform(table: any, valueSearching: string ): any {
+  transform(table: any, valueSearching: string ,type:string ): any {
 
     let result: any;
-    console.log(table)
-    console.log(valueSearching)
+
     if (!table || !valueSearching) {
       return table;
     }
     result=table.filter((data:any)=>data?.employee?.firstName.toString().toLowerCase().includes(valueSearching.toLowerCase()))
 
-    // if(type==='EMPLOYEE'){
+    
+    if(type==='EMPLOYEE'){
 
-    //  result=table.filter((data:any)=>data?.employee?.firstName.toString().toLowerCase().includes(valueSearching.toLowerCase()))
+     result=table.filter((data:any)=>data?.employee?.firstName?.toString().toLowerCase().includes(valueSearching.toLowerCase()))
 
 
-    // }else{
+    }else if(type==='CLIENT'){
 
-    //  result=table.filter((data:any)=>data?.name.toString().toLowerCase().includes(valueSearching.toLowerCase()))
-
-    // }
+     result=table.filter((data:any)=>data?.name?.toString().toLowerCase().includes(valueSearching.toLowerCase()))
+     console.group(table);
+     console.group(valueSearching);
+    }
     return result;
   }
 

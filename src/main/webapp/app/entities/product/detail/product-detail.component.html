@@ -20,7 +20,10 @@
         </dd>
         <dt><span jhiTranslate="barApp.product.image">Image</span></dt>
         <dd>
-          <span>{{ product.image }}</span>
+          <div *ngIf="product.image">
+            <a (click)="openFile(product.image, product.imageContentType)" jhiTranslate="entity.action.open">Ouvrir</a>
+            {{ product.imageContentType }}, {{ byteSize(product.image) }}
+          </div>
         </dd>
         <dt><span jhiTranslate="barApp.product.type">Type</span></dt>
         <dd>

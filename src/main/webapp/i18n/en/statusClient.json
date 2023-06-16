@@ -1,0 +1,9 @@
+{
+  "barApp": {
+    "StatusClient": {
+      "null": "",
+      "ACTIF": "ACTIF",
+      "FINISH": "FINISH"
+    }
+  }
+}

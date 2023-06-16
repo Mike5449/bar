@@ -28,6 +28,12 @@
             <a [routerLink]="['/employee', depot.employee.id, 'view']">{{ depot.employee.firstName }}</a>
           </div>
         </dd>
+        <dt><span jhiTranslate="barApp.depot.client">Client</span></dt>
+        <dd>
+          <div *ngIf="depot.client">
+            <a [routerLink]="['/client', depot.client.id, 'view']">{{ depot.client.name }}</a>
+          </div>
+        </dd>
       </dl>
 
       <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">

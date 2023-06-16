@@ -3,6 +3,7 @@ package com.mycompany.mikedev.web.rest;
 import com.mycompany.mikedev.repository.DepotRepository;
 import com.mycompany.mikedev.service.DepotService;
 import com.mycompany.mikedev.service.dto.DepotDTO;
+import com.mycompany.mikedev.service.mapper.DepotMapper;
 import com.mycompany.mikedev.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -43,7 +44,9 @@ public class DepotResource {
 
     private final DepotRepository depotRepository;
 
-    public DepotResource(DepotService depotService, DepotRepository depotRepository) {
+    private static DepotMapper depotMapper;
+
+    public DepotResource(DepotService depotService, DepotRepository depotRepository,DepotMapper depotMapper) {
         this.depotService = depotService;
         this.depotRepository = depotRepository;
     }
@@ -173,6 +176,18 @@ public class DepotResource {
         Optional<DepotDTO> depotDTO = depotService.findOne(id);
         return ResponseUtil.wrapOrNotFound(depotDTO);
     }
+    @GetMapping("/depots/byClient/{id}")
+    public ResponseEntity<List<DepotDTO>> getDepotsByClientId(@PathVariable Long id) {
+        log.debug("REST request to get Depot : {}", id);
+        List<DepotDTO>depotDTO = depotService.getDepotsByClientId(id);
+        
+        return ResponseEntity.ok().body(depotDTO);
+    }
+
+    @GetMapping("/depots/sum/{id}")
+    public Double getTotalDepotsClientByClientId(@PathVariable Long clientId){
+        return depotService.getTotalDepotsClientByClientId(clientId);
+    }
 
     /**
      * {@code DELETE  /depots/:id} : delete the "id" depot.
@@ -189,6 +204,7 @@ public class DepotResource {
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
     }
-}
 
+
+}
 

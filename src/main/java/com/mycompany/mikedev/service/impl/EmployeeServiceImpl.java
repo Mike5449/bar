@@ -3,11 +3,14 @@ package com.mycompany.mikedev.service.impl;
 import com.mycompany.mikedev.domain.Employee;
 import com.mycompany.mikedev.repository.EmployeeRepository;
 import com.mycompany.mikedev.service.EmployeeService;
+import com.mycompany.mikedev.service.UserService;
+import com.mycompany.mikedev.service.dto.AdminUserDTO;
 import com.mycompany.mikedev.service.dto.EmployeeDTO;
 import com.mycompany.mikedev.service.mapper.EmployeeMapper;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -26,6 +29,9 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     private final EmployeeMapper employeeMapper;
 
+    @Autowired
+    private UserService userService;
+
     public EmployeeServiceImpl(EmployeeRepository employeeRepository, EmployeeMapper employeeMapper) {
         this.employeeRepository = employeeRepository;
         this.employeeMapper = employeeMapper;
@@ -36,6 +42,16 @@ public class EmployeeServiceImpl implements EmployeeService {
         log.debug("Request to save Employee : {}", employeeDTO);
         Employee employee = employeeMapper.toEntity(employeeDTO);
         employee = employeeRepository.save(employee);
+
+        if(employee != null){
+            AdminUserDTO adminUserDTO=new AdminUserDTO();
+            adminUserDTO.setLogin(employeeDTO.getLogin());
+            adminUserDTO.setFirstName(employeeDTO.getFirstName());
+            adminUserDTO.setLastName(employeeDTO.getLastName());
+            adminUserDTO.setEmail(employeeDTO.getEmail() != null ? employeeDTO.getEmail() : employeeDTO.getFirstName().concat("@gmail.com"));
+            adminUserDTO.setActivated(true);
+            userService.createCoustumUser(adminUserDTO, employeeDTO.getPassword(), employee);
+        }
         return employeeMapper.toDto(employee);
     }
 

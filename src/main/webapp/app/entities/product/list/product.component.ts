@@ -10,6 +10,7 @@ import { ITEMS_PER_PAGE, PAGE_HEADER, TOTAL_COUNT_RESPONSE_HEADER } from 'app/co
 import { ASC, DESC, SORT, ITEM_DELETED_EVENT, DEFAULT_SORT_DATA } from 'app/config/navigation.constants';
 import { EntityArrayResponseType, ProductService } from '../service/product.service';
 import { ProductDeleteDialogComponent } from '../delete/product-delete-dialog.component';
+import { DataUtils } from 'app/core/util/data-util.service';
 
 @Component({
   selector: 'jhi-product',
@@ -30,6 +31,7 @@ export class ProductComponent implements OnInit {
     protected productService: ProductService,
     protected activatedRoute: ActivatedRoute,
     public router: Router,
+    protected dataUtils: DataUtils,
     protected modalService: NgbModal
   ) {}
 
@@ -39,6 +41,18 @@ export class ProductComponent implements OnInit {
     this.load();
   }
 
+  byteSize(base64String: string): string {
+    return this.dataUtils.byteSize(base64String);
+  }
+
+  openFile(base64String: string, contentType: string | null | undefined): void {
+    return this.dataUtils.openFile(base64String, contentType);
+  }
+
+  getImageDataUrl(img:any,contentType:any){
+    return `data:${contentType};base64,${img}`
+
+  }
   delete(product: IProduct): void {
     const modalRef = this.modalService.open(ProductDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
     modalRef.componentInstance.product = product;
@@ -70,6 +84,59 @@ export class ProductComponent implements OnInit {
   navigateToPage(page = this.page): void {
     this.handleNavigation(page, this.predicate, this.ascending);
   }
+
+  firstChange() {
+    const filterMenu = document.querySelector<HTMLElement>(".filter-menu");
+    if (filterMenu) {
+      filterMenu.classList.toggle("active");
+    }
+  }
+
+  secondChange() {
+    const listElement = document.querySelector<HTMLElement>(".list");
+    const gridElement = document.querySelector<HTMLElement>(".grid");
+    const productsAreaWrapperElement = document.querySelector<HTMLElement>(
+      ".products-area-wrapper"
+    );
+
+    if (listElement && gridElement && productsAreaWrapperElement) {
+      listElement.classList.remove("active");
+      gridElement.classList.add("active");
+      productsAreaWrapperElement.classList.add("gridView");
+      productsAreaWrapperElement.classList.remove("tableView");
+    }
+  }
+
+  thirdChange() {
+    const listElement = document.querySelector<HTMLElement>(".list");
+const gridElement = document.querySelector<HTMLElement>(".grid");
+const productsAreaWrapperElement = document.querySelector<HTMLElement>(
+  ".products-area-wrapper"
+);
+
+if (listElement && gridElement && productsAreaWrapperElement) {
+  listElement.addEventListener("click", () => {
+    listElement.classList.add("active");
+    gridElement.classList.remove("active");
+    productsAreaWrapperElement.classList.remove("gridView");
+    productsAreaWrapperElement.classList.add("tableView");
+  });
+}
+
+  }
+
+  changeTheme() {
+    const modeSwitch = document.querySelector<HTMLElement>('.mode-switch');
+
+    if (modeSwitch) {
+      modeSwitch.addEventListener('click', () => {
+        document.documentElement.classList.toggle('light');
+        modeSwitch.classList.toggle('active');
+      });
+    }
+  }
+
+  
 
   protected loadFromBackendWithRouteInformations(): Observable<EntityArrayResponseType> {
     return combineLatest([this.activatedRoute.queryParamMap, this.activatedRoute.data]).pipe(

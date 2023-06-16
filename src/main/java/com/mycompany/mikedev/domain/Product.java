@@ -1,8 +1,12 @@
 package com.mycompany.mikedev.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.mycompany.mikedev.domain.enumeration.Categorie;
 import com.mycompany.mikedev.domain.enumeration.Section;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import org.hibernate.annotations.Cache;
@@ -15,7 +19,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Table(name = "product")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class Product implements Serializable {
+public class Product extends AbstractAuditingEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -28,8 +32,16 @@ public class Product implements Serializable {
     @Column(name = "name", nullable = false)
     private String name;
 
+    @NotNull
+    @Column(name="price",nullable=false)
+    private Long price;
+
+    @Lob
     @Column(name = "image")
     private byte[] image;
+
+    @Column(name = "image_content_type")
+    private String imageContentType;
 
     @NotNull
     @Enumerated(EnumType.STRING)
@@ -41,6 +53,11 @@ public class Product implements Serializable {
     @Column(name = "section", nullable = false)
     private Section section;
 
+
+    // @OneToMany(mappedBy = "product")
+    // @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    // @JsonIgnoreProperties(value = { "product" }, allowSetters = true)
+    // private Set<ProductPrice> productPrice = new HashSet<>();
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
     public Long getId() {
@@ -73,13 +90,26 @@ public class Product implements Serializable {
         return this.image;
     }
 
-    public Product image(byte[] defaultImage) {
-        this.setImage(defaultImage);
+    public Product image(byte[] image) {
+        this.setImage(image);
         return this;
     }
 
     public void setImage(byte[] image) {
         this.image = image;
+    }
+
+    public String getImageContentType() {
+        return this.imageContentType;
+    }
+
+    public Product imageContentType(String imageContentType) {
+        this.imageContentType = imageContentType;
+        return this;
+    }
+
+    public void setImageContentType(String imageContentType) {
+        this.imageContentType = imageContentType;
     }
 
     public Categorie getType() {
@@ -134,8 +164,39 @@ public class Product implements Serializable {
             "id=" + getId() +
             ", name='" + getName() + "'" +
             ", image='" + getImage() + "'" +
+            ", imageContentType='" + getImageContentType() + "'" +
             ", type='" + getType() + "'" +
             ", section='" + getSection() + "'" +
             "}";
     }
+
+    // /**
+    //  * @return Set<ProductPrice> return the productPrice
+    //  */
+    // public Set<ProductPrice> getProductPrice() {
+    //     return productPrice;
+    // }
+
+    // /**
+    //  * @param productPrice the productPrice to set
+    //  */
+    // public void setProductPrice(Set<ProductPrice> productPrice) {
+    //     this.productPrice = productPrice;
+    // }
+
+
+    /**
+     * @return Long return the price
+     */
+    public Long getPrice() {
+        return price;
+    }
+
+    /**
+     * @param price the price to set
+     */
+    public void setPrice(Long price) {
+        this.price = price;
+    }
+
 }

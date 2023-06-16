@@ -18,7 +18,7 @@ public class ProductPriceDTO implements Serializable {
 
     private StatusPrice status;
 
-    private ProductDTO produit;
+    private ProductDTO product;
 
     public Long getId() {
         return id;
@@ -44,12 +44,12 @@ public class ProductPriceDTO implements Serializable {
         this.status = status;
     }
 
-    public ProductDTO getProduit() {
-        return produit;
+    public ProductDTO getProduct() {
+        return product;
     }
 
-    public void setProduit(ProductDTO produit) {
-        this.produit = produit;
+    public void setProduct(ProductDTO product) {
+        this.product = product;
     }
 
     @Override
@@ -80,7 +80,7 @@ public class ProductPriceDTO implements Serializable {
             "id=" + getId() +
             ", price=" + getPrice() +
             ", status='" + getStatus() + "'" +
-            ", produit=" + getProduit() +
+            ", product=" + getProduct() +
             "}";
     }
 }

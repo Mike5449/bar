@@ -9,6 +9,8 @@ import { IDepot } from '../depot.model';
 import { DepotService } from '../service/depot.service';
 import { IEmployee } from 'app/entities/employee/employee.model';
 import { EmployeeService } from 'app/entities/employee/service/employee.service';
+import { IClient } from 'app/entities/client/client.model';
+import { ClientService } from 'app/entities/client/service/client.service';
 
 @Component({
   selector: 'jhi-depot-update',
@@ -19,6 +21,7 @@ export class DepotUpdateComponent implements OnInit {
   depot: IDepot | null = null;
 
   employeesSharedCollection: IEmployee[] = [];
+  clientsSharedCollection: IClient[] = [];
 
   editForm: DepotFormGroup = this.depotFormService.createDepotFormGroup();
 
@@ -26,10 +29,13 @@ export class DepotUpdateComponent implements OnInit {
     protected depotService: DepotService,
     protected depotFormService: DepotFormService,
     protected employeeService: EmployeeService,
+    protected clientService: ClientService,
     protected activatedRoute: ActivatedRoute
   ) {}
 
   compareEmployee = (o1: IEmployee | null, o2: IEmployee | null): boolean => this.employeeService.compareEmployee(o1, o2);
+
+  compareClient = (o1: IClient | null, o2: IClient | null): boolean => this.clientService.compareClient(o1, o2);
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ depot }) => {
@@ -83,6 +89,7 @@ export class DepotUpdateComponent implements OnInit {
       this.employeesSharedCollection,
       depot.employee
     );
+    this.clientsSharedCollection = this.clientService.addClientToCollectionIfMissing<IClient>(this.clientsSharedCollection, depot.client);
   }
 
   protected loadRelationshipsOptions(): void {
@@ -93,5 +100,11 @@ export class DepotUpdateComponent implements OnInit {
         map((employees: IEmployee[]) => this.employeeService.addEmployeeToCollectionIfMissing<IEmployee>(employees, this.depot?.employee))
       )
       .subscribe((employees: IEmployee[]) => (this.employeesSharedCollection = employees));
+
+    this.clientService
+      .query()
+      .pipe(map((res: HttpResponse<IClient[]>) => res.body ?? []))
+      .pipe(map((clients: IClient[]) => this.clientService.addClientToCollectionIfMissing<IClient>(clients, this.depot?.client)))
+      .subscribe((clients: IClient[]) => (this.clientsSharedCollection = clients));
   }
 }

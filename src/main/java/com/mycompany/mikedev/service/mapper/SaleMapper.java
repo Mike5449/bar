@@ -12,6 +12,9 @@ import com.mycompany.mikedev.service.dto.EmployeeDTO;
 import com.mycompany.mikedev.service.dto.ProductDTO;
 import com.mycompany.mikedev.service.dto.ProductPriceDTO;
 import com.mycompany.mikedev.service.dto.SaleDTO;
+
+import java.util.List;
+
 import org.mapstruct.*;
 
 /**
@@ -21,8 +24,8 @@ import org.mapstruct.*;
 public interface SaleMapper extends EntityMapper<SaleDTO, Sale> {
     @Mapping(target = "employee", source = "employee", qualifiedByName = "employeeFirstName")
     @Mapping(target = "client", source = "client", qualifiedByName = "clientName")
-    @Mapping(target = "depot", source = "depot", qualifiedByName = "depotAmount")
-    @Mapping(target = "produit", source = "produit", qualifiedByName = "productName")
+    // @Mapping(target = "client.depot", source = "client.depot", qualifiedByName = "depotAmount")
+    @Mapping(target = "product", source = "product", qualifiedByName = "productName")
     @Mapping(target = "currentPrice", source = "currentPrice", qualifiedByName = "productPriceId")
     SaleDTO toDto(Sale s);
 
@@ -38,16 +41,17 @@ public interface SaleMapper extends EntityMapper<SaleDTO, Sale> {
     @Mapping(target = "name", source = "name")
     ClientDTO toDtoClientName(Client client);
 
-    @Named("depotAmount")
-    @BeanMapping(ignoreByDefault = true)
-    @Mapping(target = "id", source = "id")
-    @Mapping(target = "amount", source = "amount")
-    DepotDTO toDtoDepotAmount(Depot depot);
+    // @Named("depotAmount")
+    // @BeanMapping(ignoreByDefault = true)
+    // @Mapping(target = "id", source = "id")
+    // @Mapping(target = "amount", source = "amount")
+    // DepotDTO toDtoDepotAmount(Depot depot);
 
     @Named("productName")
     @BeanMapping(ignoreByDefault = true)
     @Mapping(target = "id", source = "id")
     @Mapping(target = "name", source = "name")
+    @Mapping(target = "price", source = "price")
     ProductDTO toDtoProductName(Product product);
 
     @Named("productPriceId")

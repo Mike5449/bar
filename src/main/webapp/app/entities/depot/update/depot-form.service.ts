@@ -21,6 +21,7 @@ type DepotFormGroupContent = {
   amount: FormControl<IDepot['amount']>;
   description: FormControl<IDepot['description']>;
   employee: FormControl<IDepot['employee']>;
+  client: FormControl<IDepot['client']>;
 };
 
 export type DepotFormGroup = FormGroup<DepotFormGroupContent>;
@@ -45,6 +46,7 @@ export class DepotFormService {
       }),
       description: new FormControl(depotRawValue.description),
       employee: new FormControl(depotRawValue.employee),
+      client: new FormControl(depotRawValue.client),
     });
   }
 

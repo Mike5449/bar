@@ -47,12 +47,6 @@
       "relationshipType": "many-to-one"
     },
     {
-      "otherEntityField": "amount",
-      "otherEntityName": "depot",
-      "relationshipName": "depot",
-      "relationshipType": "many-to-one"
-    },
-    {
       "otherEntityField": "name",
       "otherEntityName": "product",
       "relationshipName": "produit",

@@ -25,7 +25,7 @@
       "employee": "Employee",
       "client": "Client",
       "depot": "Depot",
-      "produit": "Produit",
+      "product": "Product",
       "currentPrice": "Current Price"
     }
   }

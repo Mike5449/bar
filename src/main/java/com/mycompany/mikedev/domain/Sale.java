@@ -15,7 +15,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Table(name = "sale")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class Sale implements Serializable {
+public class Sale extends AbstractAuditingEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -47,17 +47,18 @@ public class Sale implements Serializable {
     private User user;
 
     @ManyToOne
-    private Client client;
+    @JoinColumn(name="client.id")
+    private Client client ;
 
     @ManyToOne
     @JsonIgnoreProperties(value = { "employee" }, allowSetters = true)
     private Depot depot;
 
     @ManyToOne
-    private Product produit;
+    private Product product;
 
     @ManyToOne
-    @JsonIgnoreProperties(value = { "produit" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "product" }, allowSetters = true)
     private ProductPrice currentPrice;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
@@ -153,29 +154,29 @@ public class Sale implements Serializable {
         return this;
     }
 
-    public Depot getDepot() {
-        return this.depot;
+    // public Depot getDepot() {
+    //     return this.depot;
+    // }
+
+    // public void setDepot(Depot depot) {
+    //     this.depot = depot;
+    // }
+
+    // public Sale depot(Depot depot) {
+    //     this.setDepot(depot);
+    //     return this;
+    // }
+
+    public Product getProduct() {
+        return this.product;
     }
 
-    public void setDepot(Depot depot) {
-        this.depot = depot;
+    public void setProduct(Product product) {
+        this.product = product;
     }
 
-    public Sale depot(Depot depot) {
-        this.setDepot(depot);
-        return this;
-    }
-
-    public Product getProduit() {
-        return this.produit;
-    }
-
-    public void setProduit(Product product) {
-        this.produit = product;
-    }
-
-    public Sale produit(Product product) {
-        this.setProduit(product);
+    public Sale product(Product product) {
+        this.setProduct(product);
         return this;
     }
 

@@ -34,10 +34,18 @@ export class DepotService {
     return this.http.get<IDepot>(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
 
+  getDepotByClient(id: number): Observable<EntityArrayResponseType> {
+    return this.http.get<IDepot[]>(`${this.resourceUrl}/byClient/${id}`, { observe: 'response' });
+  }
+  getDepotByClients(id: number): Observable<EntityArrayResponseType> {
+    return this.http.get<IDepot[]>(`${this.resourceUrl}/sum/${id}`, { observe: 'response' });
+  }
+
   query(req?: any): Observable<EntityArrayResponseType> {
     const options = createRequestOption(req);
     return this.http.get<IDepot[]>(this.resourceUrl, { params: options, observe: 'response' });
   }
+
 
   delete(id: number): Observable<HttpResponse<{}>> {
     return this.http.delete(`${this.resourceUrl}/${id}`, { observe: 'response' });

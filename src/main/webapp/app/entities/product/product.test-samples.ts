@@ -20,15 +20,16 @@ export const sampleWithPartialData: IProduct = {
 export const sampleWithFullData: IProduct = {
   id: 49054,
   name: 'deliver',
-  image: 'Administrateur Health',
-  type: Categorie['AUTRE'],
-  section: Section['RESTAURANT'],
+  image: '../fake-data/blob/hipster.png',
+  imageContentType: 'unknown',
+  type: Categorie['GASEUSE'],
+  section: Section['PISCINE'],
 };
 
 export const sampleWithNewData: NewProduct = {
-  name: 'neural Automotive c',
-  type: Categorie['ALCOLISEE'],
-  section: Section['BAR'],
+  name: 'driver synthesizing',
+  type: Categorie['AUTRE'],
+  section: Section['PISCINE'],
   id: null,
 };
 

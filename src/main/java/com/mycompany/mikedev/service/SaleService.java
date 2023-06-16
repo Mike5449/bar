@@ -1,6 +1,9 @@
 package com.mycompany.mikedev.service;
 
+import com.mycompany.mikedev.domain.Sale;
 import com.mycompany.mikedev.service.dto.SaleDTO;
+
+import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -63,4 +66,6 @@ public interface SaleService {
      * @param id the id of the entity.
      */
     void delete(Long id);
+
+    List<SaleDTO> prendreParDateAndEmploy();
 }

@@ -25,7 +25,7 @@ type SaleFormGroupContent = {
   employee: FormControl<ISale['employee']>;
   client: FormControl<ISale['client']>;
   depot: FormControl<ISale['depot']>;
-  produit: FormControl<ISale['produit']>;
+  produit: FormControl<ISale['product']>;
   currentPrice: FormControl<ISale['currentPrice']>;
 };
 
@@ -55,7 +55,7 @@ export class SaleFormService {
       employee: new FormControl(saleRawValue.employee),
       client: new FormControl(saleRawValue.client),
       depot: new FormControl(saleRawValue.depot),
-      produit: new FormControl(saleRawValue.produit),
+      produit: new FormControl(saleRawValue.product),
       currentPrice: new FormControl(saleRawValue.currentPrice),
     });
   }

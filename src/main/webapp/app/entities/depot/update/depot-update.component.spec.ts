@@ -11,6 +11,8 @@ import { DepotService } from '../service/depot.service';
 import { IDepot } from '../depot.model';
 import { IEmployee } from 'app/entities/employee/employee.model';
 import { EmployeeService } from 'app/entities/employee/service/employee.service';
+import { IClient } from 'app/entities/client/client.model';
+import { ClientService } from 'app/entities/client/service/client.service';
 
 import { DepotUpdateComponent } from './depot-update.component';
 
@@ -21,6 +23,7 @@ describe('Depot Management Update Component', () => {
   let depotFormService: DepotFormService;
   let depotService: DepotService;
   let employeeService: EmployeeService;
+  let clientService: ClientService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -44,6 +47,7 @@ describe('Depot Management Update Component', () => {
     depotFormService = TestBed.inject(DepotFormService);
     depotService = TestBed.inject(DepotService);
     employeeService = TestBed.inject(EmployeeService);
+    clientService = TestBed.inject(ClientService);
 
     comp = fixture.componentInstance;
   });
@@ -71,15 +75,40 @@ describe('Depot Management Update Component', () => {
       expect(comp.employeesSharedCollection).toEqual(expectedCollection);
     });
 
+    it('Should call Client query and add missing value', () => {
+      const depot: IDepot = { id: 456 };
+      const client: IClient = { id: 41749 };
+      depot.client = client;
+
+      const clientCollection: IClient[] = [{ id: 85737 }];
+      jest.spyOn(clientService, 'query').mockReturnValue(of(new HttpResponse({ body: clientCollection })));
+      const additionalClients = [client];
+      const expectedCollection: IClient[] = [...additionalClients, ...clientCollection];
+      jest.spyOn(clientService, 'addClientToCollectionIfMissing').mockReturnValue(expectedCollection);
+
+      activatedRoute.data = of({ depot });
+      comp.ngOnInit();
+
+      expect(clientService.query).toHaveBeenCalled();
+      expect(clientService.addClientToCollectionIfMissing).toHaveBeenCalledWith(
+        clientCollection,
+        ...additionalClients.map(expect.objectContaining)
+      );
+      expect(comp.clientsSharedCollection).toEqual(expectedCollection);
+    });
+
     it('Should update editForm', () => {
       const depot: IDepot = { id: 456 };
       const employee: IEmployee = { id: 51019 };
       depot.employee = employee;
+      const client: IClient = { id: 8937 };
+      depot.client = client;
 
       activatedRoute.data = of({ depot });
       comp.ngOnInit();
 
       expect(comp.employeesSharedCollection).toContain(employee);
+      expect(comp.clientsSharedCollection).toContain(client);
       expect(comp.depot).toEqual(depot);
     });
   });
@@ -160,6 +189,16 @@ describe('Depot Management Update Component', () => {
         jest.spyOn(employeeService, 'compareEmployee');
         comp.compareEmployee(entity, entity2);
         expect(employeeService.compareEmployee).toHaveBeenCalledWith(entity, entity2);
+      });
+    });
+
+    describe('compareClient', () => {
+      it('Should forward to clientService', () => {
+        const entity = { id: 123 };
+        const entity2 = { id: 456 };
+        jest.spyOn(clientService, 'compareClient');
+        comp.compareClient(entity, entity2);
+        expect(clientService.compareClient).toHaveBeenCalledWith(entity, entity2);
       });
     });
   });

@@ -1,5 +1,6 @@
 package com.mycompany.mikedev.repository;
 
+import com.mycompany.mikedev.domain.Product;
 import com.mycompany.mikedev.domain.Stock;
 import java.util.List;
 import java.util.Optional;
@@ -17,6 +18,8 @@ public interface StockRepository extends JpaRepository<Stock, Long> {
     default Optional<Stock> findOneWithEagerRelationships(Long id) {
         return this.findOneWithToOneRelationships(id);
     }
+
+    Optional<Stock> findByProduct(Product product);
 
     default List<Stock> findAllWithEagerRelationships() {
         return this.findAllWithToOneRelationships();

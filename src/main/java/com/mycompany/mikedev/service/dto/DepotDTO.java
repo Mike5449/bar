@@ -19,6 +19,8 @@ public class DepotDTO implements Serializable {
 
     private EmployeeDTO employee;
 
+    private ClientDTO client;
+
     public Long getId() {
         return id;
     }
@@ -51,6 +53,14 @@ public class DepotDTO implements Serializable {
         this.employee = employee;
     }
 
+    public ClientDTO getClient() {
+        return client;
+    }
+
+    public void setClient(ClientDTO client) {
+        this.client = client;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -80,6 +90,7 @@ public class DepotDTO implements Serializable {
             ", amount=" + getAmount() +
             ", description='" + getDescription() + "'" +
             ", employee=" + getEmployee() +
+            ", client=" + getClient() +
             "}";
     }
 }

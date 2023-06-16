@@ -5,6 +5,13 @@
     overflow-y: auto;
 }
 
+.depotNegatif{
+  color: red;
+}
+.depotPositif{
+  color:green
+}
+
 ::-webkit-scrollbar {
     width: 3px;
     height: 2px !important;

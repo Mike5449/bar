@@ -48,10 +48,10 @@
             <a [routerLink]="['/depot', sale.depot.id, 'view']">{{ sale.depot.amount }}</a>
           </div>
         </dd>
-        <dt><span jhiTranslate="barApp.sale.produit">Produit</span></dt>
+        <dt><span jhiTranslate="barApp.sale.product">Product</span></dt>
         <dd>
-          <div *ngIf="sale.produit">
-            <a [routerLink]="['/product', sale.produit.id, 'view']">{{ sale.produit.name }}</a>
+          <div *ngIf="sale.product">
+            <a [routerLink]="['/product', sale.product.id, 'view']">{{ sale.product.name }}</a>
           </div>
         </dd>
         <dt><span jhiTranslate="barApp.sale.currentPrice">Current Price</span></dt>

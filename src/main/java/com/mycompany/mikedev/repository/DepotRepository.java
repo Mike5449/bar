@@ -1,5 +1,6 @@
 package com.mycompany.mikedev.repository;
 
+import com.mycompany.mikedev.domain.Client;
 import com.mycompany.mikedev.domain.Depot;
 import java.util.List;
 import java.util.Optional;
@@ -26,15 +27,24 @@ public interface DepotRepository extends JpaRepository<Depot, Long> {
         return this.findAllWithToOneRelationships(pageable);
     }
 
+    List<Depot> findByClient(Client client);
+
+    @Query("SELECT SUM(d.amount) FROM Depot d WHERE d.client=:client")
+    Double getTotalDepotsByClient(@Param("client") Client client);
+
+    @Query(value="select depot from Depot depot where"+" depot.client.id=:clientId")
+    List<Depot>findByClientId(@Param("clientId") Long clientId);
+
     @Query(
-        value = "select distinct depot from Depot depot left join fetch depot.employee",
+        value = "select distinct depot from Depot depot left join fetch depot.employee left join fetch depot.client",
         countQuery = "select count(distinct depot) from Depot depot"
     )
+    
     Page<Depot> findAllWithToOneRelationships(Pageable pageable);
 
-    @Query("select distinct depot from Depot depot left join fetch depot.employee")
+    @Query("select distinct depot from Depot depot left join fetch depot.employee left join fetch depot.client")
     List<Depot> findAllWithToOneRelationships();
 
-    @Query("select depot from Depot depot left join fetch depot.employee where depot.id =:id")
+    @Query("select depot from Depot depot left join fetch depot.employee left join fetch depot.client where depot.id =:id")
     Optional<Depot> findOneWithToOneRelationships(@Param("id") Long id);
 }

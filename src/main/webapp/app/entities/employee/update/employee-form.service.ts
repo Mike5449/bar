@@ -34,6 +34,9 @@ type EmployeeFormDefaults = Pick<NewEmployee, 'id' | 'dateOfBirth' | 'hireDate' 
 type EmployeeFormGroupContent = {
   id: FormControl<EmployeeFormRawValue['id'] | NewEmployee['id']>;
   firstName: FormControl<EmployeeFormRawValue['firstName']>;
+  login: FormControl<EmployeeFormRawValue['login']>;
+  password: FormControl<EmployeeFormRawValue['password']>;
+  confirm: FormControl<EmployeeFormRawValue['confirm']>;
   lastName: FormControl<EmployeeFormRawValue['lastName']>;
   gender: FormControl<EmployeeFormRawValue['gender']>;
   dateOfBirth: FormControl<EmployeeFormRawValue['dateOfBirth']>;
@@ -67,6 +70,15 @@ export class EmployeeFormService {
         }
       ),
       firstName: new FormControl(employeeRawValue.firstName, {
+        validators: [Validators.required],
+      }),
+      login: new FormControl(employeeRawValue.login, {
+        validators: [Validators.required],
+      }),
+      password: new FormControl(employeeRawValue.password, {
+        validators: [Validators.required],
+      }),
+      confirm: new FormControl(employeeRawValue.confirm, {
         validators: [Validators.required],
       }),
       lastName: new FormControl(employeeRawValue.lastName, {

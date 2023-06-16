@@ -14,7 +14,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Table(name = "product_price")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class ProductPrice implements Serializable {
+public class ProductPrice extends AbstractAuditingEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -32,7 +32,7 @@ public class ProductPrice implements Serializable {
     private StatusPrice status;
 
     @ManyToOne
-    private Product produit;
+    private Product product;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -75,16 +75,16 @@ public class ProductPrice implements Serializable {
         this.status = status;
     }
 
-    public Product getProduit() {
-        return this.produit;
+    public Product getProduct() {
+        return this.product;
     }
 
-    public void setProduit(Product product) {
-        this.produit = product;
+    public void setProduct(Product product) {
+        this.product = product;
     }
 
-    public ProductPrice produit(Product product) {
-        this.setProduit(product);
+    public ProductPrice Product(Product product) {
+        this.setProduct(product);
         return this;
     }
 
