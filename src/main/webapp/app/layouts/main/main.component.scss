@@ -1,6 +1,13 @@
 .app-container,.sidebar{
-    height: calc(100vh - 60px);
+    height: calc(100vh - 40px);
     overflow-y: auto;
+}
+.footer{
+  height: 40px;
+  background-color: #101827;
+  .bord{
+    border-right: 1px  solid #ffffff88;
+  }
 }
 ::-webkit-scrollbar {
     width: 10px;
