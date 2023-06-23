@@ -8,6 +8,9 @@ import { AccountService } from 'app/core/auth/account.service';
 import { LoginService } from 'app/login/login.service';
 import { TokenDecodeService } from 'app/shared/token-decode.service';
 import { SharedService } from 'app/shared/shared.service';
+import { CompteCaisseService } from 'app/entities/compte-caisse/service/compte-caisse.service';
+import { ICompteCaisse } from 'app/entities/compte-caisse/compte-caisse.model';
+import { Account } from 'app/core/auth/account.model';
 
 @Component({
   selector: 'jhi-main',
@@ -17,6 +20,9 @@ import { SharedService } from 'app/shared/shared.service';
 export class MainComponent implements OnInit {
   private renderer: Renderer2;
   closeSideBar?:boolean;
+  account: Account | null = null;
+
+  compteCaisse:ICompteCaisse[]=[];
 
   infoToken:any;
   constructor(
@@ -26,7 +32,8 @@ export class MainComponent implements OnInit {
     private translateService: TranslateService,
     rootRenderer: RendererFactory2,
     private loginService: LoginService,
-    private tokenDecodeService:TokenDecodeService
+    private tokenDecodeService:TokenDecodeService,
+    private compteCaisseService:CompteCaisseService
   ) {
     this.renderer = rootRenderer.createRenderer(document.querySelector('html'), null);
   }
@@ -52,6 +59,35 @@ export class MainComponent implements OnInit {
 
     SharedService.closeSideBar.subscribe(data=>{
       this.closeSideBar=data;
+    })
+
+    SharedService.loadCaisse.subscribe(data=>{
+
+      this.getByEmployeAndActiveCaise();
+
+    })
+
+    this.getByEmployeAndActiveCaise();
+
+    this.accountService
+      .getAuthenticationState()
+      .subscribe(account => (this.account = account));
+    
+  }
+
+  getByEmployeAndActiveCaise(){
+    this.compteCaisseService.getByEmployeAndActiveCaise().subscribe({
+      next:(data)=>{
+
+        if(data.body)
+        this.compteCaisse=data.body;
+        console.log(this.compteCaisse)
+        
+      },
+      error:(error)=>{
+
+        console.log(error)
+      }
     })
   }
 

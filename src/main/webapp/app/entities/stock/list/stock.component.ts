@@ -14,6 +14,7 @@ import { StockDeleteDialogComponent } from '../delete/stock-delete-dialog.compon
 @Component({
   selector: 'jhi-stock',
   templateUrl: './stock.component.html',
+  styleUrls:['./stock.component.scss']
 })
 export class StockComponent implements OnInit {
   stocks?: IStock[];

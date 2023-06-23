@@ -1,10 +1,15 @@
 package com.mycompany.mikedev.service.impl;
 
 import com.mycompany.mikedev.domain.Attendance;
+import com.mycompany.mikedev.domain.Employee;
 import com.mycompany.mikedev.repository.AttendanceRepository;
+import com.mycompany.mikedev.repository.EmployeeRepository;
 import com.mycompany.mikedev.service.AttendanceService;
 import com.mycompany.mikedev.service.dto.AttendanceDTO;
 import com.mycompany.mikedev.service.mapper.AttendanceMapper;
+import com.mycompany.mikedev.util.DateUtil;
+
+import java.time.LocalDateTime;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,18 +29,34 @@ public class AttendanceServiceImpl implements AttendanceService {
 
     private final AttendanceRepository attendanceRepository;
 
+    private final EmployeeRepository employeeRepository ;
+
     private final AttendanceMapper attendanceMapper;
 
-    public AttendanceServiceImpl(AttendanceRepository attendanceRepository, AttendanceMapper attendanceMapper) {
+    public AttendanceServiceImpl(AttendanceRepository attendanceRepository, AttendanceMapper attendanceMapper ,EmployeeRepository employeeRepository) {
         this.attendanceRepository = attendanceRepository;
         this.attendanceMapper = attendanceMapper;
+        this.employeeRepository=employeeRepository;
     }
 
     @Override
     public AttendanceDTO save(AttendanceDTO attendanceDTO) {
         log.debug("Request to save Attendance : {}", attendanceDTO);
+
         Attendance attendance = attendanceMapper.toEntity(attendanceDTO);
-        attendance = attendanceRepository.save(attendance);
+        Optional<Employee> employeesRepository=employeeRepository.findPresentEmployeeExist(DateUtil.getDateInString(DateUtil.getCurrentDate(), "-"),attendance.getEmployee().getId());
+
+        if(employeesRepository.isPresent()){
+
+         throw new IllegalArgumentException("Cet employee est deja present...");
+
+
+
+        }else{
+         attendance = attendanceRepository.save(attendance);
+
+        }
+
         return attendanceMapper.toDto(attendance);
     }
 

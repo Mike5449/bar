@@ -2,6 +2,9 @@
 @import '~bootstrap/scss/functions';
 @import '~bootstrap/scss/variables';
 
+// @import 'colors';
+// @import '../assets/dist/css/bootstrap.rtl.min.css';
+
 /* ==============================================================
 Bootstrap tweaks
 ===============================================================*/
@@ -210,7 +213,51 @@ ui bootstrap tweaks
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+.item {
+  display: flex;
+  flex-direction: column;
+}
 
+.item #item-group {
+  display: flex;
+  flex-direction: row;
+  justify-content: stretch;
+}
+.item #item-group1 {
+  display: flex;
+  flex-direction: row;
+  justify-content: stretch;
+}
+
+.item #item-group select {
+  flex: 1
+}
+.item label {
+  font-size: 12pt !important;
+}
+.item input {
+  font-size: 12pt !important;
+  width: 30% !important;
+
+}
+
+.infos-totals {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px;
+  border: 2px solid black;
+  margin-top: 4px;
+}
+
+.infos-totals .item {
+  display: flex;
+  flex-direction: row;
+  font-size: larger !important;
+  font-weight: 100 !important;
+  font-style: italic !important;
+}
 .dropdown-menu {
   padding-left: 0px;
 }
@@ -237,6 +284,9 @@ angular-cli removes postcss-rtl processed inline css, processed rules must be ad
   }
 }
 /* jhipster-needle-scss-add-main JHipster will add new css style */
+
+
+
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500&display=swap');
 
 * { box-sizing: border-box; }
@@ -249,25 +299,109 @@ angular-cli removes postcss-rtl processed inline css, processed rules must be ad
   --table-header: #1a2131;
   --app-content-main-color: #fff;
   --sidebar-link: #fff;
-  --sidebar-active-link: #1d283c;
+  --sidebar-active-link: #101c33;
   --sidebar-hover-link: #1a2539;
-  --action-color: #2869ff;
+  --action-color: #b4bccf;
   --action-color-hover: #6291fd;
   --app-content-secondary-color: #1d283c;
+  --app-content-secondary-color1: #131518;
   --filter-reset: #2c394f;
   --filter-shadow: rgba(16, 24, 39, 0.8) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+
+  h2{
+    color: #ffffff !important;
+  }
+
+  h6 {
+    color: #ac7171 !important;
+  }
+
+  .dropdown-menu, .modal-body, .modal-header .modal-footer, .panier {
+    background-color: #000;
+    color:rgb(255, 255, 255) !important;
+  }
+
+   .panier {
+    background-color: #101827;
+    color:#3a60d2 !important;
+  }
+
+  ng-template, .ng-template .modal-body th {
+    background-color: #000;
+    color:rgb(0, 0, 0) !important;
+  }
+
+  label{
+    color: #ffffff;
+  }
+
+  dt {
+    color: #117e09;
+  }
+
+  dd {
+    color: rgb(255, 255, 255);
+  }
+
+  fa-icon {
+    color: #ffffff !important;
+  }
 }
 
 .light:root {
-  --app-bg: #fff;
-  --sidebar: #f3f6fd;
+  --app-bg: #f2f2f2;
+  --sidebar: #d3d6dd;
   --app-content-secondary-color: #f3f6fd;
+  --app-content-secondary-color1:rgb(121, 122, 126)d;
   --app-content-main-color: #1f1c2e;
   --sidebar-link: #1f1c2e;
   --sidebar-hover-link: rgba(195, 207, 244, 0.5);
-  --sidebar-active-link: rgba(195, 207, 244, 1);
+  --sidebar-active-link: rgb(17, 30, 71);
   --sidebar-main-color: #1f1c2e;
   --filter-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  fa-icon {
+    color: #000 !important;
+  }
+
+  h2{
+    color: #000;
+  }
+
+  label{
+    color: #000;
+  }
+
+  dt {
+    color: #000;
+  }
+
+  dd {
+    color: goldenrod;
+  }
+
+  h6, .dropdown, .nav-item{
+    color: #1f0b5d !important;
+  }
+
+  .dropdown-menu, .modal-body, .modal-header, .modal-footer {
+    background-color: #e7e7e7;
+    color:rgb(0, 0, 0) !important;
+  }
+
+  .panier {
+    background-color: #ffffff;
+    color:#117e09 !important;
+  }
+
+  ng-template {
+    background-color: #ffffff;
+    color:rgb(6, 4, 4) !important;
+  }
+
+  .modal-body th, .modal-body td {
+    color:rgb(6, 4, 4);
+  }
+
 }
 
 $font-small: 14px;
@@ -338,7 +472,7 @@ body {
       
       svg { margin-right: 8px; }
       
-      &:hover { background-color: var(--sidebar-hover-link); }
+      &:hover { background-color: var(--sidebar-hover-link); color: wheat; }
       
       &.active {
         background-color: var(--sidebar-active-link);
@@ -348,6 +482,7 @@ body {
           position: absolute;
           right: 0;
           background-color: var(--action-color);
+          color: wheat;
           height: 100%;
           width: 4px;
         }
@@ -356,7 +491,12 @@ body {
   }
   
   @media screen and (max-width: 1024px) {&{
-      display: none;
+      //display: none;
+      max-width: 35px;
+
+      &:hover {
+        max-width: 200px;
+      }
   }}
 }
 
@@ -437,6 +577,9 @@ body {
   max-height: 100%;
   display: flex;
   flex-direction: column;
+  width: calc(100% - 80px);
+  overflow: scroll;
+  scroll-behavior: smooth;
   
   &-header {
     display: flex;
@@ -664,8 +807,12 @@ body {
   padding: 0 4px;
 }
 
-.tableView {
-  .products-header {
+.tableView, table {
+  width: calc(100% - 1px);
+  overflow: scroll;
+  scroll-behavior: smooth;
+
+  .products-header, thead tr {
     display: flex;
     align-items: center;
     border-radius: 4px;
@@ -674,7 +821,7 @@ body {
     top: 0;
   }
   
-  .products-row {
+  .products-row, tr {
     display: flex;
     align-items: center;
     border-radius: 4px;
@@ -688,8 +835,18 @@ body {
       display: none;
     }
   }
+
+  .smTable {
+    background-color: var(--app-content-secondary-color1);
+    border-bottom: 1px solid rgb(225, 212, 87);
+    &:hover {
+      cursor: pointer;
+      box-shadow: var(--filter-shadow);
+      background-color: var(--app-content-secondary-color1);
+    }
+  }
   
-  .product-cell {
+  .product-cell, td, th, tbody tr td, tfoot tr td {
     flex: 1;
     padding: 8px 16px;
     color: var(--app-content-main-color);
@@ -786,11 +943,11 @@ body {
     margin: 0;
   }}
   
-  .products-header {
+  .products-header, thead tr {
     display: none;
   }
   
-  .products-row {
+  .products-row, tr {
     margin: 8px;
     width: calc(25% - 16px);
     background-color: var(--app-content-secondary-color);
@@ -846,7 +1003,7 @@ body {
     }
   }
   
-  .product-cell {
+  .product-cell, td, td {
     color: var(--app-content-main-color);
     font-size: $font-small;
     margin-bottom: 8px;
@@ -873,3 +1030,6 @@ body {
   
   .cell-label { opacity: 0.6; }
 }
+
+
+

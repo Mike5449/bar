@@ -66,6 +66,13 @@ export class EmployeeService {
       .pipe(map(res => this.convertResponseArrayFromServer(res)));
   }
 
+  employeePresent(): Observable<EntityArrayResponseType> {
+    
+    return this.http
+      .get<RestEmployee[]>(`${this.resourceUrl}/present`, {observe: 'response' })
+      .pipe(map(res => this.convertResponseArrayFromServer(res)));
+  }
+
   delete(id: number): Observable<HttpResponse<{}>> {
     return this.http.delete(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }

@@ -1,0 +1,82 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <div *ngIf="compteCaisse">
+      <h2 data-cy="compteCaisseDetailsHeading"><span jhiTranslate="barApp.compteCaisse.detail.title">Compte Caisse</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details text-white text-sm">
+        <dt><span >Id</span></dt>
+        <dd>
+          <span>{{ compteCaisse.id }}</span>
+        </dd>
+        <dt><span >Injection</span></dt>
+        <dd>
+          <span>{{ compteCaisse.injection }}</span>
+        </dd>
+        <dt><span >+ Sale</span></dt>
+        <dd>
+          <span>{{ compteCaisse.sale }}</span>
+        </dd>
+        <dt><span ><span>-</span> Pret</span></dt>
+        <dd>
+          <span>{{ compteCaisse.pret }}</span>
+        </dd>
+        <dt><span ><span>-</span> Cancel</span></dt>
+        <dd>
+          <span>{{ compteCaisse.cancel }}</span>
+        </dd>
+        <dt><span >= Sold</span></dt>
+        <dd>
+          <span>{{ compteCaisse.cash }}</span>
+        </dd>
+        
+        <dt><span>+ Balance</span></dt>
+        <dd>
+          <span>{{ compteCaisse.balance }}</span>
+        </dd>
+        <dt><span ><span>=</span> A Verser</span></dt>
+        <dd>
+          <span>{{ compteCaisse.aVerser }}</span>
+        </dd>
+
+        <!-- <dt><span jhiTranslate="barApp.compteCaisse.status">Status</span></dt>
+        <dd>
+          <span jhiTranslate="{{ 'barApp.StatusCaisse.' + compteCaisse.status }}">{{ compteCaisse.status }}</span>
+        </dd>
+        <dt><span jhiTranslate="barApp.compteCaisse.name">Name</span></dt>
+        <dd>
+          <span>{{ compteCaisse.name }}</span>
+        </dd> -->
+
+      </dl>
+
+      <div class="d-flex flex-column justify-center gap-3">
+
+        <div style="display: flex;align-items: center;justify-content: center;" class="d-flex justify-center align-items-center ">
+          <input  style="background-color: transparent;" type="number" class="col-4 input input-sm text-white border-white" placeholder="montant" name="" id="" [(ngModel)]="montant">
+        </div>
+        <div class="d-flex col-12 gap-3">
+
+          <button [disabled]="!montant" (click)="update('INJECTION')" class="btn col btn-sm btn-primary text-white">Injection</button>
+          <button [disabled]="!montant" (click)="update('PRET')" class="btn col btn-sm btn-danger">Pret</button>
+          <button [disabled]="!montant" (click)="update('CONTROL')" class="btn col btn-sm btn-success text-white">Controle</button>
+
+        </div>
+
+      </div>
+
+      <!-- <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Retour</span>
+      </button>
+
+      <button type="button" [routerLink]="['/compte-caisse', compteCaisse.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Editer</span>
+      </button> -->
+    </div>
+  </div>
+</div>

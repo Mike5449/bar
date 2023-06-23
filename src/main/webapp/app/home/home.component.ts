@@ -5,6 +5,7 @@ import { takeUntil } from 'rxjs/operators';
 
 import { AccountService } from 'app/core/auth/account.service';
 import { Account } from 'app/core/auth/account.model';
+import { SharedService } from 'app/shared/shared.service';
 
 @Component({
   selector: 'jhi-home',
@@ -15,6 +16,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   account: Account | null = null;
 
   private readonly destroy$ = new Subject<void>();
+  closeSideBar?:boolean=false;
 
   constructor(private accountService: AccountService, private router: Router) {}
 
@@ -23,6 +25,27 @@ export class HomeComponent implements OnInit, OnDestroy {
       .getAuthenticationState()
       .pipe(takeUntil(this.destroy$))
       .subscribe(account => (this.account = account));
+      if(!this.account){
+
+       this.login();
+
+
+      }
+
+      SharedService.closeSideBar.subscribe(data=>{
+
+        this.closeSideBar=data;
+  
+      })
+  }
+
+  closeSideBare(){
+
+
+    SharedService.closeSideBar.next(!this.closeSideBar)
+
+    // this.closeSideBar=!this.closeSideBar;
+
   }
 
   login(): void {

@@ -36,6 +36,7 @@ interface IProductWithPrice{
 })
 export class SaleUpdateComponent implements OnInit {
   @Input()currentClient:IClient | undefined;
+  @Input()currentEmployee:IEmployee | undefined;
   isSaving = false;
   sale: ISale | null = null;
   statusVenteValues = Object.keys(StatusVente);
@@ -104,7 +105,15 @@ export class SaleUpdateComponent implements OnInit {
         sale.amountTotal=0
         sale.client=this.currentClient;
         sale.depot=null;
-        sale.employee=null;
+        if(this.currentEmployee){
+
+         sale.employee=this.currentEmployee;
+
+        }else{
+
+          sale.employee=null;
+
+        }
         sale.product=null;
         sale.quantity=0;
         sale.status=StatusVente.NEW;
@@ -128,21 +137,23 @@ export class SaleUpdateComponent implements OnInit {
 
   submitPrices(){
 
-    const productsWithPrices=this.productsSharedCollection.filter((product,index)=>{
+    const productsWithQuantity=this.productsSharedCollection.filter((product,index)=>{
 
-      const price=this.productPrices[index];
-      console.log(price)
-      return price && price>0
+      const quantity=this.productPrices[index];
+      return quantity && quantity>0
 
       
 
     }).map((product,index)=>{
 
-      const price=this.productPrices[index]
-      return { ...product,price}
+      const quantity=this.productPrices[index]
+      return { ...product,quantity}
     })
-    console.log(productsWithPrices)
-    productsWithPrices.forEach(data=>{
+    console.log(productsWithQuantity)
+    productsWithQuantity.forEach(data=>{
+
+      console.log(data)
+
 
       const sale: any = {id:0};
 
@@ -150,14 +161,20 @@ export class SaleUpdateComponent implements OnInit {
         sale.amountTotal=0
         sale.client=this.currentClient;
         sale.depot=null;
-        sale.employee=null;
         sale.product=data;
-        sale.quantity=data.price;
+        sale.quantity=data.quantity;
         sale.status=StatusVente.NEW;
         sale.unitPrice=0;
+      
         if(this.currentClient){
 
-          sale.id=null;
+          sale.employee=this.currentEmployee;
+
+          
+        }else{
+
+          sale.employee=null;
+
         }
         
         if (sale.id !== null) {
@@ -202,6 +219,7 @@ export class SaleUpdateComponent implements OnInit {
   protected onSaveSuccess(data:any): void {
     // this.previousState();
     console.log(data)
+    SharedService.loadCaisse.next(true);
     SharedService.mapModalVisible.next(false);
     this.modalService.dismissAll();
   }

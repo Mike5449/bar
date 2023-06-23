@@ -1,8 +1,17 @@
 
 .serveuse{
-  width: 600px;
-  overflow-x: auto;
-    overflow-y: auto;
+  // width: 300px;
+    // overflow-x:scroll!important;
+    // overflow-y: scroll!important;
+
+    .active{
+      
+
+      .employees{
+        width: 10px;
+        overflow: scroll
+      }
+    }
 }
 
 .depotNegatif{

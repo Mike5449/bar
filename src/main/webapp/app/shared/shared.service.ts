@@ -9,6 +9,7 @@ Injectable({
     static tokenValue: any = '';
     static mapModalVisible = new Subject<boolean>();
     static closeSideBar=new Subject<boolean>();
+    static loadCaisse=new Subject<boolean>();
         constructor(){
 
     }

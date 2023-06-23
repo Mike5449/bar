@@ -30,6 +30,7 @@ public class Attendance extends AbstractAuditingEntity implements Serializable {
     private Boolean isPresent;
 
     @ManyToOne
+    // @JoinColumn(name)
     @JsonIgnoreProperties(value = { "job" }, allowSetters = true)
     private Employee employee;
 

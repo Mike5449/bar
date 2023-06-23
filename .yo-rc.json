@@ -36,7 +36,8 @@
       "Product",
       "ProductPrice",
       "Stock",
-      "Sale"
+      "Sale",
+      "CompteCaisse"
     ],
     "entitySuffix": "",
     "gitCompany": "",
@@ -44,7 +45,7 @@
     "jhipsterVersion": "7.9.3",
     "jwtSecretKey": "MmQ0MWI0NDdhM2MzNmNjNTAzODE3NjEzY2I5ZjI0ODI0NjAxMzBmZTUzMTVjM2RiODUyOTNjMWQzMDI2YTI2M2I4YmM1MGJiMjY3YWIxNTUxYjE1Yjc3NzIwYzc0N2YxZTNjM2E0MzVhN2I2M2JkYTRhN2U0ZWQ4YTI1OGNkMTc=",
     "languages": ["fr", "en", "es"],
-    "lastLiquibaseTimestamp": 1685496688000,
+    "lastLiquibaseTimestamp": 1686943087000,
     "messageBroker": false,
     "nativeLanguage": "fr",
     "otherModules": [],

@@ -15,6 +15,11 @@ import { RouterModule } from '@angular/router';
         loadChildren: () => import('./poste/poste.module').then(m => m.PosteModule),
       },
       {
+        path: 'compte-caisse',
+        data: { pageTitle: 'barApp.poste.home.title' },
+        loadChildren: () => import('./compte-caisse/compte-caisse.module').then(m => m.CompteCaisseModule),
+      },
+      {
         path: 'shift',
         data: { pageTitle: 'barApp.shift.home.title' },
         loadChildren: () => import('./shift/shift.module').then(m => m.ShiftModule),

@@ -1,0 +1,57 @@
+{
+  "applications": "*",
+  "changelogDate": "20230616191807",
+  "dto": "mapstruct",
+  "embedded": false,
+  "entityTableName": "compte_caisse",
+  "fields": [
+    {
+      "fieldName": "id",
+      "fieldType": "Long"
+    },
+    {
+      "fieldName": "injection",
+      "fieldType": "Long"
+    },
+    {
+      "fieldName": "sale",
+      "fieldType": "Long"
+    },
+    {
+      "fieldName": "cancel",
+      "fieldType": "Long"
+    },
+    {
+      "fieldName": "cash",
+      "fieldType": "Long"
+    },
+    {
+      "fieldName": "pret",
+      "fieldType": "Long"
+    },
+    {
+      "fieldName": "balance",
+      "fieldType": "Long"
+    },
+    {
+      "fieldName": "aVerser",
+      "fieldType": "Long"
+    },
+    {
+      "fieldName": "status",
+      "fieldType": "StatusCaisse",
+      "fieldValues": "ACTIVE,INACTIVE"
+    },
+    {
+      "fieldName": "name",
+      "fieldType": "String"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "CompteCaisse",
+  "pagination": "pagination",
+  "readOnly": false,
+  "relationships": [],
+  "service": "serviceImpl"
+}

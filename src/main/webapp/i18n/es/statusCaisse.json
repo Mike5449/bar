@@ -1,0 +1,9 @@
+{
+  "barApp": {
+    "StatusCaisse": {
+      "null": "",
+      "ACTIVE": "ACTIVE",
+      "INACTIVE": "INACTIVE"
+    }
+  }
+}

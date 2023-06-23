@@ -1,9 +1,12 @@
 package com.mycompany.mikedev.service;
 
+import com.mycompany.mikedev.domain.Employee;
 import com.mycompany.mikedev.service.dto.EmployeeDTO;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+
+import java.util.List;
 
 /**
  * Service Interface for managing {@link com.mycompany.mikedev.domain.Employee}.
@@ -56,6 +59,8 @@ public interface EmployeeService {
      * @return the entity.
      */
     Optional<EmployeeDTO> findOne(Long id);
+
+   List<Employee>findPresentEmployee();
 
     /**
      * Delete the "id" employee.

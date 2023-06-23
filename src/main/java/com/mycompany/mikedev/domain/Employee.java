@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.mycompany.mikedev.domain.enumeration.Sexe;
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.List;
+
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import org.hibernate.annotations.Cache;
@@ -83,6 +85,10 @@ public class Employee extends AbstractAuditingEntity implements Serializable {
     @JsonIgnoreProperties(value = { "employee", "authorities" }, allowSetters = true)
     @OneToOne(mappedBy = "employee")
     private User user;
+
+    @JsonIgnoreProperties(value = { "employee", "authorities" }, allowSetters = true)
+    @OneToMany(mappedBy = "employee")
+    private List< Attendance> attendance;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -369,6 +375,22 @@ public class Employee extends AbstractAuditingEntity implements Serializable {
      */
     public void setPassword(String password) {
         this.password = password;
+    }
+
+
+
+    /**
+     * @return List< Attendance> return the attendance
+     */
+    public List< Attendance> getAttendance() {
+        return attendance;
+    }
+
+    /**
+     * @param attendance the attendance to set
+     */
+    public void setAttendance(List< Attendance> attendance) {
+        this.attendance = attendance;
     }
 
 }

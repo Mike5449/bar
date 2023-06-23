@@ -20,6 +20,7 @@ import { ClientFormGroup, ClientFormService } from 'app/entities/client/update/c
 import { DepotService } from 'app/entities/depot/service/depot.service';
 import { IDepot } from 'app/entities/depot/depot.model';
 import { TokenDecodeService } from 'app/shared/token-decode.service';
+import { EmployeeService } from 'app/entities/employee/service/employee.service';
 export enum TypeAction {
   INSERT,
   UPDATE,
@@ -46,6 +47,7 @@ export enum TypeAction {
 export class SaleComponent implements OnInit {
   sales?: ISale[];
   salesGroupe?: any[];
+  serveurPresent:IEmployee[] | undefined=[];
   clients?:IClient[]=[];
   isLoading = false;
 
@@ -65,8 +67,10 @@ export class SaleComponent implements OnInit {
   isTransaction = false;
 
   currentClient:IClient | undefined;
+  currentEmployee:any;
+
   isNewClient?:boolean;
-  employeeSearching:string='';
+  employeeSearching:any='';
   clientSearching:string='';
   clientName:string='';
   amountDepot?:number;
@@ -95,6 +99,7 @@ export class SaleComponent implements OnInit {
     protected depotService: DepotService,
     public tokenDecodeService: TokenDecodeService,
     private deposevice:DepotService,
+    private employeeService:EmployeeService
     
 
   ) {}
@@ -119,13 +124,28 @@ export class SaleComponent implements OnInit {
 
     })
 
+    this.getEmployeePresent()
+
+  }
+
+  getEmployeePresent(){
+    this.employeeService.employeePresent().subscribe({
+      next:(data)=>{
+
+        // if(data.body)
+        this.serveurPresent=data.body!;
+
+        console.log(data.body)
+
+      },
+      error:()=>{
+
+      }
+    })
   }
 
   closeSideBare(){
 
-    
-
-    console.log(!this.closeSideBar)
 
     SharedService.closeSideBar.next(!this.closeSideBar)
 
@@ -145,9 +165,9 @@ export class SaleComponent implements OnInit {
     sales.forEach(data=>{
 
 
-      if(balance>0){
+      if(balance>=0){
 
-        if(data.status!=StatusVente.VALIDATE){
+        if(data.status!=StatusVente.VALIDATE && data.status!=StatusVente.CANCEL ){
 
           data.status=StatusVente.VALIDATE;
   
@@ -270,11 +290,7 @@ export class SaleComponent implements OnInit {
         }
         
 
-      })
-      
-      console.log(SaleComponent.depotMap)
-
-   
+      })   
 
     
   }
@@ -310,8 +326,11 @@ export class SaleComponent implements OnInit {
 
     clientDepot?.client?.depot?.forEach(data=>{
 
-      if(data.amount)
-      totalDepot+=data.amount;
+      if(data.amount){
+
+        totalDepot+=data.amount;
+      }
+      
     })
 
     return totalDepot;
@@ -324,8 +343,19 @@ export class SaleComponent implements OnInit {
 
     sale?.forEach(data=>{
       
-      if(data.product?.price)
-      totalAchat+=data?.product?.price;
+      if(data.product?.price){
+
+      if(data.status!=StatusVente.CANCEL){
+
+        totalAchat+=data?.product?.price*data.quantity!;
+
+
+      }
+
+
+
+      }
+
     })
 
     
@@ -393,8 +423,9 @@ export class SaleComponent implements OnInit {
     // this.openForNewClient(this.content,this.type,true);
     
   }
-  setEmployee (employee:string){
-    this.employeeSearching=employee;
+  setEmployee (employee:IEmployee | undefined){
+    this.employeeSearching=employee?.firstName;
+    this.currentEmployee=employee;
   }
   setClient (client:IClient | undefined){
     // this.clientSearching= client;
@@ -553,7 +584,7 @@ export class SaleComponent implements OnInit {
 
     // this.bilanAPayerService=tableauGrouper
     
-    //  console.log(tableauGrouper);
+      console.log(tableauGrouper);
     
     this.salesGroupe = tableauGrouper;
 
@@ -580,6 +611,7 @@ export class SaleComponent implements OnInit {
 
   protected onSaveSuccess(): void {
     SharedService.mapModalVisible.next(false);
+    SharedService.loadCaisse.next(true);
     
   }
 
@@ -590,12 +622,34 @@ protected onSaveError(message:any): void {
   // Api for inheritance.
 }
 
-validateSale(currentsale:ISale): void {
+validateSale(currentsale:ISale , type:string , sales?:any[]): void {
   // this.isSaving = true;
-  const sale = currentsale;
-  sale.status=StatusVente.VALIDATE;
 
-  this.subscribeToValidatedateSale(this.saleService.update(sale));
+  const sale = currentsale;
+
+  if(type===StatusVente.VALIDATE){
+
+    const balance=this.sendTotalDepot(currentsale?.client?.id!) - this.balance(sales!);
+
+    if(balance>=0){
+
+      sale.status=StatusVente.VALIDATE;
+
+      this.subscribeToValidatedateSale(this.saleService.update(sale))
+
+    }else{
+      alert("Depot insufisant pour valider ce produit")
+    }
+
+    
+
+  }else if(type===StatusVente.CANCEL){
+
+    sale.status=StatusVente.CANCEL;
+
+    this.subscribeToValidatedateSale(this.saleService.update(sale));
+  }
+  
   
 }
 

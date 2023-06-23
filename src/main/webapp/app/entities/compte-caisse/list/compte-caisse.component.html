@@ -1,0 +1,195 @@
+<div>
+  <h2 id="page-heading" data-cy="CompteCaisseHeading">
+    <span jhiTranslate="barApp.compteCaisse.home.title">CompteCaisses</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span jhiTranslate="barApp.compteCaisse.home.refreshListLabel">Actualiser la liste</span>
+      </button>
+
+      <!-- <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-compte-caisse"
+        [routerLink]="['/compte-caisse/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span jhiTranslate="barApp.compteCaisse.home.createLabel"> Créer un nouveau Compte Caisse </span>
+      </button> -->
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <div class="alert alert-warning" id="no-result" *ngIf="compteCaisses?.length === 0">
+    <span jhiTranslate="barApp.compteCaisse.home.notFound">Aucun Compte Caisse trouvé</span>
+  </div>
+
+  <div class="table-responsive table-entities" id="entities" *ngIf="compteCaisses && compteCaisses.length > 0">
+    <table   aria-describedby="page-heading">
+      <thead>
+        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()">
+          <th scope="col" jhiSortBy="id">
+            <div class="d-flex">
+              <span jhiTranslate="barApp.compteCaisse.id">Id</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="injection">
+            <div class="d-flex">
+              <span >Caissier(e)</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="injection">
+            <div class="d-flex">
+              <span jhiTranslate="barApp.compteCaisse.injection">Injection</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="sale">
+            <div class="d-flex">
+              <span jhiTranslate="barApp.compteCaisse.sale">Sale</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="cancel">
+            <div class="d-flex">
+              <span jhiTranslate="barApp.compteCaisse.cancel">Cancel</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="cash">
+            <div class="d-flex">
+              <span jhiTranslate="barApp.compteCaisse.cash">Cash</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="pret">
+            <div class="d-flex">
+              <span jhiTranslate="barApp.compteCaisse.pret">Pret</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="balance">
+            <div class="d-flex">
+              <span jhiTranslate="barApp.compteCaisse.balance">Balance</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="aVerser">
+            <div class="d-flex">
+              <span jhiTranslate="barApp.compteCaisse.aVerser">A Verser</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="status">
+            <div class="d-flex">
+              <span jhiTranslate="barApp.compteCaisse.status">Status</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          
+          <th scope="col">Action</th>
+        </tr>
+      </thead>
+      <tbody *ngFor="let compteCaisse of onlyActive( compteCaisses ); trackBy: trackId">
+        <tr  data-cy="entityTable">
+          <td>
+            <a [routerLink]="['/compte-caisse', compteCaisse.id, 'view']">{{ compteCaisse.id }}</a>
+          </td>
+          <td class="text-end">{{ compteCaisse?.employee?.firstName }}</td>
+          <td class="text-end">{{ compteCaisse.injection }}</td>
+          <td class="text-end">{{ compteCaisse.sale }}</td>
+          <td class="text-end">{{ compteCaisse.cancel }}</td>
+          <td class="text-end">{{ compteCaisse.cash }}</td>
+          <td class="text-end">{{ compteCaisse.pret }}</td>
+          <td class="text-end">{{ compteCaisse.balance }}</td>
+          <td class="text-end">{{ compteCaisse.aVerser }}</td>
+          <td class="text-end" jhiTranslate="{{ 'barApp.StatusCaisse.' + compteCaisse.status }}">{{ compteCaisse.status }}</td>
+         
+          <td class="text-end">
+            <div class="btn-group">
+              <button
+                type="submit"
+                [routerLink]="['/compte-caisse', compteCaisse.id, 'view']"
+                class="btn btn-info btn-sm"
+                data-cy="entityDetailsButton"
+              >
+                <fa-icon icon="eye"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">Voir</span>
+              </button>
+
+              <button
+                type="submit"
+                (click)="openOrClose(compteCaisse?.employee?.id)"
+                class="btn btn-primary btn-sm"
+                data-cy="entityEditButton"
+              >
+                <fa-icon icon="pencil-alt"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Editer</span>
+              </button>
+
+              <!-- <button type="submit" (click)="delete(compteCaisse)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                <fa-icon icon="times"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Supprimer</span>
+              </button> -->
+            </div>
+          </td>
+          
+        </tr>
+        <tr *ngIf="compteCaisse?.employee?.id===idCaissier">
+          <td colspan="10">
+
+            <table>
+
+              <tbody>
+                <tr *ngFor="let compteCaisseInactive of onlyInactive( compteCaisses ,compteCaisse?.employee?.id ); trackBy: trackId" style="border: 1px solid gray;">
+                  <td>
+                    <a [routerLink]="['/compte-caisse', compteCaisse.id, 'view']">{{ compteCaisse.id }}</a>
+                  </td>
+                  <td class="text-end">{{ compteCaisseInactive?.employee?.firstName }}</td>
+                  <td class="text-end">{{ compteCaisseInactive.injection }}</td>
+                  <td class="text-end">{{ compteCaisseInactive.sale }}</td>
+                  <td class="text-end">{{ compteCaisseInactive.cancel }}</td>
+                  <td class="text-end">{{ compteCaisseInactive.cash }}</td>
+                  <td class="text-end">{{ compteCaisseInactive.pret }}</td>
+                  <td class="text-end">{{ compteCaisseInactive.balance }}</td>
+                  <td class="text-end">{{ compteCaisseInactive.aVerser }}</td>
+                  <td class="text-end" >{{ compteCaisseInactive.status }}</td>
+                  <td></td>
+                </tr>
+              </tbody>
+
+            </table>
+
+            
+
+          </td>
+        </tr>
+        
+      </tbody>
+    </table>
+  </div>
+
+  <div *ngIf="compteCaisses && compteCaisses.length > 0">
+    <div class="d-flex justify-content-center">
+      <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
+    </div>
+
+    <div class="d-flex justify-content-center">
+      <ngb-pagination
+        [collectionSize]="totalItems"
+        [page]="page"
+        [pageSize]="itemsPerPage"
+        [maxSize]="5"
+        [rotate]="true"
+        [boundaryLinks]="true"
+        (pageChange)="navigateToPage($event)"
+      ></ngb-pagination>
+    </div>
+  </div>
+</div>

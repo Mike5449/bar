@@ -1,5 +1,6 @@
 package com.mycompany.mikedev.web.rest;
 
+import com.mycompany.mikedev.domain.Employee;
 import com.mycompany.mikedev.repository.EmployeeRepository;
 import com.mycompany.mikedev.service.EmployeeService;
 import com.mycompany.mikedev.service.dto.EmployeeDTO;
@@ -159,6 +160,19 @@ public class EmployeeResource {
         }
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    @GetMapping("/employees/present")
+    public ResponseEntity<List<Employee>> employeePresent(
+        @org.springdoc.api.annotations.ParameterObject Pageable pageable,
+        @RequestParam(required = false, defaultValue = "false") boolean eagerload
+    ) {
+        log.debug("REST request to get a page of Employees");
+        List<Employee> page;
+        
+            page = employeeService.findPresentEmployee();
+
+        return ResponseEntity.ok().body(page);
     }
 
     /**

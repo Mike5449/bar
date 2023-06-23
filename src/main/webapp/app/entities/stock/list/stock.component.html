@@ -1,7 +1,7 @@
 
 
 
-<div class="app-content">
+<div class="app-conten">
   <div class="app-content-header">
     <h1 class="app-content-headerText">PRODUITS EN STOCK</h1>
     <button (click)="changeTheme()" class="mode-switch" title="Switch Theme">
@@ -10,7 +10,7 @@
         <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
       </svg>
     </button>
-    <button [routerLink]="['/product/new']" class="app-content-headerButton">Ajouter produit</button>
+    <button [routerLink]="['/stock/new']" class="app-content-headerButton">Ajouter produit</button>
   </div>
   <div class="app-content-actions">
     <input class="search-bar" placeholder="Search..." type="text">
@@ -21,7 +21,7 @@
           <label>Category</label>
           <select>
             <option>All Categories</option>
-            <option>Furniture</option>                     <option>Decoration</option>
+            <option>Furniture</option><option>Decoration</option>
             <option>Kitchen</option>
             <option>Bathroom</option>
           </select>
@@ -49,7 +49,7 @@
       </button>
     </div>
   </div>
-  <div  class="products-area-wrapper tableView">
+  <div  class="products-area-wrapper gridView">
     <div class="products-header">
       <div class="product-cell image">
         Items
@@ -90,6 +90,26 @@
         <span class="cell-label">Status:</span>
         <span class="status active">disponible</span>
       </div>
+      
+
+        <div class="btn-group col-12">
+          <button type="submit" [routerLink]="['/stock', stock.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
+            <fa-icon icon="eye"></fa-icon>
+            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">Voir</span>
+          </button>
+
+          <button type="submit" [routerLink]="['/stock', stock.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
+            <fa-icon icon="pencil-alt"></fa-icon>
+            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Editer</span>
+          </button>
+
+          <button type="submit" (click)="delete(stock)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+            <fa-icon icon="times"></fa-icon>
+            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Supprimer</span>
+          </button>
+        </div>
+
+      
       
     </div>
     <!-- <div class="products-row">
@@ -302,7 +322,7 @@
 
 
 
-<div>
+<!-- <div>
   <h2 id="page-heading" data-cy="StockHeading">
     <span jhiTranslate="barApp.stock.home.title">Stocks</span>
 
@@ -422,4 +442,4 @@
       ></ngb-pagination>
     </div>
   </div>
-</div>
+</div> -->

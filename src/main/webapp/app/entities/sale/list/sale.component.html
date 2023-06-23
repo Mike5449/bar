@@ -6,7 +6,7 @@
     <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
   </div>
   <div class="modal-body  text-black" >
-    <jhi-sale-update *ngIf="type === getTypeAction().INSERT" [currentClient]="currentClient"></jhi-sale-update>
+    <jhi-sale-update *ngIf="type === getTypeAction().INSERT" [currentClient]="currentClient" [currentEmployee]="currentEmployee"></jhi-sale-update>
     <!-- <jhi-client-update *ngIf="type === getTypeAction().INSERT  && isNewClient" [currentClient]="currentClient"></jhi-client-update> -->
     <!-- <jhi-sale-detail *ngIf="type === getTypeAction().DETAIL" [creditSolde]="creditSoldeSelected"></jhi-sale-detail>
     <jhi-sale-update *ngIf="type === getTypeAction().UPDATE" [creditSolde]="creditSoldeSelected" [isForTransactionSys]="isTransaction"></jhi-sale-update> -->
@@ -21,37 +21,68 @@
   
     <div class="col-2">
 
-      <select class="form-select form-select-sm bg-white" (click)="setClient(client)" style="width: 100%;" [(ngModel)]="client" (change)="openSpecific(content, getTypeAction().INSERT,client)"  data-mb-filter="true">
+      <h6>LAS VEGAS</h6>
+      <!-- <select class="form-select form-select-sm bg-white" (click)="setClient(client)" style="width: 100%;" [(ngModel)]="client" (change)="openSpecific(content, getTypeAction().INSERT,client)"  data-mb-filter="true">
         <option  value=""></option>
         <option ><input type="text" placeholder="Search" class="input-group-sm"></option>
         <option *ngFor="let client of clients "   value="client">{{client.name}}</option>
         
-      </select>
+      </select> -->
 
     </div>
     
-    <div  class="row col-10 overflow-y serveuse" style="width: 600px;">
+    <div  class="d-flex col col-10 serveuse">
 
-      <div  class="row d-flex text-danger" style="font-weight: bold;font-size: 12px;">
+      <div  class="row d-flex status active col-11" style="font-weight: bold;font-size: 12px;">
 
-        <div (click)="setEmployee('')" class="col ">tous</div>
+        <div (click)="setEmployee(undefined)" class="col ">tous</div>
 
-        <div *ngFor="let employee of salesGroupe " (click)="setEmployee(employee?.employee?.firstName)" class="col">{{employee?.employee?.firstName}}</div>
+        <div *ngFor="let employee of serveurPresent " (click)="setEmployee(employee)" class="col">{{employee?.firstName}}</div>
         
         <div (click)="closeSideBare()" class="col ">sidebar</div>
 
+        
+
       </div>       
+
+      <div class="col-1 ">
+        <a [routerLink]="['/stock']"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }" class=" btn-primary btn-sm text-white"> Stock</a>
+      </div>
      
     </div>
   
   </div>
-  <div *ngIf="!isCommande" class="d-flex col-12 justify-content-end m-1 g-2">
+  <div *ngIf="!isCommande" class=" d-flex m-1 g-2">
 
-    <button (click)="newCommande()" class="btn btn-sm btn-primary">nouveau client</button>
+    <div class="searchClientt col-2">
+      <select class="form-select form-select-sm text-primary" (click)="setClient(client)" style="width: 100%; background: transparent;" [(ngModel)]="client" (change)="openSpecific(content, getTypeAction().INSERT,client)"  data-mb-filter="true">
+        <option  value="">search client</option>
 
+        <option *ngFor="let client of clients "   value="client">{{client.name}}</option>
+        
+      </select>
+    </div>
+
+    <div class="employee d-flex col justify-content-end ">
+
+      <span class="status active" style="font-size: 12px; font-weight: bold;">{{employeeSearching}}</span>
+
+      <button (click)="newCommande()" class="btn btn-sm btn-primary text-white">nouveau client</button>
+
+
+    </div>
+
+    
   </div>
 
+
   <div *ngIf="isCommande" class="d-flex col-12 justify-content-end m-1 g-2">
+
+
+    <span class="status active">{{employeeSearching}}</span>
+
 
     <div class="input-group-sm">
       <input class="form-control " placeholder="nom du client" type="text" [(ngModel)]="clientName">
@@ -71,18 +102,18 @@
           <div class="card "  style="margin-top: 10px;">
             <div class="card-body products-row overflow-auto" style="height: 400px;background-color: #1d283c;color: #fff; ">
               
-              <div class="card-header text-white " style="font-weight: bold;width: 100%;font-size: 13px;">
+              <div class="card-header text-primary " style="font-weight: bold;width: 100%;font-size: 13px;">
     
                 <div class="d-flex justify-content-between">
 
-                  <span class="text-success" >Client : <span >{{client?.client?.name}}</span></span>
-                  <span class="text-success">Depot  : <span>{{sendTotalDepot(client?.client?.id)}}</span> $</span>
+                  <span >Client : <span >{{client?.client?.name}}</span></span>
+                  <span>Depot  : <span>{{sendTotalDepot(client?.client?.id)}}</span> $</span>
 
                 </div>
                 <div class="d-flex justify-content-between">
 
-                  <div class="text-success">Achat   : <span >{{totalAchat(client?.product)}}</span> $</div>
-                  <div [ngClass]="sendTotalDepot(client?.client?.id) - balance(client?.product) <= 0 ? 'text-danger' : 'text-success' ">Balance : <span>{{sendTotalDepot(client?.client?.id) - balance(client?.product) || 0}}$</span> </div>
+                  <div>Achat   : <span >{{totalAchat(client?.product)}}</span> $</div>
+                  <div [ngClass]="sendTotalDepot(client?.client?.id) - balance(client?.product) <= 0 ? 'text-danger' : 'text-primary' ">Balance : <span>{{sendTotalDepot(client?.client?.id) - balance(client?.product) || 0}}$</span> </div>
                   
                 </div>
                
@@ -92,7 +123,7 @@
               <div class="table-responsive table-entities text-sm "  id="entities" *ngIf="sales && sales.length > 0">
                 <table class="table table-sm table-hover text-sm" aria-describedby="page-heading">
                   <thead>
-                    <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()" style="font-size: 13px;" class="text-danger">
+                    <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()" style="font-size: 13px;" class="text-primary">
                       <!-- <th scope="col" jhiSortBy="id">
                         <div class="d-flex">
                           <span jhiTranslate="barApp.sale.id">Id</span>
@@ -157,12 +188,12 @@
                       
                       
                       <th scope="col">
-                        <fa-icon icon="eye" class="text-danger"></fa-icon>
+                        <fa-icon icon="eye" class="text-primary text-primary"></fa-icon>
 
                       </th>
                     </tr>
                   </thead>
-                  <tbody *ngFor="let sale of client?.product; trackBy: trackId">
+                  <tbody *ngFor="let sale of client?.product let i=index; trackBy: trackId">
                     <tr  data-cy="entityTable" style="font-weight: bold;font-size: 13px;color: #fff;border: none;">
                       <!-- <td>
                         <a [routerLink]="['/sale', sale.id, 'view']">{{ sale.id }}</a>
@@ -217,15 +248,16 @@
                             <span class="d-none d-md-inline" jhiTranslate="entity.action.view">Voir</span>
                           </button> -->
             
-                          <button *ngIf="sale?.status!='VALIDATE' || sale?.status!='CANCEL'"  type="submit" (click)="validateSale(sale)" class="btn btn-primary btn-sm" data-cy="entityEditButton">
+                          <button *ngIf="sale?.status==='NEW'"  type="submit" (click)="validateSale(sale,'VALIDATE',client?.product)" class="btn btn-primary btn-sm text-white" data-cy="entityEditButton">
                             <fa-icon icon="pencil-alt"></fa-icon>
                             <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">validate</span>
                           </button>
             
-                          <button *ngIf="sale?.status!='VALIDATE'" type="submit" (click)="delete(sale)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                          <button *ngIf="sale?.status==='VALIDATE' && client?.product?.length===i+1" type="submit" (click)="validateSale(sale,'CANCEL')" class="btn btn-danger btn-sm text-white" data-cy="entityDeleteButton">
                             <fa-icon icon="times"></fa-icon>
-                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Supprimer</span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Supprimer </span>
                           </button>
+
                         </div>
 
                         <div *ngIf="infoToken?.jobName==='Serveur(se)'" class="btn-group">
@@ -241,7 +273,7 @@
             
                           <button  *ngIf="sale?.status!='VALIDATE'" type="submit" (click)="delete(sale)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
                             <fa-icon icon="times"></fa-icon>
-                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Supprimer</span>
+                            <span class="d-none d-md-inline text-white" jhiTranslate="entity.action.delete">Supprimer</span>
                           </button>
                         </div>
                           </td>
@@ -255,19 +287,19 @@
             </div>
             <div class="d-flex justify-content-end card-footer " style="background-color: #1d283c;" >
 
-              <div *ngIf="infoToken.jobName!='Serveur(se)'" class="d-flex">
+              <div class="d-flex">
 
                 <div class="input-group-sm mr-5">
                   <input class="form-control" #amountDepot placeholder="Depot" type="number" [(ngModel)]="amountDepots">
                 </div>
-                <button [disabled]="!amountDepots" (click)="newDepot(client?.client,amountDepot)" class="btn bottom-0 btn-success btn-sm">Depot</button>
+                <button [disabled]="!amountDepots" (click)="newDepot(client?.client,amountDepot)" class="btn bottom-0 btn-success text-white btn-sm">Depot</button>
                 
                 
               </div>
               
-              <div style="margin-left: 10px;">
-              <a *ngIf="infoToken.jobName==='Serveur(se)'" (click)="openSpecific(content, getTypeAction().INSERT,client?.client)" class="btn bottom-0 btn-primary ml5 btn-sm">Commande</a>
-              <a *ngIf="infoToken.jobName!='Serveur(se)'" (click)="validateAllsale(client?.product,client?.client?.id)" class="btn bottom-0 btn-primary ml5 btn-sm">Tout valider</a>
+              <div style="margin-left: 10px;" class="d-flex gap-2">
+              <a  (click)="openSpecific(content, getTypeAction().INSERT,client?.client)" class="btn bottom-0 btn-primary text-white ml5 btn-sm col">Comd</a>
+              <a *ngIf="infoToken.jobName!='Serveur(se)'" (click)="validateAllsale(client?.product,client?.client?.id)" class="btn bottom-0 btn-primary text-white ml5 btn-sm col ">Valider</a>
 
               </div>
 
@@ -342,7 +374,7 @@
 
 
 
-<div>
+<!-- <div>
   <h2 id="page-heading" data-cy="SaleHeading">
     <span jhiTranslate="barApp.sale.home.title">Sales</span>
 
@@ -513,4 +545,4 @@
       ></ngb-pagination>
     </div>
   </div>
-</div>
+</div> -->

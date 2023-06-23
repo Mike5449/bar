@@ -1,0 +1,32 @@
+{
+  "barApp": {
+    "compteCaisse": {
+      "home": {
+        "title": "Compte Caisses",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Compte Caisse",
+        "createOrEditLabel": "Create or edit a Compte Caisse",
+        "notFound": "No Compte Caisses found"
+      },
+      "created": "A new Compte Caisse is created with identifier {{ param }}",
+      "updated": "A Compte Caisse is updated with identifier {{ param }}",
+      "deleted": "A Compte Caisse is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Compte Caisse {{ id }}?"
+      },
+      "detail": {
+        "title": "Compte Caisse"
+      },
+      "id": "Id",
+      "injection": "Injection",
+      "sale": "Sale",
+      "cancel": "Cancel",
+      "cash": "Cash",
+      "pret": "Pret",
+      "balance": "Balance",
+      "aVerser": "A Verser",
+      "status": "Status",
+      "name": "Name"
+    }
+  }
+}
